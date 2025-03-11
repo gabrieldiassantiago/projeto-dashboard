@@ -80,30 +80,28 @@
 </head>
 <body class="bg-gradient-to-br from-primary to-secondary text-white min-h-screen">
     
-    <!-- Mobile sidebar toggle -->
-    <div class="fixed top-4 left-4 z-50 lg:hidden">
-        <button id="mobile-menu-toggle" class="bg-accent text-white p-2 rounded-lg shadow-lg">
-            <i class="fas fa-bars"></i>
-        </button>
-    </div>
+  <!-- Mobile sidebar toggle -->
+<div class="fixed top-4 left-4 z-50 lg:hidden" id="mobile-menu-toggle-container">
+    <button id="mobile-menu-toggle" class="bg-accent text-white p-2 rounded-lg shadow-lg">
+        <i class="fas fa-bars"></i>
+    </button>
+</div>
 
-    <!-- Mobile sidebar -->
-    <div id="mobile-sidebar" class="fixed inset-0 bg-black bg-opacity-80 z-40 transform -translate-x-full transition-transform duration-300 lg:hidden">
-        <div class="h-full w-64 bg-secondary overflow-y-auto">
-            <div class="p-4 flex justify-between items-center border-b border-gray-700">
-                <h2 class="text-xl font-bold text-accent">Menu</h2>
-                <button id="close-sidebar" class="text-white">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="p-4 space-y-4">
-                <a href="#" class="block p-2 rounded-lg bg-accent text-white">
-                    <i class="fas fa-home mr-2"></i> Início
-                </a>
-               
-            </div>
+<!-- Mobile sidebar -->
+<div id="mobile-sidebar" class="fixed inset-0 bg-black bg-opacity-80 z-40 transform -translate-x-full transition-transform duration-300 lg:hidden">
+    <div class="h-full w-64 bg-secondary overflow-y-auto">
+        <div class="p-4 flex justify-end items-center border-b border-gray-700">
+            <button id="close-sidebar" class="text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="p-4 space-y-4">
+            <a href="#" class="block p-2 rounded-lg bg-accent text-white">
+                <i class="fas fa-home mr-2"></i> Início
+            </a>
         </div>
     </div>
+</div>
     
     <!-- Conteúdo principal -->
     <div class="lg:ml-16 transition-all duration-300">
@@ -114,7 +112,7 @@
             </div>
             <div class="text-center md:text-left mb-4 md:mb-0">
                 <h1 class="text-2xl md:text-3xl font-bold   bg-clip-text">Trilha de Implantação</h1>
-                <p class="text-gray-300">Seu progresso total: <span class="text-accent font-bold">65%</span> concluído</p>
+                <p class="text-gray-100">Seu progresso total: <span class="text-white font-bold">65%</span> concluído</p>
             </div>
           
         </header>
@@ -257,20 +255,33 @@
         </button>
        
     </div>
-
     <script>
         // Mobile menu toggle
         const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenuToggleContainer = document.getElementById('mobile-menu-toggle-container');
         const closeSidebar = document.getElementById('close-sidebar');
         const mobileSidebar = document.getElementById('mobile-sidebar');
+        const menuIcon = mobileMenuToggle.querySelector('i');
         
         mobileMenuToggle.addEventListener('click', function() {
+            // Mostrar o menu (remover a classe que esconde)
             mobileSidebar.classList.remove('-translate-x-full');
+            // Remover o ícone de menu (hamburger) e adicionar o ícone de fechar (X)
+            menuIcon.classList.remove('fa-bars');
+            menuIcon.classList.add('fa-xmark');
+            // Esconder o botão de toggle
+            mobileMenuToggleContainer.classList.add('hidden');
         });
         
         closeSidebar.addEventListener('click', function() {
+            // Esconder o menu (adicionar a classe que esconde)
             mobileSidebar.classList.add('-translate-x-full');
+            // Remover o ícone de fechar (X) e adicionar o ícone de menu (hamburger)
+            menuIcon.classList.remove('fa-xmark');
+            menuIcon.classList.add('fa-bars');
+            // Mostrar o botão de toggle novamente
+            mobileMenuToggleContainer.classList.remove('hidden');
         });
-    </script>
+        </script>
 </body>
 </html>
