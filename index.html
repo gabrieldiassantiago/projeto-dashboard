@@ -98,6 +98,26 @@
         .mobile-menu.active {
             display: block;
         }
+
+        /* Adicionar ao final da seção <style> */
+#comercial-container, #estoque-container {
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #ff9800 #2a3245;
+}
+
+#comercial-container::-webkit-scrollbar, #estoque-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+#comercial-container::-webkit-scrollbar-thumb, #estoque-container::-webkit-scrollbar-thumb {
+    background-color: #ff9800;
+    border-radius: 4px;
+}
+
+#comercial-container::-webkit-scrollbar-track, #estoque-container::-webkit-scrollbar-track {
+    background-color: #2a3245;
+}
     </style>
 </head>
 <body class="bg-gradient-to-br from-primary to-secondary text-white min-h-screen">
@@ -128,15 +148,14 @@
     <!-- Conteúdo principal -->
     <div class="lg:ml-16 transition-all duration-300">
         <!-- Cabeçalho da página -->
-        <header class="p-4 md:p-6 flex flex-col md:flex-row items-center bg-gradient-to-r from-blue to-blue bg-opacity-20 border-b border-gray-700">
+        <header class="p-4 md:p-6 flex flex-col md:flex-row items-center bg-gradient-to-r  from-blue-400  to-orange-400 bg-opacity-20 border-b border-gray-700">
             <div class="bg-white text-primary rounded-full w-16 h-16 flex items-center justify-center mr-4 shadow-lg border-4 border-accent mb-4 md:mb-0">
                 <span class="text-xs font-bold">50 / 50</span>
             </div>
             <div class="text-center md:text-left mb-4 md:mb-0">
                 <h1 class="text-2xl md:text-3xl font-bold   bg-clip-text">Trilha de Implantação</h1>
-                <p class="text-gray-100">Seu progresso total: <span class="text-white font-bold">65%</span> concluído</p>
+                <p class="text-gray-100">Seu progresso total: <span class="text-white font-bold">0%</span> concluído</p>
             </div>
-          
         </header>
 
         <!-- Conteúdo principal -->
@@ -170,86 +189,82 @@
         </div>
     </div>
 </div>
-
-            <!-- Estatísticas rápidas -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                <div class="bg-gradient-to-br from-info to-blue-700 rounded-xl p-4 shadow-lg flex items-center">
-                    <div class="bg-white bg-opacity-20 rounded-full p-3 mr-4">
-                        <i class="fas fa-graduation-cap text-2xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold">12</h3>
-                        <p class="text-sm text-gray-200">Cursos Disponíveis</p>
-                    </div>
-                </div>
-                <div class="bg-gradient-to-br from-success to-teal rounded-xl p-4 shadow-lg flex items-center">
-                    <div class="bg-white bg-opacity-20 rounded-full p-3 mr-4">
-                        <i class="fas fa-check-circle text-2xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold">5</h3>
-                        <p class="text-sm text-gray-200">Cursos Concluídos</p>
-                    </div>
-                </div>
-                <div class="bg-gradient-to-br from-warning to-accent rounded-xl p-4 shadow-lg flex items-center">
-                    <div class="bg-white bg-opacity-20 rounded-full p-3 mr-4">
-                        <i class="fas fa-clock text-2xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold">3</h3>
-                        <p class="text-sm text-gray-200">Em Andamento</p>
-                    </div>
-                </div>
-                <div class="bg-gradient-to-br from-blue to-pink rounded-xl p-4 shadow-lg flex items-center">
-                    <div class="bg-white bg-opacity-20 rounded-full p-3 mr-4">
-                        <i class="fas fa-trophy text-2xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-lg font-bold">250</h3>
-                        <p class="text-sm text-gray-200">Pontos Acumulados</p>
-                    </div>
-                </div>
-            </div>
-
-           <!-- Seção Comercial -->
+<!-- Estatísticas rápidas -->
+<div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="bg-gradient-to-br from-gray-700 to-blue-900 rounded-xl p-4 shadow-lg flex items-center">
+        <div class="bg-white bg-opacity-10 rounded-full p-3 mr-4 flex items-center justify-center w-12 h-12">
+            <i class="fas fa-graduation-cap text-2xl text-gray-300"></i>
+        </div>
+        <div class="flex flex-col justify-center">
+            <h3 class="text-lg font-bold text-gray-100">12</h3>
+            <p class="text-sm text-gray-400">Cursos Disponíveis</p>
+        </div>
+    </div>
+    <div class="bg-gradient-to-br from-gray-700 to-blue-900 rounded-xl p-4 shadow-lg flex items-center">
+        <div class="bg-white bg-opacity-10 rounded-full p-3 mr-4 flex items-center justify-center w-12 h-12">
+            <i class="fas fa-check-circle text-2xl text-gray-300"></i>
+        </div>
+        <div class="flex flex-col justify-center">
+            <h3 class="text-lg font-bold text-gray-100">5</h3>
+            <p class="text-sm text-gray-400">Cursos Concluídos</p>
+        </div>
+    </div>
+    <div class="bg-gradient-to-br from-gray-700 to-blue-900 rounded-xl p-4 shadow-lg flex items-center">
+        <div class="bg-white bg-opacity-10 rounded-full p-3 mr-4 flex items-center justify-center w-12 h-12">
+            <i class="fas fa-clock text-2xl text-gray-300"></i>
+        </div>
+        <div class="flex flex-col justify-center">
+            <h3 class="text-lg font-bold text-gray-100">3</h3>
+            <p class="text-sm text-gray-400">Em Andamento</p>
+        </div>
+    </div>
+    <div class="bg-gradient-to-br from-gray-700 to-blue-900 rounded-xl p-4 shadow-lg flex items-center">
+        <div class="bg-white bg-opacity-10 rounded-full p-3 mr-4 flex items-center justify-center w-12 h-12">
+            <i class="fas fa-trophy text-2xl text-gray-300"></i>
+        </div>
+        <div class="flex flex-col justify-center">
+            <h3 class="text-lg font-bold text-gray-100">250</h3>
+            <p class="text-sm text-gray-400">Pontos Acumulados</p>
+        </div>
+    </div>
+</div>
+         <!-- Seção Comercial -->
 <section class="mb-10">
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 bg-secondary bg-opacity-30 p-4 rounded-t-xl border-l-4 border-accent">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 bg-secondary bg-opacity-30 p-4 rounded-t-xl border-l-4 border-accent cursor-pointer" onclick="toggleModule('comercial-container')">
         <div class="flex items-center mb-2 sm:mb-0">
             <i class="fas fa-handshake text-accent text-2xl mr-3"></i>
             <h2 class="text-xl font-bold">Comercial</h2>
-            <span class="ml-3 bg-accent text-white text-xs px-2 py-1 rounded-full">4 cursos</span>
+            <span class="ml-3 bg-accent text-white text-xs px-2 py-1 rounded-full">3 cursos</span>
         </div>
         <div class="flex items-center">
-            <span class="text-blue-400 text-sm mr-2">Progresso: <span class="font-bold text-white">50.00%</span></span>
+            <span class="text-blue-400 text-sm mr-2">Progresso: <span class="font-bold text-white">0%</span></span>
             <button class="text-gray-400 hover:text-white">
-                <i class="fas fa-chevron-down"></i>
+                <i class="fas fa-chevron-down" id="comercial-toggle-icon"></i>
             </button>
         </div>
     </div>
     <div class="w-full bg-secondary rounded-full h-3 mb-8 overflow-hidden">
         <div class="bg-accent h-3 rounded-full progress-shine" style="width: 50%"></div>
     </div>
-    <div id="comercial-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+    <div id="comercial-container" class="flex overflow-x-auto space-x-6 pb-4 hidden"></div>
 </section>
-            <!-- Seção Estoque -->
-       <!-- Seção Estoque -->
+
+<!-- Seção Estoque -->
 <section>
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 bg-secondary bg-opacity-30 p-4 rounded-t-xl border-l-4 border-info">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 bg-secondary bg-opacity-30 p-4 rounded-t-xl border-l-4 border-info cursor-pointer" onclick="toggleModule('estoque-container')">
         <div class="flex items-center mb-2 sm:mb-0">
             <i class="fas fa-boxes text-info text-2xl mr-3"></i>
             <h2 class="text-xl font-bold">Estoque</h2>
-            <span class="ml-3 bg-info text-white text-xs px-2 py-1 rounded-full">5 cursos</span>
+            <span class="ml-3 bg-info text-white text-xs px-2 py-1 rounded-full">1 cursos</span>
         </div>
         <div class="flex items-center">
-            <span class="text-blue-400 text-sm mr-2">Progresso: <span class="font-bold text-white">50.00%</span></span>
+            <span class="text-blue-400 text-sm mr-2">Progresso: <span class="font-bold text-white">0%</span></span>
             <button class="text-gray-400 hover:text-white">
-                <i class="fas fa-chevron-down"></i>
+                <i class="fas fa-chevron-down" id="estoque-toggle-icon"></i>
             </button>
         </div>
     </div>
-    <div id="estoque-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <!-- Treinamentos de estoque serão exibidos aqui -->
-    </div>
+    <div id="estoque-container" class="flex overflow-x-auto space-x-6 pb-4 hidden"></div>
 </section>
         </main>
 

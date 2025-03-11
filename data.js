@@ -2,12 +2,12 @@ const treinamentos = [
     { id: 1, nome: "Como cadastrar clientes ", modulo: "Comercial", status: "Concluído", duracao: "45 minutos", nivel: "Básico", progresso: 100, imagem: "./static/compradores-seu-papel-no-varejo.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como cadastrar Clientes no Sistema, sejam eles pessoas Físicas (CPF) ou pessoas jurídicas (CNPJ)", visualizacoes: 120 },
     { id: 2, nome: "Como Cadastrar Fornecedores", modulo: "Comercial", status: "Em Andamento", duracao: "30 minutos", nivel: "Intermediário", progresso: 50, imagem: "./static/bom-relacionamento-fornecedores.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como cadastrar Fornecedores no Sistema, sejam eles pessoas Físicas (CPF) ou pessoas jurídicas (CNPJ)", visualizacoes: 80 },
     { id: 4, nome: "Exemplo de mais aulas", modulo: "Comercial", status: "Não Iniciado", duracao: "90 minutos", nivel: "Especialista", progresso: 0, imagem: "./static/contratos.avif", video: "./videos/clientes.mp4", descricao: "Descrição do treinamento 4", visualizacoes: 30 },
-    { id: 5, nome: "Como Cadastrar Produtos", modulo: "Estoque", status: "Não Iniciado", duracao: "50 minutos", nivel: "Intermediário", progresso: 0, imagem: "./static/produtos.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como Cadastrar Produtos no Sistema.", visualizacoes: 70 }
+    { id: 5, nome: "Como Cadastrar Produtos", modulo: "Estoque", status: "Não Iniciado", duracao: "50 minutos", nivel: "Intermediário", progresso: 0, imagem: "./static/produtos.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como Cadastrar Produtos no Sistema.", visualizacoes: 70 },
+    { id: 6, nome: "Aula 2 de estoque", modulo: "Estoque", status: "Não Iniciado", duracao: "50 minutos", nivel: "Intermediário", progresso: 0, imagem: "./static/produtos.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como Cadastrar Produtos no Sistema.", visualizacoes: 70 }
+
 ];
 
 function exibirTreinamentos(lista, containerId) {
-    console.log("Lista de treinamentos:", lista); // Verifique se a lista contém dados
-    console.log("Container ID:", containerId); // Verifique se o containerId está correto
     const container = document.getElementById(containerId);
     if (!container) {
         console.error(`Container com ID ${containerId} não encontrado!`);
@@ -16,7 +16,7 @@ function exibirTreinamentos(lista, containerId) {
     container.innerHTML = "";
     lista.forEach(treinamento => {
         const card = document.createElement('div');
-        card.className = "bg-secondary rounded-xl overflow-hidden shadow-lg border border-gray-700 transition-all duration-300 card-hover";
+        card.className = "bg-secondary rounded-xl overflow-hidden shadow-lg border border-gray-700 transition-all duration-300 card-hover flex-shrink-0 w-[300px]";
         card.innerHTML = `
             <div class="relative">
                 <img src="${treinamento.imagem}" alt="${treinamento.nome}" class="w-full h-48 object-cover">
@@ -30,7 +30,6 @@ function exibirTreinamentos(lista, containerId) {
             <div class="p-4">
                 <div class="flex justify-between items-start mb-2">
                     <h3 class="text-lg font-semibold">${treinamento.nome}</h3>
-                    <span class="bg-${getNivelColor(treinamento.nivel)} text-white text-xs px-2 py-1 rounded-full">${treinamento.nivel}</span>
                 </div>
                 <p class="text-gray-400 text-sm mb-4">Módulo: ${treinamento.modulo}</p>
                 <div class="flex items-center justify-between">
@@ -45,14 +44,16 @@ function exibirTreinamentos(lista, containerId) {
             </div>
         `;
 
-        // Adicionar evento de clique para redirecionar para a página de detalhes
         card.addEventListener('click', () => {
             window.location.href = `detalhesTreinamento.html?id=${treinamento.id}`;
         });
 
         container.appendChild(card);
     });
+    // Garantir que o container esteja visível após filtrar
+    container.classList.remove('hidden');
 }
+
 
 // Funções auxiliares
 function getColor(status) {
@@ -73,15 +74,6 @@ function getIcon(status) {
     }
 }
 
-function getNivelColor(nivel) {
-    switch (nivel) {
-        case "Básico": return "accent";
-        case "Intermediário": return "info";
-        case "Avançado": return "purple";
-        case "Especialista": return "teal";
-        default: return "gray-500";
-    }
-}
 
 function buscarTreinamentoPorId(id) {
    //puxar os dados que ja estao aqui 
@@ -118,11 +110,6 @@ function exibirDadosTreinamento(treinamento) {
     document.getElementById('descricaoAula').textContent = treinamento.descricao;
     document.getElementById('visualizacoes').textContent = treinamento.visualizacoes;
 
-   
-
-
-   
-
     // Tags
     const tagsContainer = document.getElementById('tagsAula');
     tagsContainer.innerHTML = '';
@@ -150,8 +137,71 @@ function exibirDadosTreinamento(treinamento) {
     } else {
         console.error('Container de vídeo não encontrado ou vídeo não especificado');
     }
-
 }
+
+function toggleModule(containerId) {
+    const container = document.getElementById(containerId);
+    const toggleIcon = document.getElementById('toggle-icon');
+    
+    if (container.classList.contains('hidden')) {
+        container.classList.remove('hidden');
+        toggleIcon.classList.remove('fa-chevron-down');
+        toggleIcon.classList.add('fa-chevron-up');
+    } else {
+        container.classList.add('hidden');
+        toggleIcon.classList.remove('fa-chevron-up');
+        toggleIcon.classList.add('fa-chevron-down');
+    }
+}
+
+// Função para carregar as próximas aulas do módulo atual
+function carregarProximasAulas(treinamentoAtual) {
+    const proximasAulasContainer = document.getElementById('proximas-aulas-container');
+    const moduloAtualNome = document.getElementById('moduloAtualNome');
+    if (!proximasAulasContainer || !moduloAtualNome) {
+        console.error('Container ou nome do módulo não encontrado!');
+        return;
+    }
+
+    // Definir o nome do módulo atual
+    moduloAtualNome.textContent = treinamentoAtual.modulo;
+
+    // Filtrar apenas as aulas do mesmo módulo
+    const aulasDoModulo = treinamentos.filter(t => t.modulo === treinamentoAtual.modulo);
+    
+    // Encontrar o índice da aula atual
+    const indiceAtual = aulasDoModulo.findIndex(t => t.id === treinamentoAtual.id);
+    
+    // Pegar apenas as próximas aulas (após a atual)
+    const proximasAulas = aulasDoModulo.slice(indiceAtual + 1);
+
+    proximasAulasContainer.innerHTML = '';
+    
+    if (proximasAulas.length === 0) {
+        proximasAulasContainer.innerHTML = `
+            <div class="p-2 text-gray-400 text-sm">
+                Nenhuma aula futura encontrada neste módulo.
+            </div>
+        `;
+        return;
+    }
+
+    proximasAulas.forEach(aula => {
+        const aulaElement = document.createElement('div');
+        aulaElement.className = "flex items-center p-2 rounded-lg hover:bg-primary hover:bg-opacity-30 transition-colors";
+        aulaElement.innerHTML = `
+            <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center mr-3">
+                <i class="fas fa-lock text-gray-400"></i>
+            </div>
+            <div class="flex-1 min-w-0">
+                <p class="font-medium truncate">${aula.nome}</p>
+                <p class="text-xs text-gray-400">${aula.duracao} • ${aula.status === 'Não Iniciado' ? 'Bloqueado' : aula.status}</p>
+            </div>
+        `;
+        proximasAulasContainer.appendChild(aulaElement);
+    });
+}
+
 
 function getProgressColor(status) {
     switch (status) {
@@ -245,3 +295,18 @@ document.addEventListener("DOMContentLoaded", () => {
     exibirTreinamentos(comercialTreinamentos, "comercial-container");
     exibirTreinamentos(estoqueTreinamentos, "estoque-container");
 });
+
+function toggleModule(containerId) {
+    const container = document.getElementById(containerId);
+    const toggleIcon = document.getElementById(`${containerId.split('-')[0]}-toggle-icon`);
+    
+    if (container.classList.contains('hidden')) {
+        container.classList.remove('hidden');
+        toggleIcon.classList.remove('fa-chevron-down');
+        toggleIcon.classList.add('fa-chevron-up');
+    } else {
+        container.classList.add('hidden');
+        toggleIcon.classList.remove('fa-chevron-up');
+        toggleIcon.classList.add('fa-chevron-down');
+    }
+}
