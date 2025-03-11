@@ -33,6 +33,27 @@
         .gradient-bg {
             background: linear-gradient(135deg, #1a2234 0%, #2a3245 100%);
         }
+    @media (max-width: 1023px) {
+    #mobile-menu-toggle-container.scrolled {
+        background: rgba(42, 50, 69, 0.95);
+        backdrop-filter: blur(8px);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        padding: 1rem;
+        z-index: 50;
+        transition: all 0.3s ease;
+        display: flex;
+        justify-content: flex-start;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    #mobile-menu-toggle-container.scrolled #mobile-menu-toggle {
+        margin-left: 0.5rem;
+    }
+}
         .card-hover:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
@@ -256,33 +277,114 @@
         </button>
        
     </div>
-    <script>
-        // Mobile menu toggle
-        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-        const mobileMenuToggleContainer = document.getElementById('mobile-menu-toggle-container');
-        const closeSidebar = document.getElementById('close-sidebar');
-        const mobileSidebar = document.getElementById('mobile-sidebar');
-        const menuIcon = mobileMenuToggle.querySelector('i');
-        
-        mobileMenuToggle.addEventListener('click', function() {
-            // Mostrar o menu (remover a classe que esconde)
-            mobileSidebar.classList.remove('-translate-x-full');
-            // Remover o ícone de menu (hamburger) e adicionar o ícone de fechar (X)
-            menuIcon.classList.remove('fa-bars');
-            menuIcon.classList.add('fa-xmark');
-            // Esconder o botão de toggle
-            mobileMenuToggleContainer.classList.add('hidden');
-        });
-        
-        closeSidebar.addEventListener('click', function() {
-            // Esconder o menu (adicionar a classe que esconde)
-            mobileSidebar.classList.add('-translate-x-full');
-            // Remover o ícone de fechar (X) e adicionar o ícone de menu (hamburger)
-            menuIcon.classList.remove('fa-xmark');
-            menuIcon.classList.add('fa-bars');
-            // Mostrar o botão de toggle novamente
+   <script>
+// Mobile menu toggle
+const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+const mobileMenuToggleContainer = document.getElementById('mobile-menu-toggle-container');
+const closeSidebar = document.getElementById('close-sidebar');
+const mobileSidebar = document.getElementById('mobile-sidebar');
+const menuIcon = mobileMenuToggle.querySelector('i');
+let isMenuOpen = false;
+let wasScrolled = false;
+
+// Função para verificar se está em mobile (menor que 1024px)
+function isMobile() {
+    return window.innerWidth < 1024; // Breakpoint lg do Tailwind
+}
+
+// Função para atualizar o estado do ícone
+function updateMenuIcon() {
+    if (isMenuOpen) {
+        menuIcon.classList.remove('fa-bars');
+        menuIcon.classList.add('fa-xmark');
+    } else {
+        menuIcon.classList.remove('fa-xmark');
+        menuIcon.classList.add('fa-bars');
+    }
+}
+
+// Função para gerenciar a visibilidade do container
+function updateToggleContainerVisibility() {
+    if (isMenuOpen) {
+        // Quando o menu está aberto, remover completamente o container
+        mobileMenuToggleContainer.classList.add('hidden');
+        mobileMenuToggleContainer.classList.remove('scrolled');
+    } else {
+        // Quando o menu está fechado
+        mobileMenuToggleContainer.classList.remove('hidden');
+        // Restaurar o estado scrolled se necessário e for mobile
+        if (wasScrolled && isMobile()) {
+            mobileMenuToggleContainer.classList.add('scrolled');
+        }
+    }
+}
+
+// Toggle do menu mobile
+mobileMenuToggle.addEventListener('click', function() {
+    isMenuOpen = !isMenuOpen;
+    mobileSidebar.classList.toggle('-translate-x-full');
+    updateMenuIcon();
+    updateToggleContainerVisibility();
+});
+
+// Fechar o menu
+closeSidebar.addEventListener('click', function() {
+    isMenuOpen = false;
+    mobileSidebar.classList.add('-translate-x-full');
+    updateMenuIcon();
+    updateToggleContainerVisibility();
+});
+
+// Gerenciar o estado scrolled
+window.addEventListener('scroll', function() {
+    const scrollPosition = window.scrollY;
+    
+    // Só aplicar o estado scrolled se for mobile
+    if (isMobile()) {
+        if (scrollPosition > 20) {
+            wasScrolled = true;
+            if (!isMenuOpen) {
+                mobileMenuToggleContainer.classList.add('scrolled');
+                mobileMenuToggleContainer.classList.remove('hidden');
+            }
+        } else {
+            wasScrolled = false;
+            mobileMenuToggleContainer.classList.remove('scrolled');
+            if (!isMenuOpen) {
+                mobileMenuToggleContainer.classList.remove('hidden');
+            }
+        }
+    } else {
+        // Em desktop, garantir que não haja estado scrolled
+        wasScrolled = false;
+        mobileMenuToggleContainer.classList.remove('scrolled');
+        if (!isMenuOpen) {
             mobileMenuToggleContainer.classList.remove('hidden');
-        });
-        </script>
+        }
+    }
+});
+
+// Atualizar o estado ao redimensionar a janela
+window.addEventListener('resize', function() {
+    if (!isMobile()) {
+        // Se mudar para desktop, remover o estado scrolled
+        wasScrolled = false;
+        mobileMenuToggleContainer.classList.remove('scrolled');
+        if (!isMenuOpen) {
+            mobileMenuToggleContainer.classList.remove('hidden');
+        }
+    } else {
+        // Se mudar para mobile, verificar o estado do scroll
+        const scrollPosition = window.scrollY;
+        if (scrollPosition > 20) {
+            wasScrolled = true;
+            if (!isMenuOpen) {
+                mobileMenuToggleContainer.classList.add('scrolled');
+                mobileMenuToggleContainer.classList.remove('hidden');
+            }
+        }
+    }
+});
+</script>
 </body>
 </html>
