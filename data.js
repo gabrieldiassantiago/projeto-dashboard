@@ -127,7 +127,7 @@ function exibirDadosTreinamento(treinamento) {
         videoContainer.innerHTML = `
             <video 
                 controls 
-                class="w-full rounded-lg shadow-lg"
+                class="w-full  shadow-lg"
                 preload="metadata"
             >
                 <source src="${treinamento.video}" type="video/mp4">
