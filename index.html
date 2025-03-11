@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trilha de Cursos - Implantação</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="data.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1a2234',
+                        secondary: '#2a3245',
+                        accent: '#ff9800',
+                        success: '#4CAF50',
+                        warning: '#FFC107',
+                        danger: '#F44336',
+                        info: '#2196F3',
+                        teal: '#009688',
+                        
+                        pink: '#E91E63',
+                        blue: '#03A9F4',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a2234 0%, #2a3245 100%);
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        .progress-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .progress-shine::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shine 1.5s infinite;
+        }
+        @keyframes shine {
+            100% {
+                left: 150%;
+            }
+        }
+        .badge-pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 152, 0, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+            }
+        }
+        /* Mobile menu */
+        .mobile-menu {
+            display: none;
+        }
+        .mobile-menu.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-primary to-secondary text-white min-h-screen">
+    
+    <!-- Mobile sidebar toggle -->
+    <div class="fixed top-4 left-4 z-50 lg:hidden">
+        <button id="mobile-menu-toggle" class="bg-accent text-white p-2 rounded-lg shadow-lg">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+
+    <!-- Mobile sidebar -->
+    <div id="mobile-sidebar" class="fixed inset-0 bg-black bg-opacity-80 z-40 transform -translate-x-full transition-transform duration-300 lg:hidden">
+        <div class="h-full w-64 bg-secondary overflow-y-auto">
+            <div class="p-4 flex justify-between items-center border-b border-gray-700">
+                <h2 class="text-xl font-bold text-accent">Menu</h2>
+                <button id="close-sidebar" class="text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-4 space-y-4">
+                <a href="#" class="block p-2 rounded-lg bg-accent text-white">
+                    <i class="fas fa-home mr-2"></i> Início
+                </a>
+               
+            </div>
+        </div>
+    </div>
+    
+    <!-- Conteúdo principal -->
+    <div class="lg:ml-16 transition-all duration-300">
+        <!-- Cabeçalho da página -->
+        <header class="p-4 md:p-6 flex flex-col md:flex-row items-center bg-gradient-to-r from-blue to-blue bg-opacity-20 border-b border-gray-700">
+            <div class="bg-white text-primary rounded-full w-16 h-16 flex items-center justify-center mr-4 shadow-lg border-4 border-accent mb-4 md:mb-0">
+                <span class="text-xs font-bold">50 / 50</span>
+            </div>
+            <div class="text-center md:text-left mb-4 md:mb-0">
+                <h1 class="text-2xl md:text-3xl font-bold   bg-clip-text">Trilha de Implantação</h1>
+                <p class="text-gray-300">Seu progresso total: <span class="text-accent font-bold">65%</span> concluído</p>
+            </div>
+          
+        </header>
+
+        <!-- Conteúdo principal -->
+        <main class="container mx-auto px-4 md:px-6 pb-10 pt-6">
+            <!-- Barra de pesquisa e filtros -->
+<div class="mb-8 bg-secondary bg-opacity-50 p-4 rounded-xl shadow-lg border border-gray-700">
+    <div class="flex flex-col lg:flex-row gap-4">
+        <div class="relative flex-grow">
+            <input type="text" id="search" 
+                placeholder="Pesquise por Treinamentos Específicos..." 
+                class="w-full bg-primary border border-gray-600 rounded-md py-3 px-4 pl-10 text-white focus:outline-none focus:ring-2 focus:ring-accent">
+            <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-3">
+            <select id="modulo" class="bg-primary border border-gray-600 rounded-md py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-accent">
+                <option value="Todos">Todos os Módulos</option>
+                <option value="Comercial">Comercial</option>
+                <option value="Estoque">Estoque</option>
+                <option value="Financeiro">Financeiro</option>
+            </select>
+            <select id="status" class="bg-primary border border-gray-600 rounded-md py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-accent">
+                <option value="Todos">Todos os Status</option>
+                <option value="Concluído">Concluído</option>
+                <option value="Em Andamento">Em Andamento</option>
+                <option value="Não Iniciado">Não Iniciado</option>
+            </select>
+            <button class="bg-accent hover:bg-orange-600 text-white px-4 py-2 rounded-md flex items-center justify-center transition-colors">
+                <i class="fas fa-filter mr-2"></i>
+                Filtrar
+            </button>
+        </div>
+    </div>
+</div>
+
+            <!-- Estatísticas rápidas -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div class="bg-gradient-to-br from-info to-blue-700 rounded-xl p-4 shadow-lg flex items-center">
+                    <div class="bg-white bg-opacity-20 rounded-full p-3 mr-4">
+                        <i class="fas fa-graduation-cap text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold">12</h3>
+                        <p class="text-sm text-gray-200">Cursos Disponíveis</p>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-br from-success to-teal rounded-xl p-4 shadow-lg flex items-center">
+                    <div class="bg-white bg-opacity-20 rounded-full p-3 mr-4">
+                        <i class="fas fa-check-circle text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold">5</h3>
+                        <p class="text-sm text-gray-200">Cursos Concluídos</p>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-br from-warning to-accent rounded-xl p-4 shadow-lg flex items-center">
+                    <div class="bg-white bg-opacity-20 rounded-full p-3 mr-4">
+                        <i class="fas fa-clock text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold">3</h3>
+                        <p class="text-sm text-gray-200">Em Andamento</p>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-br from-blue to-pink rounded-xl p-4 shadow-lg flex items-center">
+                    <div class="bg-white bg-opacity-20 rounded-full p-3 mr-4">
+                        <i class="fas fa-trophy text-2xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold">250</h3>
+                        <p class="text-sm text-gray-200">Pontos Acumulados</p>
+                    </div>
+                </div>
+            </div>
+
+           <!-- Seção Comercial -->
+<section class="mb-10">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 bg-secondary bg-opacity-30 p-4 rounded-t-xl border-l-4 border-accent">
+        <div class="flex items-center mb-2 sm:mb-0">
+            <i class="fas fa-handshake text-accent text-2xl mr-3"></i>
+            <h2 class="text-xl font-bold">Comercial</h2>
+            <span class="ml-3 bg-accent text-white text-xs px-2 py-1 rounded-full">4 cursos</span>
+        </div>
+        <div class="flex items-center">
+            <span class="text-blue-400 text-sm mr-2">Progresso: <span class="font-bold text-white">50.00%</span></span>
+            <button class="text-gray-400 hover:text-white">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+    </div>
+    <div class="w-full bg-secondary rounded-full h-3 mb-8 overflow-hidden">
+        <div class="bg-accent h-3 rounded-full progress-shine" style="width: 50%"></div>
+    </div>
+    <div id="comercial-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+</section>
+            <!-- Seção Estoque -->
+       <!-- Seção Estoque -->
+<section>
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 bg-secondary bg-opacity-30 p-4 rounded-t-xl border-l-4 border-info">
+        <div class="flex items-center mb-2 sm:mb-0">
+            <i class="fas fa-boxes text-info text-2xl mr-3"></i>
+            <h2 class="text-xl font-bold">Estoque</h2>
+            <span class="ml-3 bg-info text-white text-xs px-2 py-1 rounded-full">5 cursos</span>
+        </div>
+        <div class="flex items-center">
+            <span class="text-blue-400 text-sm mr-2">Progresso: <span class="font-bold text-white">50.00%</span></span>
+            <button class="text-gray-400 hover:text-white">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+    </div>
+    <div id="estoque-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Treinamentos de estoque serão exibidos aqui -->
+    </div>
+</section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-black bg-opacity-30 text-gray-400 py-6 border-t border-gray-700">
+            <div class="container mx-auto px-4 md:px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0 text-center md:text-left">
+                        <p>© 2025 Plataforma de Treinamento. Todos os direitos reservados.</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 text-center">
+                        <a href="#" class="hover:text-accent transition-colors">Termos de Uso</a>
+                        <a href="#" class="hover:text-accent transition-colors">Política de Privacidade</a>
+                        <a href="#" class="hover:text-accent transition-colors">Suporte</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Desktop sidebar -->
+    <div class="fixed left-0 top-0 h-full w-16 bg-black bg-opacity-50 backdrop-blur-sm hidden lg:flex flex-col items-center pt-24 space-y-8 border-r border-gray-700">
+        <button class="w-10 h-10 rounded-lg bg-accent text-white flex items-center justify-center hover:bg-opacity-80 transition-colors">
+            <i class="fas fa-home"></i>
+        </button>
+       
+    </div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const closeSidebar = document.getElementById('close-sidebar');
+        const mobileSidebar = document.getElementById('mobile-sidebar');
+        
+        mobileMenuToggle.addEventListener('click', function() {
+            mobileSidebar.classList.remove('-translate-x-full');
+        });
+        
+        closeSidebar.addEventListener('click', function() {
+            mobileSidebar.classList.add('-translate-x-full');
+        });
+    </script>
+</body>
+</html>
