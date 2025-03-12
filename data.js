@@ -141,14 +141,31 @@ function exibirDadosTreinamento(treinamento) {
 
 function toggleModule(containerId) {
     const container = document.getElementById(containerId);
-    const toggleIcon = document.getElementById('toggle-icon');
+    const toggleIcon = document.querySelector(`#${containerId}-toggle-icon`);
     
     if (container.classList.contains('hidden')) {
         container.classList.remove('hidden');
+        container.style.height = 'auto';
+        const height = container.clientHeight + 'px';
+        container.style.height = '0px';
+
+        setTimeout(() => {
+            container.style.height = height;
+        }, 0);
+
         toggleIcon.classList.remove('fa-chevron-down');
         toggleIcon.classList.add('fa-chevron-up');
     } else {
-        container.classList.add('hidden');
+        container.style.height = container.clientHeight + 'px';
+
+        setTimeout(() => {
+            container.style.height = '0px';
+        }, 0);
+
+        container.addEventListener('transitionend', () => {
+            container.classList.add('hidden');
+        }, { once: true });
+
         toggleIcon.classList.remove('fa-chevron-up');
         toggleIcon.classList.add('fa-chevron-down');
     }
@@ -296,17 +313,3 @@ document.addEventListener("DOMContentLoaded", () => {
     exibirTreinamentos(estoqueTreinamentos, "estoque-container");
 });
 
-function toggleModule(containerId) {
-    const container = document.getElementById(containerId);
-    const toggleIcon = document.getElementById(`${containerId.split('-')[0]}-toggle-icon`);
-    
-    if (container.classList.contains('hidden')) {
-        container.classList.remove('hidden');
-        toggleIcon.classList.remove('fa-chevron-down');
-        toggleIcon.classList.add('fa-chevron-up');
-    } else {
-        container.classList.add('hidden');
-        toggleIcon.classList.remove('fa-chevron-up');
-        toggleIcon.classList.add('fa-chevron-down');
-    }
-}
