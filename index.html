@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -54,6 +55,37 @@
         margin-left: 0.5rem;
     }
 }
+
+/* Adicionar ao final da seção <style> */
+/* Animações para abrir e fechar containers */
+.section-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0;
+}
+
+.section-container.open {
+    max-height: 1000px; /* Valor alto o suficiente para acomodar o conteúdo */
+    opacity: 1;
+}
+
+.toggle-icon {
+    transition: transform 0.3s ease;
+}
+
+.toggle-icon.open {
+    transform: rotate(180deg);
+}
+
+#mobile-sidebar {
+    z-index: 60;
+}
+
+
+.hidden-header {
+    display: none;
+}
         .card-hover:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
@@ -93,13 +125,6 @@
         .badge-pulse {
             animation: pulse 2s infinite;
         }
-
-        /* Adicione a transição para a altura dos containers */
-#comercial-container,
-#estoque-container {
-    transition: height 0.7s ease-in-out;
-    overflow: hidden;
-}
         @keyframes pulse {
             0% {
                 box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7);
@@ -249,7 +274,7 @@
         </div>
     </div>
 </div>
-      <!-- Seção Comercial -->
+         <!-- Seção Comercial -->
 <section class="mb-10">
     <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 bg-secondary bg-opacity-30 p-4 rounded-t-xl border-l-4 border-accent cursor-pointer" onclick="toggleModule('comercial-container')">
         <div class="flex items-center mb-2 sm:mb-0">
@@ -260,14 +285,14 @@
         <div class="flex items-center">
             <span class="text-blue-400 text-sm mr-2">Progresso: <span class="font-bold text-white">0%</span></span>
             <button class="text-gray-400 hover:text-white">
-                <i class="fas fa-chevron-down" id="comercial-container-toggle-icon"></i>
+                <i class="fas fa-chevron-down" id="comercial-toggle-icon"></i>
             </button>
         </div>
     </div>
     <div class="w-full bg-secondary rounded-full h-3 mb-8 overflow-hidden">
         <div class="bg-accent h-3 rounded-full progress-shine" style="width: 50%"></div>
     </div>
-    <div id="comercial-container" class="flex overflow-x-auto space-x-6 pb-4 hidden transition-all duration-500 ease-in-out"></div>
+    <div id="comercial-container" class="flex overflow-x-auto space-x-6 pb-4 hidden"></div>
 </section>
 
 <!-- Seção Estoque -->
@@ -276,16 +301,16 @@
         <div class="flex items-center mb-2 sm:mb-0">
             <i class="fas fa-boxes text-info text-2xl mr-3"></i>
             <h2 class="text-xl font-bold">Estoque</h2>
-            <span class="ml-3 bg-info text-white text-xs px-2 py-1 rounded-full">2 cursos</span>
+            <span class="ml-3 bg-info text-white text-xs px-2 py-1 rounded-full">1 cursos</span>
         </div>
         <div class="flex items-center">
             <span class="text-blue-400 text-sm mr-2">Progresso: <span class="font-bold text-white">0%</span></span>
             <button class="text-gray-400 hover:text-white">
-                <i class="fas fa-chevron-down" id="estoque-container-toggle-icon"></i>
+                <i class="fas fa-chevron-down" id="estoque-toggle-icon"></i>
             </button>
         </div>
     </div>
-    <div id="estoque-container" class="flex overflow-x-auto space-x-6 pb-4 hidden transition-all duration-500 ease-in-out"></div>
+    <div id="estoque-container" class="flex overflow-x-auto space-x-6 pb-4 hidden"></div>
 </section>
         </main>
 

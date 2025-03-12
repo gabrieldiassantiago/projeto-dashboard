@@ -141,31 +141,14 @@ function exibirDadosTreinamento(treinamento) {
 
 function toggleModule(containerId) {
     const container = document.getElementById(containerId);
-    const toggleIcon = document.querySelector(`#${containerId}-toggle-icon`);
+    const toggleIcon = document.getElementById('toggle-icon');
     
     if (container.classList.contains('hidden')) {
         container.classList.remove('hidden');
-        container.style.height = 'auto';
-        const height = container.clientHeight + 'px';
-        container.style.height = '0px';
-
-        setTimeout(() => {
-            container.style.height = height;
-        }, 0);
-
         toggleIcon.classList.remove('fa-chevron-down');
         toggleIcon.classList.add('fa-chevron-up');
     } else {
-        container.style.height = container.clientHeight + 'px';
-
-        setTimeout(() => {
-            container.style.height = '0px';
-        }, 0);
-
-        container.addEventListener('transitionend', () => {
-            container.classList.add('hidden');
-        }, { once: true });
-
+        container.classList.add('hidden');
         toggleIcon.classList.remove('fa-chevron-up');
         toggleIcon.classList.add('fa-chevron-down');
     }
@@ -313,3 +296,43 @@ document.addEventListener("DOMContentLoaded", () => {
     exibirTreinamentos(estoqueTreinamentos, "estoque-container");
 });
 
+function toggleModule(containerId) {
+    const container = document.getElementById(containerId);
+    const toggleIcon = document.getElementById('toggle-icon');
+    
+    if (container.classList.contains('hidden')) {
+        container.classList.remove('hidden');
+        container.classList.add('fade-in');
+        container.classList.remove('fade-out');
+        toggleIcon.classList.remove('fa-chevron-down');
+        toggleIcon.classList.add('fa-chevron-up');
+    } else {
+        container.classList.add('fade-out');
+        container.classList.remove('fade-in');
+        setTimeout(() => {
+            container.classList.add('hidden');
+        }, 300); // Tempo da animação
+        toggleIcon.classList.remove('fa-chevron-up');
+        toggleIcon.classList.add('fa-chevron-down');
+    }
+}
+
+// Adicionando classes de animação via CSS
+document.head.insertAdjacentHTML("beforeend", `
+    <style>
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        .fade-out {
+            animation: fadeOut 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-10px); }
+        }
+    </style>
+`);
