@@ -4,7 +4,6 @@ const treinamentos = [
     { id: 4, nome: "Exemplo de mais aulas", modulo: "Comercial", status: "Não Iniciado", duracao: "90 minutos", nivel: "Especialista", progresso: 0, imagem: "./static/contratos.avif", video: "./videos/clientes.mp4", descricao: "Descrição do treinamento 4", visualizacoes: 30 },
     { id: 5, nome: "Como Cadastrar Produtos", modulo: "Estoque", status: "Não Iniciado", duracao: "50 minutos", nivel: "Intermediário", progresso: 0, imagem: "./static/produtos.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como Cadastrar Produtos no Sistema.", visualizacoes: 70 },
     { id: 6, nome: "Aula 2 de estoque", modulo: "Estoque", status: "Não Iniciado", duracao: "50 minutos", nivel: "Intermediário", progresso: 0, imagem: "./static/produtos.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como Cadastrar Produtos no Sistema.", visualizacoes: 70 }
-
 ];
 
 function exibirTreinamentos(lista, containerId) {
@@ -316,8 +315,6 @@ function toggleModule(containerId) {
         toggleIcon.classList.add('fa-chevron-down');
     }
 }
-
-// Adicionando classes de animação via CSS
 document.head.insertAdjacentHTML("beforeend", `
     <style>
         .fade-in {

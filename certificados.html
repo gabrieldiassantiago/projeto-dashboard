@@ -366,8 +366,8 @@
                 
                 card.innerHTML = `
                     <div class="flex justify-between items-start mb-4">
-                        <div class="${color.bgColor} p-3 rounded-lg">
-                            <i class="${color.icon} text-2xl"></i>
+                        <div class="${color.bgColor} p-6 rounded-lg h-12 w-12 flex items-center justify-center mr-4">
+                            <i class="${color.icon}  text-center flex  text-2xl"></i>
                         </div>
                         <span class="bg-${getStatusBgColor(cert.status)} bg-opacity-20 text-${getStatusTextColor(cert.status)} px-3 py-1 rounded-full text-sm">
                             ${cert.status}
