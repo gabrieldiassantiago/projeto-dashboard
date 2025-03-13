@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Certificados</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="certificados.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Add jsPDF library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -23,121 +27,6 @@
             }
         }
     </script>
-    <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #1a2234 0%, #2a3245 100%);
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-        .star-rating {
-            color: #ffc107;
-        }
-        .certificate-bg {
-            background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuXzEiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgcGF0dGVyblRyYW5zZm9ybT0icm90YXRlKDQ1KSI+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjIiIGhlaWdodD0iMiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjA1KSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuXzEpIi8+PC9zdmc+');
-        }
-        @media (max-width: 1023px) {
-            #mobile-menu-toggle-container.scrolled {
-                background: rgba(42, 50, 69, 0.95);
-                backdrop-filter: blur(8px);
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                width: 100%;
-                padding: 1rem;
-                z-index: 50;
-                transition: all 0.3s ease;
-                display: flex;
-                justify-content: flex-start;
-                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            }
-            #mobile-menu-toggle-container.scrolled #mobile-menu-toggle {
-                margin-left: 0.5rem;
-            }
-        }
-
-        /* Centralização do título em mobile e tablet */
-@media (max-width: 1023px) {
-    header {
-        flex-direction: column;
-        align-items: center;
-    }
-    .header-title {
-        justify-content: center;
-        width: 100%;
-        text-align: center;
-    }
-    #view-certificates-btn {
-        margin-top: 1rem;
-    }
-}
-
-/* Garantir layout normal no desktop */
-@media (min-width: 1024px) {
-    header {
-        flex-direction: row;
-        justify-content: space-between;
-    }
-    .header-title {
-        justify-content: flex-start;
-        width: auto;
-        text-align: left;
-    }
-}
-        #mobile-sidebar {
-            z-index: 60;
-        }
-        header {
-            position: relative;
-            z-index: 20;
-        }
-        @media (min-width: 768px) and (max-width: 1023px) {
-            header {
-                flex: auto; 
-                align-items: center;
-                justify-content: center;
-            }
-        }
-        /* Correção para os filtros */
-        select {
-            max-width: 100%;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        @media (max-width: 767px) {
-            .filter-container {
-                flex-direction: column;
-            }
-            .filter-select {
-                width: 100%;
-            }
-        }
-        /* Centralização do título em mobile */
-        @media (max-width: 767px) {
-            .header-title {
-                justify-content: center;
-                width: 100%;
-            }
-        }
-/* Adicionar ou substituir estas regras no final da seção <style> */
-    #mobile-sidebar {
-        z-index: 60;
-        transition: all 0.3s ease;
-    }
-    
-    #mobile-sidebar .bg-secondary {
-        transition: all 0.3s ease;
-    }
-    
-    #mobile-sidebar.scrolled .bg-secondary {
-        background: rgba(42, 50, 69, 0.95) !important;
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px); /* Suporte para Safari */
-    }
-    </style>
 </head>
 <body class="bg-gradient-to-br from-primary to-secondary text-white min-h-screen">
     <!-- Mobile sidebar toggle -->
@@ -147,27 +36,27 @@
         </button>
     </div>
 
-  <!-- Mobile sidebar -->
-<div id="mobile-sidebar" class="fixed inset-0 bg-black bg-opacity-80 z-40 transform -translate-x-full transition-transform duration-300 lg:hidden">
-    <div class="h-full w-64 bg-secondary overflow-y-auto">
-        <div class="p-4 flex justify-end items-center border-b border-gray-700">
-            <button id="close-sidebar" class="text-white">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="">
-            <a href="./index.html" class="block p-2 rounded-lg  text-white">
-                <i class="fas fa-home mr-2"></i> Início
-            </a>
-        </div>
-        <div class="">
-            <a href="certificados.html" class="block p-2  bg-accent rounded-lg text-white">
-                <i class="fa-solid fa-certificate mr-2"></i>
-                Certificados
-            </a>
+    <!-- Mobile sidebar -->
+    <div id="mobile-sidebar" class="fixed inset-0 bg-black bg-opacity-80 z-40 transform -translate-x-full transition-transform duration-300 lg:hidden">
+        <div class="h-full w-64 bg-secondary overflow-y-auto">
+            <div class="p-4 flex justify-end items-center border-b border-gray-700">
+                <button id="close-sidebar" class="text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="">
+                <a href="./index.html" class="block p-2 rounded-lg  text-white">
+                    <i class="fas fa-home mr-2"></i> Início
+                </a>
+            </div>
+            <div class="">
+                <a href="certificados.html" class="block p-2  bg-accent rounded-lg text-white">
+                    <i class="fa-solid fa-certificate mr-2"></i>
+                    Certificados
+                </a>
+            </div>
         </div>
     </div>
-</div>
 
     <!-- Desktop sidebar -->
     <div class="fixed left-0 top-0 h-full w-16 bg-black bg-opacity-50 backdrop-blur-sm hidden lg:flex flex-col items-center pt-24 space-y-8 border-r border-gray-700">
@@ -229,34 +118,51 @@
 
             <!-- Conteúdo do Certificado (inicialmente oculto) -->
             <div id="certificate-view" class="hidden">
-                <div class="bg-white text-black p-8 rounded-xl mb-6 certificate-bg">
-                    <div class="flex justify-between items-start mb-6">
-                        <div>
-                            <div class="flex items-center">
-                                <img src="https://placeholder.com/100x50" alt="Logo" class="h-12 mr-4">
-                                <h2 class="text-3xl font-bold text-primary">CERTIFICADO DE CONCLUSÃO</h2>
+                <!-- NOVO LAYOUT DO CERTIFICADO -->
+                <div id="certificate-for-print" class="certificate-container mb-6">
+                    <div class="certificate-pattern z-10"></div>
+
+                    <!-- Imagem da borda -->
+                    <img src="./static/efeito cantos.png" alt="Decorative border" class="certificate-border">
+
+                    <div class="certificate-content">
+                        <!-- Cabeçalho com logo e número do certificado -->
+                        <div class="flex justify-center items-center ">
+                            <div class="flex items-center justify-center">
+                                <div class="mr-4 text-accent flex gap-2 items-center justify-center">
+                                    <img class="h-16" src="./static/logo2.png" alt="" srcset="">
+                                    <p class="text-accent font-bold text-center text-2xl justify-center items-center">USE SISTEMAS</p>
+                                </div>
                             </div>
                         </div>
-                        <div class="text-sm text-gray-500">
-                            <p>Nº do certificado: <span id="cert-number"></span></p>
-                            <p>Data de emissão: <span id="cert-date"></span></p>
+
+                        <!-- Título do certificado -->
+                        <h1 class="certificate-title">
+                            CERTIFICADO DE CONCLUSÃO<br>
+                            DE TREINAMENTO COMERCIAL
+                        </h1>
+
+                        <p class="text-center text-xl mt-8 text-black">Certifico que, para os devidos fins, que o(a) aluno(a):</p>
+
+                        <!-- Nome do aluno -->
+                        <div class="certificate-student-line">
+                            <h3 id="cert-name" class="text-5xl font-bold text-black">Gabriel Dias Santiago</h3>
                         </div>
-                    </div>
-                    
-                    <div class="text-center my-10">
-                        <h1 id="cert-title" class="text-4xl font-bold mb-6"></h1>
-                        <p class="text-xl">Este certificado é concedido a</p>
-                        <h3 id="cert-name" class="text-3xl font-bold my-3">Nome da pessoa</h3>
-                        <p class="text-xl">pela conclusão com êxito do curso acima mencionado.</p>
-                    </div>
-                    
-                    <div class="flex justify-between items-end mt-16">
-                        <div>
-                            <p>Duração: <span id="cert-duration"></span></p>
-                            <p>Instrutor: <span id="cert-instructor"></span></p>
-                        </div>
-                        <div class="text-center border-t-2 border-gray-400 pt-2 w-48">
-                            <p>Assinatura do Instrutor</p>
+
+                        <!-- Descrição do certificado -->
+                        <p class="certificate-description">
+                            Certificamos que o mesmo concluiu com êxito o treinamento para utilização do
+                            sistema USE no módulo comercial. Este treinamento abrangeu as principais
+                            funcionalidades e práticas recomendadas para otimizar o uso do sistema,
+                            visando melhorar a eficiência e a produtividade nas atividades comerciais.
+                        </p>
+
+                        <!-- Informações e assinatura -->
+                        <div class="flex justify-center items-end mt-16">
+                            <div class="certificate-signature text-center">
+                                <p class="font-bold text-black">MARCELO SANTOS</p>
+                                <p class="text-sm text-black">DIRETOR GERAL USE SISTEMAS</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -268,7 +174,7 @@
                             <i class="fas fa-user-graduate text-accent mr-2"></i>
                             Destinatário
                         </h3>
-                        <p class="text-gray-300 mb-2">Nome: <span class="text-white">Nome da pessoa</span></p>
+                        <p class="text-gray-300 mb-2">Nome: <span id="recipient-name" class="text-white">Nome da pessoa</span></p>
                         <p class="text-gray-300">Cargo: <span class="text-white">Cargo da pessoa</span></p>
                     </div>
                     
@@ -287,7 +193,7 @@
                             Ações
                         </h3>
                         <div class="flex flex-col space-y-3">
-                            <button class="bg-accent hover:bg-orange-600 text-white w-full py-2 rounded-md flex items-center justify-center">
+                            <button id="download-pdf-btn" class="bg-accent hover:bg-orange-600 text-white w-full py-2 rounded-md flex items-center justify-center">
                                 <i class="fas fa-download mr-2"></i>
                                 Baixar PDF
                             </button>
@@ -329,7 +235,7 @@
         const treinamentos = [
             { id: 1, nome: "Como cadastrar clientes", modulo: "Comercial", status: "Concluído", duracao: "45 minutos", nivel: "Básico", progresso: 100, instrutor: "João Silva", dataEmissao: "15/03/2024", numero: "TESTE-1234" },
             { id: 2, nome: "Como Cadastrar Fornecedores", modulo: "Comercial", status: "Em Andamento", duracao: "30 minutos", nivel: "Intermediário", progresso: 50, instrutor: "Maria Santos", dataEmissao: "", numero: "" },
-            { id: 4, nome: "Exemplo de mais aulas", modulo: "Comercial", status: "Não Iniciado", duracao: "90 minutos", nivel: "Especialista", progresso: 0, instrutor: "Carlos Oliveira", dataEmissao: "", numero: "" },
+            { id: 4, nome: "Exemplo de mais aulas", modulo: "cert-nameComercial", status: "Não Iniciado", duracao: "90 minutos", nivel: "Especialista", progresso: 0, instrutor: "Carlos Oliveira", dataEmissao: "", numero: "" },
             { id: 5, nome: "Como Cadastrar Produtos", modulo: "Estoque", status: "Não Iniciado", duracao: "50 minutos", nivel: "Intermediário", progresso: 0, instrutor: "Ana Costa", dataEmissao: "", numero: "" },
         ];
         
@@ -423,15 +329,11 @@
                 certificatesGrid.classList.add('hidden');
                 certificatesGrid.classList.remove('hide');
         
-                // Definir os dados do certificado
-                document.getElementById('cert-title').textContent = cert.nome;
-                document.getElementById('cert-number').textContent = cert.numero;
-                document.getElementById('cert-date').textContent = cert.dataEmissao;
-                document.getElementById('cert-duration').textContent = cert.duracao;
-                document.getElementById('cert-instructor').textContent = cert.instrutor;
-                
+                // Definir os dados do certificado                
                 document.querySelector('#course-details-nome span').textContent = cert.nome;
                 document.querySelector('#course-details-modulo span').textContent = cert.modulo;
+                document.getElementById('recipient-name').textContent = "Gabriel Dias Santiago";
+                document.getElementById('cert-name').textContent = "Gabriel Dias Santiago";
         
                 // Mostrar o certificado com animação
                 certificateView.classList.remove('hidden');
@@ -509,6 +411,61 @@
             }
             return starsHtml;
         }
+        
+        // Função para gerar PDF do certificado
+        function generatePDF() {
+            // Referência ao elemento do certificado
+            const certificateElement = document.getElementById('certificate-for-print');
+            const recipientName = document.getElementById('recipient-name').textContent;
+            const courseName = document.querySelector('#course-details-nome span').textContent;
+            
+            // Configurações para o html2canvas
+            const options = {
+                scale: 2, // Aumenta a qualidade da imagem
+                useCORS: true, // Permite carregar imagens de outros domínios
+                allowTaint: true, // Permite que imagens "tainted" sejam usadas
+                backgroundColor: '#ffffff' // Fundo branco
+            };
+            
+            // Mostrar mensagem de carregamento
+            alert("Gerando PDF, por favor aguarde...");
+            
+            // Converter o elemento HTML para canvas
+            html2canvas(certificateElement, options).then(canvas => {
+                // Criar um novo documento PDF
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('landscape', 'mm', 'a4');
+                
+                // Dimensões da página A4 paisagem
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                
+                // Obter a imagem do canvas
+                const imgData = canvas.toDataURL('image/png');
+                
+                // Calcular a proporção para ajustar a imagem à página
+                const imgWidth = canvas.width;
+                const imgHeight = canvas.height;
+                const ratio = Math.min(pageWidth / imgWidth, pageHeight / imgHeight);
+                
+                // Calcular as dimensões ajustadas
+                const imgWidthAdjusted = imgWidth * ratio;
+                const imgHeightAdjusted = imgHeight * ratio;
+                
+                // Calcular a posição para centralizar a imagem
+                const x = (pageWidth - imgWidthAdjusted) / 2;
+                const y = (pageHeight - imgHeightAdjusted) / 2;
+                
+                // Adicionar a imagem ao PDF
+                pdf.addImage(imgData, 'PNG', x, y, imgWidthAdjusted, imgHeightAdjusted);
+                
+                // Salvar o PDF
+                pdf.save(`Certificado_${recipientName}_${courseName}.pdf`);
+            });
+        }
+        
+        // Adicionar evento de clique ao botão de download
+        document.getElementById('download-pdf-btn').addEventListener('click', generatePDF);
         
         document.addEventListener('DOMContentLoaded', () => {
             loadCertificates();
@@ -617,6 +574,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateScrollState();
         });
-        </script>
+    </script>
 </body>
 </html>
