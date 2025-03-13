@@ -130,13 +130,13 @@
                     <p class="text-sm mb-2">Próxima meta:</p>
                     <div class="flex justify-between text-sm mb-1">
                         <span>Módulo 1</span>
-                        <span class="text-success">32%</span>
+                        <span class="text-success" id="progresso-porcentagem">32%</span>
                     </div>
                     <div class="w-full bg-gray-600 rounded-full h-2">
-                        <div class="bg-success h-2 rounded-full" style="width: 32%"></div>
+                        <div class="bg-success h-2 rounded-full" id="progresso-barra" style="width: 32%"></div>
                     </div>
                     <div class="mt-4">
-                        <a href="./certificados.html" class="block bg-accent hover:bg-orange-600 text-white text-sm px-4 py-2 rounded-lg text-center">
+                        <a href="./certificados.html" id="solicitar-certificado-btn" class="block bg-accent hover:bg-orange-600 text-white text-sm px-4 py-2 rounded-lg text-center opacity-50 pointer-events-none">
                             <i class="fa-solid fa-certificate mr-2"></i> Solicitar certificado
                         </a>
                     </div>
@@ -320,6 +320,25 @@
         function isMobile() {
             return window.innerWidth < 1024;
         }
+
+// Função para atualizar o estado do botão de certificado
+function atualizarBotaoCertificado() {
+    const progresso = parseInt(document.getElementById('progresso-porcentagem').textContent); // Obtém o progresso como número
+    const botaoCertificado = document.getElementById('solicitar-certificado-btn');
+
+    if (progresso === 100) {
+        botaoCertificado.classList.remove('opacity-50', 'pointer-events-none'); // Habilita o botão
+    } else {
+        botaoCertificado.classList.add('opacity-50', 'pointer-events-none'); // Desabilita o botão
+    }
+}
+
+// Chamar a função ao carregar a página
+document.addEventListener('DOMContentLoaded', () => {
+    atualizarBotaoCertificado();
+});
+
+
 
         function updateMenuIcon() {
             if (isMenuOpen) {
