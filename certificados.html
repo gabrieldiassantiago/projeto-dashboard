@@ -405,59 +405,107 @@
             }
             return starsHtml;
         }
-        
-        // Função para gerar PDF do certificado
         function generatePDF() {
-            // Referência ao elemento do certificado
             const certificateElement = document.getElementById('certificate-for-print');
             const recipientName = document.getElementById('recipient-name').textContent;
             const courseName = document.querySelector('#course-details-nome span').textContent;
-            
-            // Configurações para o html2canvas
-            const options = {
-                scale: 2, // Aumenta a qualidade da imagem
-                useCORS: true, // Permite carregar imagens de outros domínios
-                allowTaint: true, // Permite que imagens "tainted" sejam usadas
-                backgroundColor: '#ffffff' // Fundo branco
-            };
-            
-            // Mostrar mensagem de carregamento
-            alert("Gerando PDF, por favor aguarde...");
-            
-            // Converter o elemento HTML para canvas
-            html2canvas(certificateElement, options).then(canvas => {
-                // Criar um novo documento PDF
-                const { jsPDF } = window.jspdf;
-                const pdf = new jsPDF('landscape', 'mm', 'a4');
-                
-                // Dimensões da página A4 paisagem
-                const pageWidth = pdf.internal.pageSize.getWidth();
-                const pageHeight = pdf.internal.pageSize.getHeight();
-                
-                // Obter a imagem do canvas
-                const imgData = canvas.toDataURL('image/png');
-                
-                // Calcular a proporção para ajustar a imagem à página
-                const imgWidth = canvas.width;
-                const imgHeight = canvas.height;
-                const ratio = Math.min(pageWidth / imgWidth, pageHeight / imgHeight);
-                
-                // Calcular as dimensões ajustadas
-                const imgWidthAdjusted = imgWidth * ratio;
-                const imgHeightAdjusted = imgHeight * ratio;
-                
-                // Calcular a posição para centralizar a imagem
-                const x = (pageWidth - imgWidthAdjusted) / 2;
-                const y = (pageHeight - imgHeightAdjusted) / 2;
-                
-                // Adicionar a imagem ao PDF
-                pdf.addImage(imgData, 'PNG', x, y, imgWidthAdjusted, imgHeightAdjusted);
-                
-                // Salvar o PDF
-                pdf.save(`Certificado_${recipientName}_${courseName}.pdf`);
-            });
-        }
         
+            const loadingMessage = document.createElement('div');
+            loadingMessage.innerHTML = `
+                <div class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-[100]">
+                    <div class="bg-secondary p-6 rounded-xl text-center">
+                        <i class="fas fa-spinner fa-spin text-3xl text-accent mb-4"></i>
+                        <p class="text-xl">Gerando seu certificado...</p>
+                        <p class="text-sm text-gray-400 mt-2">Por favor aguarde</p>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(loadingMessage);
+        
+            // Criar um container temporário para renderização
+            const tempContainer = document.createElement('div');
+            tempContainer.style.position = 'absolute';
+            tempContainer.style.left = '-9999px';
+            tempContainer.style.top = '0';
+            document.body.appendChild(tempContainer);
+            
+            // Clonar o certificado para o container temporário
+            const certificateClone = certificateElement.cloneNode(true);
+            tempContainer.appendChild(certificateClone);
+            
+            // Configurar o clone para A4 landscape
+            certificateClone.style.width = '297mm';
+            certificateClone.style.height = '210mm';
+            certificateClone.style.position = 'relative';
+            certificateClone.style.overflow = 'hidden';
+            certificateClone.style.backgroundColor = 'white';
+            certificateClone.style.margin = '0';
+            certificateClone.style.padding = '0';
+            
+            // Garantir que a borda esteja corretamente posicionada
+            const borderImg = certificateClone.querySelector('.certificate-border');
+            if (borderImg) {
+                borderImg.style.position = 'absolute';
+                borderImg.style.top = '0';
+                borderImg.style.left = '0';
+                borderImg.style.width = '100%';
+                borderImg.style.height = '100%';
+                borderImg.style.objectFit = 'contain';
+                borderImg.style.zIndex = '5';
+            }
+            
+            // Adicionar um atraso para garantir que os estilos sejam aplicados
+            setTimeout(() => {
+                // Usar a biblioteca html2canvas já carregada no HTML
+                // html2canvas is assumed to be globally available, no import needed.
+                html2canvas(certificateClone, {
+                    scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    imageTimeout: 0
+                }).then(canvas => {
+                    try {
+                        const { jsPDF } = window.jspdf;
+                        const pdf = new jsPDF({
+                            orientation: 'landscape',
+                            unit: 'mm',
+                            format: 'a4',
+                            compress: true
+                        });
+        
+                        const pageWidth = pdf.internal.pageSize.getWidth(); // 297mm
+                        const pageHeight = pdf.internal.pageSize.getHeight(); // 210mm
+        
+                        const imgData = canvas.toDataURL('image/png', 1.0);
+        
+                        // Adicionar imagem ao PDF, preenchendo a página inteira
+                        pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST');
+        
+                        let safeFilename = `Certificado_${recipientName}_${courseName}`
+                            .replace(/[^\w\s]/gi, '')
+                            .replace(/\s+/g, '_');
+        
+                        pdf.save(`${safeFilename}.pdf`);
+                    } catch (error) {
+                        console.error('Error generating PDF:', error);
+                        alert('Ocorreu um erro ao gerar o PDF. Por favor tente novamente.');
+                    }
+        
+                    // Limpar e remover elementos temporários
+                    document.body.removeChild(tempContainer);
+                    document.body.removeChild(loadingMessage);
+                }).catch(error => {
+                    console.error('Error in html2canvas:', error);
+                    alert('Ocorreu um erro ao capturar o certificado. Por favor tente novamente.');
+                    
+                    // Limpar e remover elementos temporários
+                    document.body.removeChild(tempContainer);
+                    document.body.removeChild(loadingMessage);
+                });
+            }, 500);
+        }
         // Adicionar evento de clique ao botão de download
         document.getElementById('download-pdf-btn').addEventListener('click', generatePDF);
         
