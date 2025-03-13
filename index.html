@@ -22,9 +22,11 @@
                         danger: '#F44336',
                         info: '#2196F3',
                         teal: '#009688',
-                        
+                        green: '#4CAF50',
                         pink: '#E91E63',
                         blue: '#03A9F4',
+                        red: '#F44336',
+
                     }
                 }
             }
@@ -116,8 +118,8 @@
             <i class="fas fa-graduation-cap text-2xl text-accent"></i>
         </div>
         <div class="flex flex-col justify-center">
-            <h3 class="text-lg font-bold text-gray-100">12</h3>
-            <p class="text-sm text-gray-400">Cursos Disponíveis</p>
+            <h3 class="text-lg font-bold text-gray-100">5</h3>
+            <p class="text-sm text-gray-400">Aulas Disponíveis</p>
         </div>
     </div>
     <div class="bg-gradient-to-br from-gray-700 to-blue-900 rounded-xl p-4 shadow-lg flex items-center">
@@ -125,8 +127,8 @@
             <i class="fas fa-check-circle text-2xl text-accent"></i>
         </div>
         <div class="flex flex-col justify-center">
-            <h3 class="text-lg font-bold text-gray-100">5</h3>
-            <p class="text-sm text-gray-400">Cursos Concluídos</p>
+            <h3 class="text-lg font-bold text-gray-100">1</h3>
+            <p class="text-sm text-gray-400">Aulas Concluídos</p>
         </div>
     </div>
     <div class="bg-gradient-to-br from-gray-700 to-blue-900 rounded-xl p-4 shadow-lg flex items-center">
@@ -134,7 +136,7 @@
             <i class="fas fa-clock text-2xl text-accent"></i>
         </div>
         <div class="flex flex-col justify-center">
-            <h3 class="text-lg font-bold text-gray-100">3</h3>
+            <h3 class="text-lg font-bold text-gray-100">2</h3>
             <p class="text-sm text-gray-400">Em Andamento</p>
         </div>
     </div>
@@ -143,7 +145,7 @@
             <i class="fas fa-trophy text-2xl text-accent"></i>
         </div>
         <div class="flex flex-col justify-center">
-            <h3 class="text-lg font-bold text-gray-100">250</h3>
+            <h3 class="text-lg font-bold text-gray-100">50</h3>
             <p class="text-sm text-gray-400">Pontos Acumulados</p>
         </div>
     </div>
@@ -157,7 +159,7 @@
             <span class="ml-3 bg-accent text-white text-xs px-2 py-1 rounded-full">3 cursos</span>
         </div>
         <div class="flex items-center">
-            <span class="text-blue-400 text-sm mr-2">Progresso: <span class="font-bold text-white">0%</span></span>
+            <span class="text-blue-400 text-sm mr-2">Progresso: <span class="font-bold text-white">25%</span></span>
             <button class="text-gray-400 hover:text-white">
                 <i class="fas fa-chevron-down" id="comercial-toggle-icon"></i>
             </button>
@@ -215,7 +217,8 @@
     </a>
 </div>
    <script>
-// Mobile menu toggle
+    
+ // Mobile menu toggle
 const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
 const mobileMenuToggleContainer = document.getElementById('mobile-menu-toggle-container');
 const closeSidebar = document.getElementById('close-sidebar');

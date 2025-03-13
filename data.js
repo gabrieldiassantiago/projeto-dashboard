@@ -1,10 +1,13 @@
 const treinamentos = [
     { id: 1, nome: "Como cadastrar clientes ", modulo: "Comercial", status: "Concluído", duracao: "45 minutos", nivel: "Básico", progresso: 100, imagem: "./static/compradores-seu-papel-no-varejo.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como cadastrar Clientes no Sistema, sejam eles pessoas Físicas (CPF) ou pessoas jurídicas (CNPJ)", visualizacoes: 120 },
-    { id: 2, nome: "Como Cadastrar Fornecedores", modulo: "Comercial", status: "Em Andamento", duracao: "30 minutos", nivel: "Intermediário", progresso: 50, imagem: "./static/bom-relacionamento-fornecedores.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como cadastrar Fornecedores no Sistema, sejam eles pessoas Físicas (CPF) ou pessoas jurídicas (CNPJ)", visualizacoes: 80 },
-    { id: 4, nome: "Exemplo de mais aulas", modulo: "Comercial", status: "Não Iniciado", duracao: "90 minutos", nivel: "Especialista", progresso: 0, imagem: "./static/contratos.avif", video: "./videos/clientes.mp4", descricao: "Descrição do treinamento 4", visualizacoes: 30 },
-    { id: 5, nome: "Como Cadastrar Produtos", modulo: "Estoque", status: "Não Iniciado", duracao: "50 minutos", nivel: "Intermediário", progresso: 0, imagem: "./static/produtos.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como Cadastrar Produtos no Sistema.", visualizacoes: 70 },
-    { id: 6, nome: "Aula 2 de estoque", modulo: "Estoque", status: "Não Iniciado", duracao: "50 minutos", nivel: "Intermediário", progresso: 0, imagem: "./static/produtos.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como Cadastrar Produtos no Sistema.", visualizacoes: 70 }
+    { id: 2, nome: "Como Cadastrar Representantes", modulo: "Comercial", status: "Em Andamento", duracao: "30 minutos", nivel: "Intermediário", progresso: 50, imagem: "./static/bom-relacionamento-fornecedores.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como cadastrar Fornecedores no Sistema, sejam eles pessoas Físicas (CPF) ou pessoas jurídicas (CNPJ)", visualizacoes: 80 },
+    { id: 3, nome: "Cadastro de transportadoras", modulo: "Comercial", status: "Não Iniciado", duracao: "90 minutos", nivel: "Especialista", progresso: 0, imagem: "./static/contratos.avif", video: "./videos/clientes.mp4", descricao: "Descrição do treinamento 4", visualizacoes: 30 },
+    { id: 4, nome: "Cadastro de Tabela de Preço", modulo: "Estoque", status: "Não Iniciado", duracao: "50 minutos", nivel: "Intermediário", progresso: 0, imagem: "./static/produtos.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como Cadastrar Produtos no Sistema.", visualizacoes: 70 },
 ];
+
+//traga os dados da api pra ca ^^^^
+
+
 
 function exibirTreinamentos(lista, containerId) {
     const container = document.getElementById(containerId);
@@ -16,9 +19,13 @@ function exibirTreinamentos(lista, containerId) {
     lista.forEach(treinamento => {
         const card = document.createElement('div');
         card.className = "bg-secondary rounded-xl overflow-hidden shadow-lg border border-gray-700 transition-all duration-300 card-hover flex-shrink-0 w-[300px]";
+        
+        // aqui voce traga a imagem de cada treinamento do banco de dados
+        const imageUrl = `{{ url_for('static', filename=aula.thumbnail) }}`;
+
         card.innerHTML = `
             <div class="relative">
-                <img src="${treinamento.imagem}" alt="${treinamento.nome}" class="w-full h-48 object-cover">
+                <img src="${imageUrl}" alt="${treinamento.nome}" class="w-full h-48 object-cover">
                 <div class="absolute top-0 right-0 bg-${getColor(treinamento.status)} text-white text-xs px-2 py-1 m-2 rounded-lg">
                     <i class="fas fa-${getIcon(treinamento.status)} mr-1"></i> ${treinamento.status}
                 </div>
@@ -49,31 +56,31 @@ function exibirTreinamentos(lista, containerId) {
 
         container.appendChild(card);
     });
-    // Garantir que o container esteja visível após filtrar
     container.classList.remove('hidden');
 }
 
 
-// Funções auxiliares
+// Funções auxiliares para obter cores e textos
 function getColor(status) {
     switch (status) {
         case "Concluído": return "success";
         case "Em Andamento": return "warning";
-        case "Não Iniciado": return "danger";
-        default: return "info";
+        case "Não Iniciado": return "red";
+        default: return "accent";
     }
 }
 
+// Funções auxiliares para obter cores e textos
 function getIcon(status) {
     switch (status) {
-        case "Concluído": return "check-circle";
+        case "Concluído": return "check-circle ";
         case "Em Andamento": return "play-circle";
         case "Não Iniciado": return "star";
         default: return "info-circle";
     }
 }
 
-
+// busca o treinamento pelo id
 function buscarTreinamentoPorId(id) {
    //puxar os dados que ja estao aqui 
     if (!id) {
@@ -90,9 +97,9 @@ function buscarTreinamentoPorId(id) {
 
 document.addEventListener('DOMContentLoaded', () => {
     const treinamentoId = getQueryParam('id');
-    console.log('ID do treinamento:', treinamentoId); // Verifique o ID
+    console.log('ID do treinamento:', treinamentoId); 
     const treinamento = buscarTreinamentoPorId(treinamentoId);
-    console.log('Treinamento encontrado:', treinamento); // Verifique o objeto
+    console.log('Treinamento encontrado:', treinamento); 
     exibirDadosTreinamento(treinamento);
 });
 
@@ -120,7 +127,7 @@ function exibirDadosTreinamento(treinamento) {
         tagsContainer.appendChild(tagElement);
     });
 
-    // Colocar o vídeo
+    // Colocar o vídeo (aqui voce adpatar para o banco de dados flask) 
     const videoContainer = document.getElementById('videoContainer');
     if (videoContainer && treinamento.video) {
         videoContainer.innerHTML = `
@@ -138,20 +145,6 @@ function exibirDadosTreinamento(treinamento) {
     }
 }
 
-function toggleModule(containerId) {
-    const container = document.getElementById(containerId);
-    const toggleIcon = document.getElementById('toggle-icon');
-    
-    if (container.classList.contains('hidden')) {
-        container.classList.remove('hidden');
-        toggleIcon.classList.remove('fa-chevron-down');
-        toggleIcon.classList.add('fa-chevron-up');
-    } else {
-        container.classList.add('hidden');
-        toggleIcon.classList.remove('fa-chevron-up');
-        toggleIcon.classList.add('fa-chevron-down');
-    }
-}
 
 // Função para carregar as próximas aulas do módulo atual
 function carregarProximasAulas(treinamentoAtual) {
@@ -204,27 +197,27 @@ function carregarProximasAulas(treinamentoAtual) {
 
 function getProgressColor(status) {
     switch (status) {
-        case "Concluído": return "green-400";
+        case "Concluído": return "green";
         case "Em Andamento": return "yellow-400";
-        case "Não Iniciado": return "gray-400";
+        case "Não Iniciado": return "gray-300";
         default: return "gray-400";
     }
 }
 
 function getButtonColor(status) {
     switch (status) {
-        case "Concluído": return "accent";
-        case "Em Andamento": return "info";
-        case "Não Iniciado": return "purple";
+        case "Concluído": return "";
+        case "Em Andamento": return "accent";
+        case "Não Iniciado": return "green";
         default: return "gray-500";
     }
 }
 
 function getHoverColor(status) {
     switch (status) {
-        case "Concluído": return "orange-600";
+        case "Concluído": return "";
         case "Em Andamento": return "blue-600";
-        case "Não Iniciado": return "purple-700";
+        case "Não Iniciado": return "green-700";
         default: return "gray-600";
     }
 }
