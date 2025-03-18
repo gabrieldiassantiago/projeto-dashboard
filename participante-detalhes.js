@@ -915,7 +915,7 @@ const estatisticas = {
         });
     }
     
-    // Função para carregar o perfil do participante
+    // Função para carregar o perfil do participante na página
     function carregarPerfil(participante) {
         document.getElementById('participanteImagem').src = participante.imagem;
         document.getElementById('participanteNome').textContent = participante.nome;
@@ -947,7 +947,6 @@ const estatisticas = {
         // Progresso geral
         document.getElementById('progressoGeral').style.width = `${participante.progresso}%`;
         
-     
     }
     
     // Função para carregar o progresso por módulo
@@ -1086,6 +1085,37 @@ const estatisticas = {
             certificadosContainer.appendChild(div);
         });
     }
+});
+
+  // Script para o menu mobile
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileSidebar = document.getElementById('mobile-sidebar');
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const closeSidebar = document.getElementById('close-sidebar');
+    
+    mobileMenuToggle.addEventListener('click', function() {
+        mobileSidebar.classList.remove('-translate-x-full');
+    });
+    
+    closeSidebar.addEventListener('click', function() {
+        mobileSidebar.classList.add('-translate-x-full');
+    });
+    
+    // Script para o header fixo em mobile
+    const mobileMenuToggleContainer = document.getElementById('mobile-menu-toggle-container');
+    
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+            mobileMenuToggleContainer.classList.add('scrolled');
+        } else {
+            mobileMenuToggleContainer.classList.remove('scrolled');
+        }
+    });
+    
+    // Simulação de dados para demonstração
+    // Normalmente estes dados viriam do seu arquivo JS externo
+    document.getElementById('progressoGeral').style.width = '65%';
+    document.getElementById('progressoGeralMini').style.width = '65%';
 });
 
 tailwind.config = {
