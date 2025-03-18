@@ -248,28 +248,21 @@ select {
     transform: translateY(0);
 }
 
-
-
 .certificate-pattern {
     position: absolute;
-
     background-size: 50px 50px;
     opacity: 0.1;
     z-index: 0;
 }
 
 
-
-
 .certificate-container {
     position: relative;
     background-color: white;
     border-radius: 10px;
-    
     overflow: hidden;
     margin: 0 auto;
     padding: 0;
-    
     box-sizing: border-box;
 }
 

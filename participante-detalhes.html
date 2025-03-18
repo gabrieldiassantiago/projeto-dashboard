@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalhes do Participante</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a2234 0%, #2a3245 100%);
+        }
+
+        @media (max-width: 1023px) {
+            #mobile-menu-toggle-container.scrolled {
+                background: rgba(42, 50, 69, 0.95);
+                backdrop-filter: blur(8px);
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                padding: 1rem;
+                z-index: 50;
+                transition: all 0.3s ease;
+                display: flex;
+                justify-content: flex-start;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            }
+
+            #mobile-menu-toggle-container.scrolled #mobile-menu-toggle {
+                margin-left: 0.5rem;
+            }
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-shine {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-shine::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shine 1.5s infinite;
+        }
+
+        @keyframes shine {
+            100% {
+                left: 150%;
+            }
+        }
+
+        .badge-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 152, 0, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+            }
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        .mobile-menu {
+            display: none;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        /* Fix for mobile sidebar */
+        #mobile-sidebar {
+            z-index: 60;
+        }
+
+        /* Transição suave para os cards */
+        .participant-card {
+            transition: all 0.3s ease;
+        }
+
+        /* Estilo para as barras de progresso */
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+        }
+
+        /* Animação para os números */
+        .stat-number {
+            transition: all 0.5s ease;
+        }
+        
+        .stat-number:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Estilo para o gráfico de radar */
+        .radar-chart {
+            position: relative;
+            width: 100%;
+            height: 300px;
+        }
+        
+        /* Estilo para a timeline */
+        .timeline-item {
+            position: relative;
+            padding-left: 28px;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #4B5563;
+        }
+        
+        .timeline-dot {
+            position: absolute;
+            left: -5px;
+            top: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-[#1a2234] to-[#2a3245] text-white min-h-screen">
+    <!-- Blobs de fundo -->
+    <div class="blob bg-blue-500 w-1/3 md:w-96 h-1/3 md:h-96 top-0 left-0"></div>
+    <div class="blob bg-orange-500 w-1/3 md:w-96 h-1/3 md:h-96 bottom-0 right-0"></div>
+    <div class="blob bg-teal-500 w-1/3 md:w-96 h-1/3 md:h-96 bottom-0 left-1/3"></div>
+
+    <!-- Conteúdo principal -->
+    <div class="lg:ml-16">
+        <!-- Cabeçalho da página -->
+        <header class="p-4 md:p-6 bg-gradient-to-r from-blue-400 to-orange-400 bg-opacity-20 border-b border-gray-700 shadow-md">
+            <div class="flex flex-col items-center justify-between gap-4 max-w-7xl mx-auto md:flex-row">
+                <div class="flex items-center gap-4 w-full">
+                    <div class="flex items-center gap-2 w-full">
+                        <div id="mobile-menu-toggle-container" class="lg:hidden">
+                            <button id="mobile-menu-toggle" class="text-white p-2 focus:outline-none">
+                                <i class="fas fa-bars text-xl"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="text-center md:text-left w-full">
+                            <h1 class="text-3xl md:text-2xl font-bold text-white truncate">Dados do usuário</h1>
+                            <p class="text-gray-100 text-sm mt-1 flex flex-col sm:flex-row sm:gap-2">
+                                <a href="painel.html" class="flex items-center justify-center sm:justify-start hover:text-orange-500 transition-colors">
+                                    <i class="fas fa-arrow-left mr-2"></i> Voltar para o Painel
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo principal -->
+        <main class="container mx-auto px-4 md:px-6 pb-10 pt-6">
+            <!-- Perfil do participante -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Informações do perfil -->
+                <div class="lg:col-span-1">
+                    <div class="bg-[#2a3245] rounded-xl overflow-hidden shadow-xl border border-gray-700">
+                        <div class="p-4 bg-gradient-to-r from-blue-400 to-orange-400 bg-opacity-20 border-b border-gray-700">
+                            <h2 class="text-xl font-bold flex items-center">
+                                <i class="fas fa-user text-orange-500 mr-2"></i> Perfil
+                            </h2>
+                        </div>
+                        <div class="p-6 text-center">
+                            <div class="relative mx-auto w-32 h-32 mb-4">
+                                <img id="participanteImagem" src="/placeholder.svg" alt="Foto do Participante" class="rounded-full w-full h-full object-cover border-4 border-orange-500">
+                                <div id="statusIndicator" class="absolute bottom-0 right-0 w-6 h-6 rounded-full border-2 border-[#2a3245]"></div>
+                            </div>
+                            <h3 id="participanteNome" class="text-xl font-bold mb-1"></h3>
+                            <p id="participanteCargo" class="text-gray-400 text-sm mb-4"></p>
+                            
+                            <div class="flex justify-center space-x-3 mb-6">
+                                <button class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </button>
+                                <button class="bg-orange-500 hover:bg-orange-600 text-white p-2 rounded-full">
+                                    <i class="fas fa-envelope"></i>
+                                </button>
+                                <button class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-full">
+                                    <i class="fab fa-whatsapp"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="space-y-4 text-left">
+                                <div class="flex items-center">
+                                    <div class="bg-[#1a2234] p-2 rounded-lg mr-3">
+                                        <i class="fas fa-briefcase text-blue-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-400">Departamento</p>
+                                        <p id="participanteDepartamento" class="font-medium"></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <div class="bg-[#1a2234] p-2 rounded-lg mr-3">
+                                        <i class="fas fa-graduation-cap text-orange-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-400">Módulo Atual</p>
+                                        <p id="participanteModulo" class="font-medium"></p>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center">
+                                    <div class="bg-[#1a2234] p-2 rounded-lg mr-3">
+                                        <i class="fas fa-calendar-alt text-green-500"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-400">Data de Início</p>
+                                        <p id="participanteDataInicio" class="font-medium"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Estatísticas do participante -->
+                <div class="lg:col-span-2">
+                    <div class="bg-[#2a3245] rounded-xl overflow-hidden shadow-xl border border-gray-700 h-auto">
+                        <div class="p-4 bg-gradient-to-r from-blue-400 to-orange-400 bg-opacity-20 border-b border-gray-700">
+                            <h2 class="text-xl font-bold flex items-center">
+                                <i class="fas fa-chart-bar text-blue-500 mr-2"></i> Estatísticas
+                            </h2>
+                        </div>
+                        <div class="p-6">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                <div class="bg-[#1a2234] rounded-lg p-4 text-center">
+                                    <div class="text-3xl font-bold text-orange-500 mb-2 stat-number" id="participantePontuacao">0</div>
+                                    <p class="text-sm text-gray-400">Pontuação Total</p>
+                                </div>
+                                
+                                <div class="bg-[#1a2234] rounded-lg p-4 text-center">
+                                    <div class="text-3xl font-bold text-green-500 mb-2 stat-number" id="participanteAulasConcluidas">0</div>
+                                    <p class="text-sm text-gray-400">Aulas Concluídas</p>
+                                </div>
+                                
+                                <div class="bg-[#1a2234] rounded-lg p-4 text-center">
+                                    <div class="text-3xl font-bold text-blue-500 mb-2 stat-number" id="participanteAulasPendentes">0</div>
+                                    <p class="text-sm text-gray-400">Aulas Pendentes</p>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <h3 class="text-lg font-semibold mb-3">Progresso Geral</h3>
+                                <div class="w-full bg-gray-700 rounded-full h-4 mb-2">
+                                    <div id="progressoGeral" class="bg-orange-500 h-4 rounded-full progress-bar" style="width: 0%"></div>
+                                </div>
+                              
+                            </div>
+                            
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Progresso por módulo e histórico -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                <!-- Progresso por módulo -->
+                <div class="bg-[#2a3245] rounded-xl overflow-hidden shadow-xl border border-gray-700">
+                    <div class="p-4 bg-gradient-to-r from-blue-400 to-orange-400 bg-opacity-20 border-b border-gray-700">
+                        <h2 class="text-xl font-bold flex items-center">
+                            <i class="fas fa-book text-green-500 mr-2"></i> Progresso por Módulo
+                        </h2>
+                    </div>
+                    <div class="p-4">
+                        <ul id="modulosProgresso" class="space-y-4">
+                            <!-- Será preenchido dinamicamente -->
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Histórico de atividades -->
+                <div class="bg-[#2a3245] rounded-xl overflow-hidden shadow-xl border border-gray-700">
+                    <div class="p-4 bg-gradient-to-r from-blue-400 to-orange-400 bg-opacity-20 border-b border-gray-700">
+                        <h2 class="text-xl font-bold flex items-center">
+                            <i class="fas fa-history text-blue-500 mr-2"></i> Histórico de Atividades
+                        </h2>
+                    </div>
+                    <div class="p-4">
+                        <div id="historicoAtividades" class="space-y-6">
+                            <!-- Será preenchido dinamicamente -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Próximas aulas -->
+           <!-- 
+            
+            <div class="bg-[#2a3245] rounded-xl overflow-hidden shadow-xl border border-gray-700 mb-8">
+                <div class="p-4 bg-gradient-to-r from-blue-400 to-orange-400 bg-opacity-20 border-b border-gray-700">
+                    <h2 class="text-xl font-bold flex items-center">
+                        <i class="fas fa-calendar text-orange-500 mr-2"></i> Próximas Aulas
+                    </h2>
+                </div>
+                <div class="p-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="proximasAulas">
+                        / Será preenchido dinamicamente
+                    </div>
+                </div>
+            </div>
+           -->
+            
+            <!-- Certificados e conquistas (nao sei se isso será util, mas está aqui) -->
+           <!--
+            <div class="bg-[#2a3245] rounded-xl overflow-hidden shadow-xl border border-gray-700">
+                <div class="p-4 bg-gradient-to-r from-blue-400 to-orange-400 bg-opacity-20 border-b border-gray-700">
+                    <h2 class="text-xl font-bold flex items-center">
+                        <i class="fas fa-award text-yellow-500 mr-2"></i> Certificados e Conquistas
+                    </h2>
+                </div>
+                <div class="p-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="certificados">
+                        Será preenchido dinamicamente
+                    </div>
+                </div>
+            </div>
+            -->
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-black bg-opacity-30 text-gray-400 py-6 border-t border-gray-700 mt-10">
+            <div class="container mx-auto px-4 md:px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0 text-center md:text-left">
+                        <p>© 2025 Plataforma de Treinamento. Todos os direitos reservados.</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 text-center">
+                        <a href="#" class="hover:text-orange-500 transition-colors">Termos de Uso</a>
+                        <a href="#" class="hover:text-orange-500 transition-colors">Política de Privacidade</a>
+                        <a href="#" class="hover:text-orange-500 transition-colors">Suporte</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Desktop sidebar -->
+    <div class="fixed left-0 top-0 h-full w-16 bg-black bg-opacity-50 backdrop-blur-sm hidden lg:flex flex-col items-center pt-24 space-y-8 border-r border-gray-700">
+        <a href="painel.html" class="w-10 h-10 rounded-lg bg-orange-500 text-white flex items-center justify-center hover:bg-opacity-80 transition-colors">
+            <i class="fas fa-home"></i>
+        </a>
+       
+    </div>
+
+    <!-- Mobile sidebar -->
+    <div id="mobile-sidebar" class="fixed inset-0 bg-black bg-opacity-80 z-40 transform -translate-x-full transition-transform duration-300 lg:hidden">
+        <div class="h-full w-64 bg-[#2a3245] overflow-y-auto">
+            <div class="p-4 flex justify-end items-center border-b border-gray-700">
+                <button id="close-sidebar" class="text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-4 space-y-4">
+                <a href="painel.html" class="block p-2 rounded-lg bg-orange-500 text-white">
+                    <i class="fas fa-home mr-2"></i> Início
+                </a>
+              
+            </div>
+        </div>
+    </div>
+
+    <script src="participante-detalhes.js"></script>
+</body>
+</html>

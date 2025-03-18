@@ -5,7 +5,13 @@ const treinamentos = [
     { id: 4, nome: "Cadastro de Tabela de Preço", modulo: "Estoque", status: "Não Iniciado", duracao: "50 minutos", nivel: "Intermediário", progresso: 0, imagem: "./static/produtos.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como Cadastrar Produtos no Sistema.", visualizacoes: 70 },
 ];
 
-//traga os dados da api pra ca ^^^^
+//traga os dados da api pra ca ^^^^ exemolo:
+
+ /*async function carregarTreinamentos() {
+    const response = await fetch('/api/treinamentos');
+    const treinamentos = await response.json();
+    // Atualizar lógica para usar esses dados
+} */
 
 
 

@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Gestão de Treinamentos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1a2234 0%, #2a3245 100%);
+        }
+
+        @media (max-width: 1023px) {
+            #mobile-menu-toggle-container.scrolled {
+                background: rgba(42, 50, 69, 0.95);
+                backdrop-filter: blur(8px);
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                padding: 1rem;
+                z-index: 50;
+                transition: all 0.3s ease;
+                display: flex;
+                justify-content: flex-start;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            }
+
+            #mobile-menu-toggle-container.scrolled #mobile-menu-toggle {
+                margin-left: 0.5rem;
+            }
+        }
+
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .progress-shine {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-shine::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            animation: shine 1.5s infinite;
+        }
+
+        @keyframes shine {
+            100% {
+                left: 150%;
+            }
+        }
+
+        .badge-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 152, 0, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+            }
+        }
+
+        .blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(60px);
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        .mobile-menu {
+            display: none;
+        }
+
+        .mobile-menu.active {
+            display: block;
+        }
+
+        /* Fix for mobile sidebar */
+        #mobile-sidebar {
+            z-index: 60;
+        }
+
+        /* Transição suave para os cards */
+        .participant-card {
+            transition: all 0.3s ease;
+        }
+
+        /* Estilo para as barras de progresso */
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+            will-change: width;
+            transform: translateZ(0);
+        }
+        
+  
+        
+        /* Estilos para o card de participante em mobile */
+        .participante-card {
+            transition: all 0.3s ease;
+        }
+        
+        .participante-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-[#1a2234] to-[#2a3245] text-white min-h-screen">
+    <!-- Blobs de fundo -->
+    <div class="blob bg-blue-500 w-1/3 md:w-96 h-1/3 md:h-96 top-0 left-0"></div>
+    <div class="blob bg-orange-500 w-1/3 md:w-96 h-1/3 md:h-96 bottom-0 right-0"></div>
+    <div class="blob bg-teal-500 w-1/3 md:w-96 h-1/3 md:h-96 bottom-0 left-1/3"></div>
+
+    <!-- Conteúdo principal -->
+    <div class="lg:ml-16">
+        <header class="p-4 md:p-6 bg-gradient-to-r border-b border-gray-700 shadow-md">
+            <div class="flex flex-col items-center justify-between gap-4 ml-0 md:ml-24 mx-auto md:flex-row">
+                <div class="flex items-center gap-4 w-full">
+                    <div class="flex items-center gap-4 w-full">
+                        <div id="mobile-menu-toggle-container" class="lg:hidden">
+                            <button id="mobile-menu-toggle" class="text-white p-2 focus:outline-none">
+                                <i class="fas fa-bars text-xl"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- Container ajustado para imagem e texto -->
+                        <div class="flex items-center gap-4 flex-1">
+                            <!-- Imagem à esquerda -->
+                            <img class="w-16" src="./logo_ff9800.png" alt="Logo">
+                            
+                            <!-- Texto à direita da imagem -->
+                            <div class="flex flex-col">
+                                <h1 class="text-3xl md:text-2xl font-bold text-white">Painel de Gestão</h1>
+                                <p class="text-gray-100 text-sm mt-1 flex items-center">
+                                    <i class="fas fa-users mr-2"></i> 
+                                    Total de Participantes: 
+                                    <span class="text-white font-semibold ml-1" id="totalParticipantes">0</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Seção de busca e filtro -->
+                <div class="flex items-center gap-2">
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="Buscar participante..." class="bg-[#1a2234] border border-gray-600 rounded-lg px-4 py-2 text-sm w-full md:w-64 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                        <button id="searchButton" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="filterButton" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm flex items-center">
+                            <i class="fas fa-filter mr-2"></i> Filtrar
+                        </button>
+                        <div id="filterDropdown" class="hidden absolute right-0 mt-2 w-64 bg-[#1a2234] border border-gray-700 rounded-lg shadow-lg z-50">
+                            <!-- Conteúdo do dropdown mantido -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Conteúdo principal -->
+        <main class="container mx-auto px-4 md:px-6 pb-10 pt-6">
+            <!-- Cards de estatísticas -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-[#2a3245] rounded-xl p-6 shadow-xl border border-gray-700 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">Total de Aulas</h3>
+                        <div class="bg-blue-500 p-3 rounded-full">
+                            <i class="fas fa-book text-white"></i>
+                        </div>
+                    </div>
+                    <p class="text-3xl font-bold mb-2 stat-number" id="totalAulas">0</p>
+                    <p class="text-gray-400 text-sm">Distribuídas em <span id="totalModulos">0</span> módulos</p>
+                </div>
+                
+                <div class="bg-[#2a3245] rounded-xl p-6 shadow-xl border border-gray-700 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">Média de Conclusão</h3>
+                        <div class="bg-green-500 p-3 rounded-full">
+                            <i class="fas fa-chart-line text-white"></i>
+                        </div>
+                    </div>
+                    <p class="text-3xl font-bold mb-2 stat-number" id="mediaConclusao">0%</p>
+                    <p class="text-gray-400 text-sm">Aumento de <span id="aumentoConclusao">0%</span> no último mês</p>
+                </div>
+                
+                <div class="bg-[#2a3245] rounded-xl p-6 shadow-xl border border-gray-700 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold">Pontuação Média</h3>
+                        <div class="bg-orange-500 p-3 rounded-full">
+                            <i class="fas fa-trophy text-white"></i>
+                        </div>
+                    </div>
+                    <p class="text-3xl font-bold mb-2 stat-number" id="pontuacaoMedia">0</p>
+                    <p class="text-gray-400 text-sm">De 1000 pontos possíveis</p>
+                </div>
+            </div>
+            
+            <!-- Tabela de participantes -->
+            <div class="bg-[#2a3245] rounded-xl overflow-hidden shadow-xl border border-gray-700 mb-8">
+                <div class="p-4 bg-gradient-to-r  border-b border-gray-700">
+                    <h2 class="text-xl font-bold flex items-center">
+                        <i class="fas fa-user-graduate text-orange-500 mr-2"></i> Participantes
+                    </h2>
+                </div>
+                
+                <!-- Versão desktop da tabela (visível apenas em telas médias e grandes) -->
+                <div class="hidden md:block overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-700">
+                        <thead class="bg-[#1a2234]">
+                            <tr>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                    Participante
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                    Pontuação
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                    Aulas Concluídas
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                    Aulas Pendentes
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                    Progresso
+                                </th>
+                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                    Ações
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="participantesTableBody" class="bg-[#2a3245] divide-y divide-gray-700">
+                            <!-- Dados serão carregados dinamicamente, sua api no casso -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Versão mobile da tabela (visível apenas em telas pequenas) -->
+                <div class="md:hidden overflow-hidden">
+                    <div class="p-4">
+                        <div id="participantesCardContainer" class="flex overflow-x-auto pb-4 space-x-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+                            <!-- Cards de participantes serão carregados dinamicamente -->
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Paginação -->
+                <div class="px-6 py-4 flex items-center justify-between border-t border-gray-700">
+                    <div class="flex-1 flex justify-between sm:hidden">
+                        <button id="prevButtonMobile" class="bg-[#1a2234] border border-gray-700 rounded-md py-2 px-4 text-sm font-medium text-gray-300 hover:bg-[#2a3245]">
+                            Anterior
+                        </button>
+                        <button id="nextButtonMobile" class="ml-3 bg-[#1a2234] border border-gray-700 rounded-md py-2 px-4 text-sm font-medium text-gray-300 hover:bg-[#2a3245]">
+                            Próximo
+                        </button>
+                    </div>
+                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                        <div>
+                            <p class="text-sm text-gray-400">
+                                Mostrando <span id="startItem" class="font-medium">0</span> a <span id="endItem" class="font-medium">0</span> de <span id="totalItems" class="font-medium">0</span> resultados
+                            </p>
+                        </div>
+                        <div>
+                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination" id="paginationContainer">
+                                <!-- Paginação será gerada dinamicamente -->
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Gráficos de desempenho -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Ranking de participantes -->
+                <div class="bg-[#2a3245] rounded-xl overflow-hidden shadow-xl border border-gray-700">
+                    <div class="p-4 bg-gradient-to-r border-b border-gray-700">
+                        <h2 class="text-xl font-bold flex items-center">
+                            <i class="fas fa-medal text-orange-500 mr-2"></i> Top Participantes
+                        </h2>
+                    </div>
+                    <div class="p-4">
+                        <ul id="topParticipantes" class="space-y-4">
+                            <!-- Top participantes serão carregados dinamicamente -->
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Estatísticas de módulos -->
+                <div class="bg-[#2a3245] rounded-xl overflow-hidden shadow-xl border border-gray-700">
+                    <div class="p-4 bg-gradient-to-r border-b border-gray-700">
+                        <h2 class="text-xl font-bold flex items-center">
+                            <i class="fas fa-book text-blue-500 mr-2"></i> Progresso por Módulo
+                        </h2>
+                    </div>
+                    <div class="p-4">
+                        <ul id="progressoPorModulo" class="space-y-4">
+                            <!-- Progresso por módulo será carregado dinamicamente -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-black bg-opacity-30 text-gray-400 py-6 border-t border-gray-700 mt-10">
+            <div class="container mx-auto px-4 md:px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0 text-center md:text-left">
+                        <p>© 2025 Plataforma de Treinamento. Todos os direitos reservados.</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 text-center">
+                        <a href="#" class="hover:text-orange-500 transition-colors">Termos de Uso</a>
+                        <a href="#" class="hover:text-orange-500 transition-colors">Política de Privacidade</a>
+                        <a href="#" class="hover:text-orange-500 transition-colors">Suporte</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Desktop sidebar -->
+    <div class="fixed left-0 top-0 h-full w-16 bg-black bg-opacity-50 backdrop-blur-sm hidden lg:flex flex-col items-center pt-24 space-y-8 border-r border-gray-700">
+        <button class="w-10 h-10 rounded-lg bg-orange-500 text-white flex items-center justify-center hover:bg-opacity-80 transition-colors">
+            <i class="fas fa-home"></i>
+        </button>
+      
+    </div>
+
+    <!-- Mobile sidebar -->
+    <div id="mobile-sidebar" class="fixed inset-0 bg-black bg-opacity-80 z-40 transform -translate-x-full transition-transform duration-300 lg:hidden">
+        <div class="h-full w-64 bg-[#2a3245] overflow-y-auto">
+            <div class="p-4 flex justify-end items-center border-b border-gray-700">
+                <button id="close-sidebar" class="text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="p-4 space-y-4">
+                <a href="#" class="block p-2 rounded-lg bg-orange-500 text-white">
+                    <i class="fas fa-home mr-2"></i> Início
+                </a>
+             
+            </div>
+        </div>
+    </div>
+
+    <script src="dados-teste-painel.js"></script>
+    <script src="painel.js"></script>
+</body>
+</html>

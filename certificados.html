@@ -454,10 +454,7 @@
                 borderImg.style.zIndex = '5';
             }
             
-            // Adicionar um atraso para garantir que os estilos sejam aplicados
             setTimeout(() => {
-                // Usar a biblioteca html2canvas já carregada no HTML
-                // html2canvas is assumed to be globally available, no import needed.
                 html2canvas(certificateClone, {
                     scale: 2,
                     useCORS: true,
@@ -480,7 +477,6 @@
         
                         const imgData = canvas.toDataURL('image/png', 1.0);
         
-                        // Adicionar imagem ao PDF, preenchendo a página inteira
                         pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight, undefined, 'FAST');
         
                         let safeFilename = `Certificado_${recipientName}_${courseName}`
@@ -493,14 +489,12 @@
                         alert('Ocorreu um erro ao gerar o PDF. Por favor tente novamente.');
                     }
         
-                    // Limpar e remover elementos temporários
                     document.body.removeChild(tempContainer);
                     document.body.removeChild(loadingMessage);
                 }).catch(error => {
                     console.error('Error in html2canvas:', error);
                     alert('Ocorreu um erro ao capturar o certificado. Por favor tente novamente.');
                     
-                    // Limpar e remover elementos temporários
                     document.body.removeChild(tempContainer);
                     document.body.removeChild(loadingMessage);
                 });
