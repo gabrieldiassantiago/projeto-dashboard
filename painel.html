@@ -33,6 +33,27 @@
             }
         }
 
+         /* This ensures the sidebar appears above the header */
+         #mobile-sidebar {
+            z-index: 60;
+        }
+        
+        /* This class will be added to the header when sidebar is open */
+        .header-hidden {
+            visibility: hidden;
+        }
+        
+        /* Make sure the sidebar has a higher z-index than the header */
+        #mobile-sidebar .sidebar-content {
+            position: relative;
+            z-index: 70;
+        }
+        
+        /* Ensure the header has a defined z-index */
+        header {
+            z-index: 50;
+            position: relative;
+        }
         .card-hover:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
@@ -111,14 +132,6 @@
             transform: translateZ(0);
         }
         
-        /* Animação para os números */
-        .stat-number {
-            transition: all 0.5s ease;
-        }
-        
-        .stat-number:hover {
-            transform: scale(1.1);
-        }
         
         /* Estilos para o card de participante em mobile */
         .participante-card {
@@ -215,7 +228,7 @@
             <!-- Busca e filtros centralizados -->
             <div class="flex items-center gap-3 w-full max-w-md justify-center lg:w-auto">
                 <div class="relative w-full">
-                    <input type="text" id="searchInput" placeholder="Buscar participante..." class="bg-[#1a2234] border border-gray-600 rounded-lg px-12 py-2 text-sm w-full focus:outline-none focus:ring-2 focus:ring-orange-500">
+                    <input type="text" id="searchInput" placeholder="Buscar funcionário..." class="bg-[#1a2234] border border-gray-600 rounded-lg px-12 py-2  focus:outline-none focus:ring-2 focus:ring-orange-500">
                     <button id="searchButton" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">
                         <i class="fas fa-search"></i>
                     </button>

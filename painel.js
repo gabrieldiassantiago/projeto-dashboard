@@ -1089,9 +1089,7 @@ document.addEventListener("DOMContentLoaded", () => {
                       <a href="participante-detalhes.html?id=${participante.id}" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs flex items-center">
                           <i class="fas fa-eye mr-1"></i> Detalhes
                       </a>
-                      <button class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded text-xs flex items-center">
-                          <i class="fas fa-chart-bar mr-1"></i> Gráficos
-                      </button>
+                  
                   </div>
               `
   
