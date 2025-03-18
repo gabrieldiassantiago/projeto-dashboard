@@ -1047,6 +1047,8 @@ const estatisticas = {
             proximasAulasContainer.appendChild(div);
         });
     }
+
+    
     
     // Função para carregar os certificados
     function carregarCertificados(participante) {
