@@ -989,16 +989,16 @@ document.addEventListener("DOMContentLoaded", () => {
                   <td class="px-6 py-4 whitespace-nowrap">
                       <div class="flex items-center">
                           <div class="flex-shrink-0 h-10 w-10">
-                              <img class="h-10 w-10 rounded-full" src="${participante.imagem}" alt="${participante.nome}">
+                              <img class="h-10 rounded-full w-10" src="${participante.imagem}" alt="${participante.nome}">
                           </div>
                           <div class="ml-4">
                               <div class="text-sm font-medium">${participante.nome}</div>
-                              <div class="text-sm text-gray-400">Módulo: ${participante.modulo}</div>
+                              <div class="text-gray-400 text-sm">Módulo: ${participante.modulo}</div>
                           </div>
                       </div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="text-sm font-semibold">${participante.pontuacao} <span class="${pontuacaoClass} text-xs">${pontuacaoPrefix}${pontuacaoDiff}</span></div>
+                      <div class="text-sm font-semibold">${participante.pontuacao} <span class="text-xs ${pontuacaoClass}">${pontuacaoPrefix}${pontuacaoDiff}</span></div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
                       <div class="text-sm">${participante.aulasConcluidas} de ${participante.totalAulas}</div>
@@ -1007,14 +1007,14 @@ document.addEventListener("DOMContentLoaded", () => {
                       <div class="text-sm">${participante.aulasPendentes}</div>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap">
-                      <div class="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
-                          <div class="${progressoClass} h-2 rounded-full transition-all duration-1000" style="width: ${participante.progresso}%"></div>
+                      <div class="bg-gray-700 h-2 rounded-full w-full overflow-hidden">
+                          <div class="h-2 rounded-full ${progressoClass} duration-1000 transition-all" style="width: ${participante.progresso}%"></div>
                       </div>
-                      <div class="text-xs text-right mt-1">${participante.progresso}%</div>
+                      <div class="text-right text-xs mt-1">${participante.progresso}%</div>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm">
+                  <td class="text-sm px-6 py-4 whitespace-nowrap">
                       <a href="participante-detalhes.html?id=${participante.id}" class="text-blue-400 hover:text-blue-300 mr-3">
-                          <i class="fas fa-eye"></i>
+                          <i class="fa-eye fas"></i>
                       </a>
                    
                   </td>
@@ -1052,25 +1052,25 @@ document.addEventListener("DOMContentLoaded", () => {
         card.innerHTML = `
                   <div class="flex items-center mb-4">
                       <div class="flex-shrink-0 h-12 w-12">
-                          <img class="h-12 w-12 rounded-full" src="${participante.imagem}" alt="${participante.nome}">
+                          <img class="h-12 rounded-full w-12" src="${participante.imagem}" alt="${participante.nome}">
                       </div>
-                      <div class="ml-4 flex-1">
+                      <div class="flex-1 ml-4">
                           <div class="text-sm font-medium">${participante.nome}</div>
-                          <div class="text-xs text-gray-400">Módulo: ${participante.modulo}</div>
+                          <div class="text-gray-400 text-xs">Módulo: ${participante.modulo}</div>
                       </div>
                       <div class="flex flex-col items-end">
                           <div class="text-sm font-semibold">${participante.pontuacao}</div>
-                          <div class="${pontuacaoClass} text-xs">${pontuacaoPrefix}${pontuacaoDiff}</div>
+                          <div class="text-xs ${pontuacaoClass}">${pontuacaoPrefix}${pontuacaoDiff}</div>
                       </div>
                   </div>
                   
                   <div class="grid grid-cols-2 gap-2 mb-3">
-                      <div class="bg-[#2a3245] rounded p-2 text-center">
-                          <div class="text-xs text-gray-400">Concluídas</div>
+                      <div class="bg-[#2a3245] p-2 rounded text-center">
+                          <div class="text-gray-400 text-xs">Concluídas</div>
                           <div class="text-sm font-medium">${participante.aulasConcluidas} de ${participante.totalAulas}</div>
                       </div>
-                      <div class="bg-[#2a3245] rounded p-2 text-center">
-                          <div class="text-xs text-gray-400">Pendentes</div>
+                      <div class="bg-[#2a3245] p-2 rounded text-center">
+                          <div class="text-gray-400 text-xs">Pendentes</div>
                           <div class="text-sm font-medium">${participante.aulasPendentes}</div>
                       </div>
                   </div>
@@ -1080,14 +1080,14 @@ document.addEventListener("DOMContentLoaded", () => {
                           <span>Progresso</span>
                           <span>${participante.progresso}%</span>
                       </div>
-                      <div class="w-full bg-gray-700 rounded-full h-2">
-                          <div class="${progressoClass} h-2 rounded-full progress-bar" style="width: ${participante.progresso}%"></div>
+                      <div class="bg-gray-700 h-2 rounded-full w-full">
+                          <div class="h-2 rounded-full ${progressoClass} progress-bar" style="width: ${participante.progresso}%"></div>
                       </div>
                   </div>
                   
                   <div class="flex justify-end space-x-2">
-                      <a href="participante-detalhes.html?id=${participante.id}" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs flex items-center">
-                          <i class="fas fa-eye mr-1"></i> Detalhes
+                      <a href="participante-detalhes.html?id=${participante.id}" class="flex bg-blue-500 p-2 rounded text-white text-xs w-full hover:bg-blue-600 items-center">
+                          <i class="fa-eye fas mr-1"></i> Detalhes
                       </a>
                   
                   </div>
@@ -1106,7 +1106,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const prevButton = document.createElement("button")
       prevButton.className =
         "relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-700 bg-[#1a2234] text-sm font-medium text-gray-300 hover:bg-[#2a3245]"
-      prevButton.innerHTML = '<span class="sr-only">Anterior</span><i class="fas fa-chevron-left"></i>'
+      prevButton.innerHTML = '<span class="sr-only">Anterior</span><i class="fa-chevron-left fas"></i>'
       prevButton.disabled = currentPage === 1
       prevButton.addEventListener("click", () => {
         if (currentPage > 1) {
@@ -1146,7 +1146,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const nextButton = document.createElement("button")
       nextButton.className =
         "relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-700 bg-[#1a2234] text-sm font-medium text-gray-300 hover:bg-[#2a3245]"
-      nextButton.innerHTML = '<span class="sr-only">Próximo</span><i class="fas fa-chevron-right"></i>'
+      nextButton.innerHTML = '<span class="sr-only">Próximo</span><i class="fa-chevron-right fas"></i>'
       nextButton.disabled = currentPage === totalPages
       nextButton.addEventListener("click", () => {
         if (currentPage < totalPages) {
@@ -1183,13 +1183,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const li = document.createElement("li")
         li.className = "flex items-center p-3 bg-[#1a2234] rounded-lg"
         li.innerHTML = `
-                  <div class="text-2xl font-bold ${medalClass} mr-4">${index + 1}</div>
+                  <div class="text-2xl ${medalClass} font-bold mr-4">${index + 1}</div>
                   <div class="flex-shrink-0 h-10 w-10">
-                      <img class="h-10 w-10 rounded-full" src="${participante.imagem}" alt="${participante.nome}">
+                      <img class="h-10 rounded-full w-10" src="${participante.imagem}" alt="${participante.nome}">
                   </div>
-                  <div class="ml-4 flex-1">
+                  <div class="flex-1 ml-4">
                       <div class="text-sm font-medium">${participante.nome}</div>
-                      <div class="w-full bg-gray-700 rounded-full h-2 mt-1">
+                      <div class="bg-gray-700 h-2 rounded-full w-full mt-1">
                           <div class="bg-orange-500 h-2 rounded-full" style="width: ${(participante.pontuacao / 1000) * 100}%"></div>
                       </div>
                   </div>
@@ -1223,17 +1223,17 @@ document.addEventListener("DOMContentLoaded", () => {
         li.innerHTML = `
                   <div class="flex justify-between items-center mb-2">
                       <h4 class="font-semibold">Módulo ${modulo.nome}</h4>
-                      <span class="text-sm text-gray-400">${modulo.totalParticipantes} participantes</span>
+                      <span class="text-gray-400 text-sm">${modulo.totalParticipantes} participantes</span>
                   </div>
                   <div class="flex items-center">
                       <div class="flex-1 mr-4">
-                          <div class="w-full bg-gray-700 rounded-full h-2">
-                              <div class="${progressoClass} h-2 rounded-full progress-bar" style="width: ${modulo.progresso}%"></div>
+                          <div class="bg-gray-700 h-2 rounded-full w-full">
+                              <div class="h-2 rounded-full ${progressoClass} progress-bar" style="width: ${modulo.progresso}%"></div>
                           </div>
                       </div>
                       <div class="${progressoClass.replace("bg-", "text-")} font-bold">${modulo.progresso}%</div>
                   </div>
-                  <div class="flex justify-between text-xs text-gray-400 mt-2">
+                  <div class="flex justify-between text-gray-400 text-xs mt-2">
                       <span>${modulo.aulasConcluidas} aulas concluídas</span>
                       <span>${modulo.aulasPendentes} aulas pendentes</span>
                   </div>

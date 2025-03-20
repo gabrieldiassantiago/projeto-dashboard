@@ -180,41 +180,50 @@
     .scroll-indicator.hidden {
         opacity: 0;
     }
+
+    /* Modificação para os cards de funcionários em mobile */
+    @media (max-width: 767px) {
+        #participantesCardContainer > div {
+            width: 75% !important;
+            flex: 0 0 75% !important;
+            min-width: 75% !important;
+        }
+    }
 </style>
 </head>
-<body class="bg-gradient-to-br from-[#1a2234] to-[#2a3245] text-white min-h-screen">
+<body class="bg-gradient-to-br text-white from-[#1a2234] min-h-screen to-[#2a3245]">
     <!-- Blobs de fundo -->
-    <div class="blob bg-blue-500 w-1/3 md:w-96 h-1/3 md:h-96 top-0 left-0"></div>
-    <div class="blob bg-orange-500 w-1/3 md:w-96 h-1/3 md:h-96 bottom-0 right-0"></div>
-    <div class="blob bg-teal-500 w-1/3 md:w-96 h-1/3 md:h-96 bottom-0 left-1/3"></div>
+    <div class="bg-blue-500 h-1/3 w-1/3 blob left-0 md:h-96 md:w-96 top-0"></div>
+    <div class="bg-orange-500 h-1/3 w-1/3 blob bottom-0 md:h-96 md:w-96 right-0"></div>
+    <div class="bg-teal-500 h-1/3 w-1/3 blob bottom-0 left-1/3 md:h-96 md:w-96"></div>
 
     <!-- Conteúdo principal -->
     <div class="lg:ml-16">
       <!-- Cabeçalho da página -->
-<header class="p-4 bg-gradient-to-r border-b border-gray-700 shadow-md">
+<header class="bg-gradient-to-r border-b border-gray-700 p-4 shadow-md">
     <div class="container mx-auto px-4">
-        <div class="flex flex-col items-center justify-center gap-4 lg:flex-row lg:justify-between">
+        <div class="flex flex-col justify-center gap-4 items-center lg:flex-row lg:justify-between">
             <!-- Logo e título -->
-            <div class="flex items-center justify-between w-full max-w-md lg:w-auto">
+            <div class="flex justify-between w-full items-center lg:w-auto max-w-md">
                 <!-- Botão do menu mobile -->
                 <div id="mobile-menu-toggle-container" class="lg:hidden">
-                    <button id="mobile-menu-toggle" class="text-white p-2 focus:outline-none">
-                        <i class="fas fa-bars text-xl"></i>
+                    <button id="mobile-menu-toggle" class="p-2 text-white focus:outline-none">
+                        <i class="text-xl fa-bars fas"></i>
                     </button>
                 </div>
 
                 <!-- Container para imagem e texto -->
-                <div class="flex items-center gap-3">
+                <div class="flex gap-3 items-center">
                     <!-- Imagem à esquerda -->
-                    <img class="w-12 sm:w-14 lg:w-16" src="./logo_ff9800.png" alt="Logo">
+                    <img class="w-12 lg:w-16 sm:w-14" src="./logo_ff9800.png" alt="Logo">
                     
                     <!-- Texto à direita da imagem -->
                     <div class="flex flex-col items-center lg:items-start">
-                        <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold text-[#ff9800] whitespace-nowrap">
+                        <h1 class="text-[#ff9800] text-xl font-bold lg:text-3xl sm:text-2xl whitespace-nowrap">
                             Painel de Gestão
                         </h1>
-                        <p class="text-gray-100 text-xs sm:text-sm mt-1 flex items-center">
-                            <i class="fas fa-users mr-2"></i> 
+                        <p class="flex text-gray-100 text-xs items-center mt-1 sm:text-sm">
+                            <i class="fa-users fas mr-2"></i> 
                             Total de Funcionários: 
                             <span class="text-white font-semibold ml-1" id="totalParticipantes">0</span>
                         </p>
@@ -226,27 +235,27 @@
             </div>
             
             <!-- Busca e filtros centralizados -->
-            <div class="flex items-center gap-3 w-full max-w-md justify-center lg:w-auto">
-                <div class="relative w-full">
+            <div class="flex justify-center w-full gap-3 items-center lg:w-auto max-w-md">
+                <div class="w-full relative">
                     <input type="text" id="searchInput" placeholder="Buscar funcionário..." 
-                    class="bg-[#1a2234] border text-left border-gray-600 rounded-lg px-4 py-2 w-full  focus:outline-none focus:ring-2 focus:ring-orange-500"
+                    class="bg-[#1a2234] border border-gray-600 rounded-lg text-left w-full focus:outline-none focus:ring-2 focus:ring-orange-500 px-4 py-2"
                     >
-                    <button id="searchButton" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400">
-                        <i class="fas fa-search"></i>
+                    <button id="searchButton" class="text-gray-400 -translate-y-1/2 absolute right-2 top-1/2 transform">
+                        <i class="fa-search fas"></i>
                     </button>
                 </div>
                 
                 <div class="relative">
-                    <button id="filterButton" class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm flex items-center whitespace-nowrap">
-                        <i class="fas fa-filter mr-2"></i> Filtrar
+                    <button id="filterButton" class="flex bg-orange-500 rounded-lg text-sm text-white hover:bg-orange-600 items-center px-4 py-2 whitespace-nowrap">
+                        <i class="fa-filter fas mr-2"></i> Filtrar
                     </button>
-                    <div id="filterDropdown" class="hidden absolute right-0 mt-2 w-64 bg-[#1a2234] border border-gray-700 rounded-lg shadow-lg z-50">
+                    <div id="filterDropdown" class="bg-[#1a2234] border border-gray-700 rounded-lg shadow-lg w-64 absolute hidden mt-2 right-0 z-50">
                         <div class="p-4">
                             <h3 class="text-sm font-semibold mb-3">Filtrar por Módulo</h3>
                             <div class="space-y-2" id="moduleFilters">
                                 <!-- Filtros serão adicionados dinamicamente -->
                             </div>
-                            <div class="mt-4 pt-3 border-t border-gray-700">
+                            <div class="border-gray-700 border-t mt-4 pt-3">
                                 <h3 class="text-sm font-semibold mb-3">Filtrar por Progresso</h3>
                                 <div class="space-y-2">
                                     <label class="flex items-center">
@@ -267,8 +276,8 @@
                                     </label>
                                 </div>
                             </div>
-                            <div class="mt-4 flex justify-end">
-                                <button id="applyFilters" class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded-lg text-sm">Aplicar</button>
+                            <div class="flex justify-end mt-4">
+                                <button id="applyFilters" class="bg-orange-500 rounded-lg text-sm text-white hover:bg-orange-600 px-3 py-1">Aplicar</button>
                             </div>
                         </div>
                     </div>
@@ -279,36 +288,36 @@
 </header>
 
         <!-- Conteúdo principal -->
-        <main class="container mx-auto px-4 md:px-6 pb-10 pt-6">
+        <main class="container md:px-6 mx-auto pb-10 pt-6 px-4">
             <!-- Cards de estatísticas -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-[#2a3245] rounded-xl p-6 shadow-xl border border-gray-700 card-hover">
-                    <div class="flex items-center justify-between mb-4">
+            <div class="grid grid-cols-1 gap-6 mb-8 md:grid-cols-3">
+                <div class="card-hover bg-[#2a3245] border border-gray-700 p-6 rounded-xl shadow-xl">
+                    <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-semibold">Total de Aulas</h3>
                         <div class="bg-blue-500 p-3 rounded-full">
-                            <i class="fas fa-book text-white"></i>
+                            <i class="text-white fa-book fas"></i>
                         </div>
                     </div>
                     <p class="text-3xl font-bold mb-2 stat-number" id="totalAulas">0</p>
                     <p class="text-gray-400 text-sm">Distribuídas em <span id="totalModulos">0</span> módulos</p>
                 </div>
                 
-                <div class="bg-[#2a3245] rounded-xl p-6 shadow-xl border border-gray-700 card-hover">
-                    <div class="flex items-center justify-between mb-4">
+                <div class="card-hover bg-[#2a3245] border border-gray-700 p-6 rounded-xl shadow-xl">
+                    <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-semibold">Média de Conclusão</h3>
                         <div class="bg-green-500 p-3 rounded-full">
-                            <i class="fas fa-chart-line text-white"></i>
+                            <i class="text-white fa-chart-line fas"></i>
                         </div>
                     </div>
                     <p class="text-3xl font-bold mb-2 stat-number" id="mediaConclusao">0%</p>
                     <p class="text-gray-400 text-sm">Aumento de <span id="aumentoConclusao">0%</span> no último mês</p>
                 </div>
                 
-                <div class="bg-[#2a3245] rounded-xl p-6 shadow-xl border border-gray-700 card-hover">
-                    <div class="flex items-center justify-between mb-4">
+                <div class="card-hover bg-[#2a3245] border border-gray-700 p-6 rounded-xl shadow-xl">
+                    <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-semibold">Pontuação Média</h3>
                         <div class="bg-orange-500 p-3 rounded-full">
-                            <i class="fas fa-trophy text-white"></i>
+                            <i class="text-white fa-trophy fas"></i>
                         </div>
                     </div>
                     <p class="text-3xl font-bold mb-2 stat-number" id="pontuacaoMedia">0</p>
@@ -317,39 +326,39 @@
             </div>
             
             <!-- Tabela de participantes -->
-            <div class="bg-[#2a3245] rounded-xl overflow-hidden shadow-xl border border-gray-700 mb-8">
-                <div class="p-4 bg-gradient-to-r  border-b border-gray-700">
-                    <h2 class="text-xl font-bold flex items-center">
-                        <i class="fas fa-user-graduate text-orange-500 mr-2"></i> Funcionários
+            <div class="bg-[#2a3245] border border-gray-700 rounded-xl shadow-xl mb-8 overflow-hidden">
+                <div class="bg-gradient-to-r border-b border-gray-700 p-4">
+                    <h2 class="flex text-xl font-bold items-center">
+                        <i class="text-orange-500 fa-user-graduate fas mr-2"></i> Funcionários
                     </h2>
                 </div>
                 
                 <!-- Versão desktop da tabela (visível apenas em telas médias e grandes) -->
                 <div class="hidden md:block overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-700">
+                    <table class="divide-gray-700 divide-y min-w-full">
                         <thead class="bg-[#1a2234]">
                             <tr>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                <th scope="col" class="text-gray-300 text-left text-xs font-medium px-6 py-3 tracking-wider uppercase">
                                     Participante
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                <th scope="col" class="text-gray-300 text-left text-xs font-medium px-6 py-3 tracking-wider uppercase">
                                     Pontuação
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                <th scope="col" class="text-gray-300 text-left text-xs font-medium px-6 py-3 tracking-wider uppercase">
                                     Aulas Concluídas
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                <th scope="col" class="text-gray-300 text-left text-xs font-medium px-6 py-3 tracking-wider uppercase">
                                     Aulas Pendentes
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                <th scope="col" class="text-gray-300 text-left text-xs font-medium px-6 py-3 tracking-wider uppercase">
                                     Progresso
                                 </th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                                <th scope="col" class="text-gray-300 text-left text-xs font-medium px-6 py-3 tracking-wider uppercase">
                                     Ações
                                 </th>
                             </tr>
                         </thead>
-                        <tbody id="participantesTableBody" class="bg-[#2a3245] divide-y divide-gray-700">
+                        <tbody id="participantesTableBody" class="bg-[#2a3245] divide-gray-700 divide-y">
                             <!-- Dados serão carregados dinamicamente -->
                         </tbody>
                     </table>
@@ -358,30 +367,30 @@
                 <!-- Versão mobile da tabela (visível apenas em telas pequenas) -->
                 <div class="md:hidden overflow-hidden">
                     <div class="p-4">
-                        <div id="participantesCardContainer" class="flex overflow-x-auto pb-4 space-x-4 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent">
+                        <div id="participantesCardContainer" class="flex overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent snap-mandatory snap-x space-x-4">
                             <!-- Cards de participantes serão carregados dinamicamente -->
                         </div>
                     </div>
                 </div>
                 
                 <!-- Paginação -->
-                <div class="px-6 py-4 flex items-center justify-between border-t border-gray-700">
-                    <div class="flex-1 flex justify-between sm:hidden">
-                        <button id="prevButtonMobile" class="bg-[#1a2234] border border-gray-700 rounded-md py-2 px-4 text-sm font-medium text-gray-300 hover:bg-[#2a3245]">
+                <div class="flex border-gray-700 border-t justify-between items-center px-6 py-4">
+                    <div class="flex flex-1 justify-between sm:hidden">
+                        <button id="prevButtonMobile" class="bg-[#1a2234] border border-gray-700 rounded-md text-gray-300 text-sm font-medium hover:bg-[#2a3245] px-4 py-2">
                             Anterior
                         </button>
-                        <button id="nextButtonMobile" class="ml-3 bg-[#1a2234] border border-gray-700 rounded-md py-2 px-4 text-sm font-medium text-gray-300 hover:bg-[#2a3245]">
+                        <button id="nextButtonMobile" class="bg-[#1a2234] border border-gray-700 rounded-md text-gray-300 text-sm font-medium hover:bg-[#2a3245] ml-3 px-4 py-2">
                             Próximo
                         </button>
                     </div>
-                    <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                    <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
                         <div>
-                            <p class="text-sm text-gray-400">
+                            <p class="text-gray-400 text-sm">
                                 Mostrando <span id="startItem" class="font-medium">0</span> a <span id="endItem" class="font-medium">0</span> de <span id="totalItems" class="font-medium">0</span> resultados
                             </p>
                         </div>
                         <div>
-                            <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination" id="paginationContainer">
+                            <nav class="rounded-md shadow-sm -space-x-px inline-flex relative z-0" aria-label="Pagination" id="paginationContainer">
                                 <!-- Paginação será gerada dinamicamente -->
                             </nav>
                         </div>
@@ -390,12 +399,12 @@
             </div>
             
             <!-- Gráficos de desempenho -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
                 <!-- Ranking de participantes -->
-                <div class="bg-[#2a3245] rounded-xl overflow-hidden shadow-xl border border-gray-700">
-                    <div class="p-4 bg-gradient-to-r border-b border-gray-700">
-                        <h2 class="text-xl font-bold flex items-center">
-                            <i class="fas fa-medal text-orange-500 mr-2"></i> Top Funcionários
+                <div class="bg-[#2a3245] border border-gray-700 rounded-xl shadow-xl overflow-hidden">
+                    <div class="bg-gradient-to-r border-b border-gray-700 p-4">
+                        <h2 class="flex text-xl font-bold items-center">
+                            <i class="text-orange-500 fa-medal fas mr-2"></i> Top Funcionários
                         </h2>
                     </div>
                     <div class="p-4">
@@ -406,10 +415,10 @@
                 </div>
                 
                 <!-- Estatísticas de módulos -->
-                <div class="bg-[#2a3245] rounded-xl overflow-hidden shadow-xl border border-gray-700">
-                    <div class="p-4 bg-gradient-to-r  border-b border-gray-700">
-                        <h2 class="text-xl font-bold flex items-center">
-                            <i class="fas fa-book text-blue-500 mr-2"></i> Progresso por Módulo
+                <div class="bg-[#2a3245] border border-gray-700 rounded-xl shadow-xl overflow-hidden">
+                    <div class="bg-gradient-to-r border-b border-gray-700 p-4">
+                        <h2 class="flex text-xl font-bold items-center">
+                            <i class="text-blue-500 fa-book fas mr-2"></i> Progresso por Módulo
                         </h2>
                     </div>
                     <div class="p-4">
@@ -422,13 +431,13 @@
         </main>
 
         <!-- Footer -->
-        <footer class="bg-black bg-opacity-30 text-gray-400 py-6 border-t border-gray-700 mt-10">
-            <div class="container mx-auto px-4 md:px-6">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <div class="mb-4 md:mb-0 text-center md:text-left">
+        <footer class="bg-black bg-opacity-30 border-gray-700 border-t text-gray-400 mt-10 py-6">
+            <div class="container md:px-6 mx-auto px-4">
+                <div class="flex flex-col justify-between items-center md:flex-row">
+                    <div class="text-center mb-4 md:mb-0 md:text-left">
                         <p>© 2025 Plataforma de Treinamento. Todos os direitos reservados.</p>
                     </div>
-                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 text-center">
+                    <div class="flex flex-col text-center sm:flex-row sm:space-x-4 sm:space-y-0 space-y-2">
                         <a href="#" class="hover:text-orange-500 transition-colors">Termos de Uso</a>
                         <a href="#" class="hover:text-orange-500 transition-colors">Política de Privacidade</a>
                         <a href="#" class="hover:text-orange-500 transition-colors">Suporte</a>
@@ -439,23 +448,23 @@
     </div>
 
     <!-- Desktop sidebar -->
-    <div class="fixed left-0 top-0 h-full w-16 bg-black bg-opacity-50 backdrop-blur-sm hidden lg:flex flex-col items-center pt-24 space-y-8 border-r border-gray-700">
-        <button class="w-10 h-10 rounded-lg bg-orange-500 text-white flex items-center justify-center hover:bg-opacity-80 transition-colors">
+    <div class="flex-col bg-black bg-opacity-50 border-gray-700 border-r h-full w-16 backdrop-blur-sm fixed hidden items-center left-0 lg:flex pt-24 space-y-8 top-0">
+        <button class="flex bg-orange-500 h-10 justify-center rounded-lg text-white w-10 hover:bg-opacity-80 items-center transition-colors">
             <i class="fa-solid fa-user-tie"></i>
         </button>
       
     </div>
 
     <!-- Mobile sidebar -->
-    <div id="mobile-sidebar" class="fixed inset-0 bg-black bg-opacity-80 z-40 transform -translate-x-full transition-transform duration-300 lg:hidden">
-        <div class="h-full w-64 bg-[#2a3245] overflow-y-auto">
-            <div class="p-4 flex justify-end items-center border-b border-gray-700">
+    <div id="mobile-sidebar" class="bg-black bg-opacity-80 -translate-x-full duration-300 fixed inset-0 lg:hidden transform transition-transform z-40">
+        <div class="bg-[#2a3245] h-full w-64 overflow-y-auto">
+            <div class="flex border-b border-gray-700 justify-end p-4 items-center">
                 <button id="close-sidebar" class="text-white">
-                    <i class="fas fa-times"></i>
+                    <i class="fa-times fas"></i>
                 </button>
             </div>
             <div class="p-4 space-y-4">
-                <a href="#" class="block p-2 rounded-lg bg-orange-500 text-white">
+                <a href="#" class="bg-orange-500 p-2 rounded-lg text-white block">
                     <i class="fa-solid fa-user-tie mr-2"></i> Inicio
                 </a>
              
@@ -467,4 +476,3 @@
     <script src="painel.js"></script>
 </body>
 </html>
-
