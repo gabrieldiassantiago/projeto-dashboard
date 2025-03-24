@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalhes do Treinamento</title>
     <script src="data.js"></script>
+    <script type="module" src="secaoComentarios.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="detalhes.css">
     <script>
@@ -196,66 +197,130 @@
     </div>
 </div>
 
-<!-- Seção de materiais para download - TERCEIRO -->
+<!-- Seção de comentários - TERCEIRO -->
 <div class="mt-6">
-    <div class="bg-secondary rounded-xl overflow-hidden shadow-xl border border-gray-700" id="materiais-complementares">
+    <div class="bg-secondary rounded-xl overflow-hidden shadow-xl border border-gray-700" id="comentarios">
         <div class="p-4 bg-gradient-to-r from-orange to-teal bg-opacity-30 border-b border-gray-700">
             <h2 class="text-xl font-bold flex items-center">
-                <i class="fas fa-file-download text-info mr-2"></i>
-                Materiais Complementares
+                <i class="fas fa-comments text-info mr-2"></i>
+                Comentários e Discussões
             </h2>
         </div>
         <div class="p-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="flex items-center p-3 bg-primary bg-opacity-50 rounded-lg hover:bg-opacity-70 transition-colors">
-                    <div class="bg-accent p-3 rounded-lg mr-3">
-                        <i class="fas fa-file-pdf text-white text-xl"></i>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-semibold">Manual de Cadastro.pdf</p>
-                        <p class="text-xs text-gray-400">2.5 MB • PDF</p>
-                    </div>
-                    <button class="bg-accent hover:bg-blue-600 text-white p-2 rounded-lg">
-                        <i class="fas fa-download"></i>
-                    </button>
+            <!-- Estatísticas de comentários -->
+            <div class="flex justify-between items-center mb-4 px-2">
+                <div class="text-sm text-gray-300">
+                    <span id="comment-count">3</span> comentários
                 </div>
-                <div class="flex items-center p-3 bg-primary bg-opacity-50 rounded-lg hover:bg-opacity-70 transition-colors">
-                    <div class="bg-success p-3 rounded-lg mr-3">
-                        <i class="fas fa-file-excel text-white text-xl"></i>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-semibold">Planilha Modelo.xlsx</p>
-                        <p class="text-xs text-gray-400">1.2 MB • Excel</p>
-                    </div>
-                    <button class="bg-accent hover:bg-green-600 text-white p-2 rounded-lg">
-                        <i class="fas fa-download"></i>
-                    </button>
-                </div>
-                <div class="flex items-center p-3 bg-primary bg-opacity-50 rounded-lg hover:bg-opacity-70 transition-colors">
-                    <div class="bg-warning p-3 rounded-lg mr-3">
-                        <i class="fas fa-file-image text-white text-xl"></i>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-semibold">Fluxograma Cadastro.png</p>
-                        <p class="text-xs text-gray-400">3.8 MB • Imagem</p>
-                    </div>
-                    <button class="bg-accent hover:bg-yellow-600 text-white p-2 rounded-lg">
-                        <i class="fas fa-download"></i>
-                    </button>
-                </div>
-                <div class="flex items-center p-3 bg-primary bg-opacity-50 rounded-lg hover:bg-opacity-70 transition-colors">
-                    <div class="bg-accent p-3 rounded-lg mr-3">
-                        <i class="fas fa-file-word text-white text-xl"></i>
-                    </div>
-                    <div class="flex-1">
-                        <p class="font-semibold">Documentação Técnica.docx</p>
-                        <p class="text-xs text-gray-400">1.7 MB • Word</p>
-                    </div>
-                    <button class="bg-accent hover:bg-blue-700 text-white p-2 rounded-lg">
-                        <i class="fas fa-download"></i>
-                    </button>
+                <div class="flex gap-2">
+                    <select id="comment-sort" class="bg-primary bg-opacity-50 text-white text-sm rounded-lg border border-gray-700 px-3 py-1.5 focus:border-accent focus:outline-none">
+                        <option value="newest">Mais recentes</option>
+                        <option value="oldest">Mais antigos</option>
+                        <option value="popular">Mais populares</option>
+                    </select>
                 </div>
             </div>
+
+            <!-- Formulário para adicionar comentário -->
+            <form id="comment-form" class="mb-6">
+                <div class="flex items-start gap-3">
+                    <img src="./static/istockphoto-1028398136-170667a.jpg" alt="Seu Avatar" class="w-10 h-10 rounded-full">
+                    <div class="flex-1">
+                        <textarea 
+                            id="comment-input"
+                            class="w-full p-3 bg-primary bg-opacity-50 rounded-lg text-white border border-gray-700 focus:border-accent focus:outline-none" 
+                            rows="3" 
+                            placeholder="Deixe seu comentário ou dúvida..."></textarea>
+                        <div class="flex justify-between mt-2">
+                            <div class="flex items-center">
+                                <button type="button" class="text-gray-400 hover:text-accent mr-3" id="emoji-button">
+                                    <i class="far fa-smile"></i>
+                                </button>
+                             
+                            </div>
+                            <button type="submit" class="bg-accent hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all hover:shadow-lg">
+                                <i class="fas fa-paper-plane mr-2"></i>Enviar Comentário
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Lista de comentários -->
+            <div id="comments-container" class="space-y-4">
+                <!-- Os comentários serão inseridos aqui via JavaScript -->
+            </div>
+
+            <!-- Botão para carregar mais comentários -->
+            <div class="text-center mt-6">
+                <button id="load-more" class="bg-primary hover:bg-opacity-70 text-white px-4 py-2 rounded-lg text-sm font-medium border border-gray-700 transition-all hover:shadow-lg">
+                    <i class="fas fa-sync-alt mr-2"></i>Carregar mais comentários
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de resposta -->
+<div id="reply-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-secondary rounded-xl p-4 max-w-lg w-full mx-4 border border-gray-700 shadow-2xl">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-bold">Responder ao comentário</h3>
+            <button id="close-reply-modal" class="text-gray-400 hover:text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div id="reply-to-info" class="mb-4 p-3 bg-primary bg-opacity-50 rounded-lg">
+            <!-- Informações do comentário sendo respondido -->
+        </div>
+        <textarea 
+            id="reply-input"
+            class="w-full p-3 bg-primary bg-opacity-50 rounded-lg text-white border border-gray-700 focus:border-accent focus:outline-none mb-4" 
+            rows="3" 
+            placeholder="Escreva sua resposta..."></textarea>
+        <div class="flex justify-end">
+            <button id="cancel-reply" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium mr-2">
+                Cancelar
+            </button>
+            <button id="submit-reply" class="bg-accent hover:bg-orange-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                <i class="fas fa-reply mr-2"></i>Responder
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Emoji picker (simplificado) -->
+<div id="emoji-picker" class="absolute bg-secondary rounded-lg p-2 border border-gray-700 shadow-lg z-40 hidden grid grid-cols-8 gap-1">
+    <button class="emoji-btn p-1 hover:bg-primary rounded">😀</button>
+    <button class="emoji-btn p-1 hover:bg-primary rounded">😂</button>
+    <button class="emoji-btn p-1 hover:bg-primary rounded">😍</button>
+    <button class="emoji-btn p-1 hover:bg-primary rounded">🤔</button>
+    <button class="emoji-btn p-1 hover:bg-primary rounded">👍</button>
+    <button class="emoji-btn p-1 hover:bg-primary rounded">👎</button>
+    <button class="emoji-btn p-1 hover:bg-primary rounded">❤️</button>
+    <button class="emoji-btn p-1 hover:bg-primary rounded">🎉</button>
+    <button class="emoji-btn p-1 hover:bg-primary rounded">😊</button>
+    <button class="emoji-btn p-1 hover:bg-primary rounded">😎</button>
+    <button class="emoji-btn p-1 hover:bg-primary rounded">😢</button>
+    <button class="emoji-btn p-1 hover:bg-primary rounded">😡</button>
+    <button class="emoji-btn p-1 hover:bg-primary rounded">🤩</button>
+    <button class="emoji-btn p-1 hover:bg-primary rounded">🙏</button>
+    <button class="emoji-btn p-1 hover:bg-primary rounded">💯</button>
+    <button class="emoji-btn p-1 hover:bg-primary rounded">🔥</button>
+</div>
+
+<!-- Confirmação de exclusão -->
+<div id="delete-confirm" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-secondary rounded-xl p-4 max-w-md w-full mx-4 border border-gray-700 shadow-2xl">
+        <h3 class="text-lg font-bold mb-2">Excluir comentário</h3>
+        <p class="text-gray-300 mb-4">Tem certeza que deseja excluir este comentário? Esta ação não pode ser desfeita.</p>
+        <div class="flex justify-end gap-2">
+            <button id="cancel-delete" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                Cancelar
+            </button>
+            <button id="confirm-delete" class="bg-danger hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                <i class="fas fa-trash-alt mr-2"></i>Excluir
+            </button>
         </div>
     </div>
 </div>

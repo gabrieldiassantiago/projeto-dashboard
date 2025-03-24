@@ -87,3 +87,190 @@
 #mobile-sidebar {
     z-index: 60;
 }
+
+
+/* Estilos para a seção de comentários */
+#comentarios {
+    position: relative;
+}
+
+#comentarios textarea {
+    resize: vertical;
+    min-height: 80px;
+    transition: all 0.3s ease;
+}
+
+#comentarios textarea:focus {
+    border-color: #ff9800;
+    box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.2);
+}
+
+#comentarios button {
+    transition: all 0.2s ease;
+}
+
+#comentarios button:hover {
+    transform: translateY(-2px);
+}
+
+/* Estilização dos comentários */
+.comment-item {
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.comment-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.comment-item.instructor {
+    border-left: 3px solid #2196F3;
+}
+
+.comment-item.deleted {
+    opacity: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+    transform: translateY(-20px);
+}
+
+.comment-actions button {
+    opacity: 0.7;
+    transition: all 0.2s ease;
+}
+
+.comment-actions button:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+}
+
+.comment-liked {
+    color: #ff9800 !important;
+    font-weight: bold;
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
+    70% { box-shadow: 0 0 0 10px rgba(255, 152, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0); }
+}
+
+.new-comment {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.pulse {
+    animation: pulse 1.5s infinite;
+}
+
+/* Replies styling */
+.replies-container {
+    margin-left: 2rem;
+    padding-left: 1rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Emoji picker */
+#emoji-picker {
+    width: 240px;
+}
+
+.emoji-btn {
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.emoji-btn:hover {
+    transform: scale(1.2);
+}
+
+/* Loading animation */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #ff9800;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsividade */
+@media (max-width: 640px) {
+    .comment-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .comment-date {
+        margin-top: 0.25rem;
+    }
+    
+    .comment-actions {
+        flex-wrap: wrap;
+    }
+    
+    .replies-container {
+        margin-left: 0.5rem;
+        padding-left: 0.5rem;
+    }
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+}
+
+.tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    z-index: 10;
+    margin-bottom: 5px;
+}
+
+/* Efeito de destaque para novos comentários */
+.highlight {
+    background-color: rgba(255, 152, 0, 0.1);
+    animation: highlight 2s ease-out forwards;
+}
+
+@keyframes highlight {
+    0% { background-color: rgba(255, 152, 0, 0.2); }
+    100% { background-color: transparent; }
+}
+
+/* Estilo para o botão de editar */
+.edit-mode textarea {
+    background-color: rgba(33, 150, 243, 0.1);
+    border: 1px solid #2196F3;
+}
+
+.edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
