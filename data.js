@@ -3,6 +3,7 @@ const treinamentos = [
     { id: 2, nome: "Como Cadastrar Representantes", modulo: "Comercial", status: "Em Andamento", duracao: "30 minutos", nivel: "Intermediário", progresso: 50, imagem: "./static/bom-relacionamento-fornecedores.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como cadastrar Fornecedores no Sistema, sejam eles pessoas Físicas (CPF) ou pessoas jurídicas (CNPJ)", visualizacoes: 80 },
     { id: 3, nome: "Cadastro de transportadoras", modulo: "Comercial", status: "Não Iniciado", duracao: "90 minutos", nivel: "Especialista", progresso: 0, imagem: "./static/contratos.avif", video: "./videos/clientes.mp4", descricao: "Descrição do treinamento 4", visualizacoes: 30 },
     { id: 4, nome: "Cadastro de Tabela de Preço", modulo: "Estoque", status: "Não Iniciado", duracao: "50 minutos", nivel: "Intermediário", progresso: 0, imagem: "./static/produtos.jpg", video: "./videos/clientes.mp4", descricao: "Aprenda à como Cadastrar Produtos no Sistema.", visualizacoes: 70 },
+    
 ];
 
 //traga os dados da api pra ca ^^^^ exemolo:
