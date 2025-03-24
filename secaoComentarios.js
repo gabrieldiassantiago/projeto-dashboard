@@ -91,8 +91,6 @@ function setupEventListeners() {
     // Botão de carregar mais
     loadMoreBtn.addEventListener('click', loadMoreComments);
     
-    // Ordenação de comentários
-    commentSort.addEventListener('change', sortComments);
     
     // Emoji picker
     emojiButton.addEventListener('click', toggleEmojiPicker);

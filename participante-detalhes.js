@@ -818,12 +818,8 @@ const estatisticas = {
         // Carregar histórico de atividades
         carregarHistoricoAtividades(participante);
         
-        // Carregar próximas aulas
-        carregarProximasAulas(participante);
-        
-        // Carregar certificados
-        carregarCertificados(participante);
-        
+
+   
         // Animar as barras de progresso
         setTimeout(() => {
             const progressBars = document.querySelectorAll('.progress-bar');
@@ -1022,71 +1018,6 @@ const estatisticas = {
         });
     }
     
-    // Função para carregar as próximas aulas
-    function carregarProximasAulas(participante) {
-        const proximasAulasContainer = document.getElementById('proximasAulas');
-        proximasAulasContainer.innerHTML = '';
-        
-        // Renderizar próximas aulas
-        participante.proximasAulas.forEach(aula => {
-            const div = document.createElement('div');
-            div.className = 'bg-[#1a2234] rounded-lg p-4 card-hover';
-            
-            div.innerHTML = `
-                <div class="flex items-center justify-between mb-2">
-                    <h4 class="font-semibold">${aula.titulo}</h4>
-                    <span class="bg-blue-500 text-white text-xs px-2 py-1 rounded-lg">${aula.data}</span>
-                </div>
-                <p class="text-gray-400 text-sm mb-3">Módulo: ${aula.modulo}</p>
-                <div class="flex items-center justify-between">
-                    <span class="text-xs text-gray-400"><i class="fas fa-clock mr-1"></i> ${aula.duracao}</span>
-                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded-lg text-sm">Iniciar</button>
-                </div>
-            `;
-            
-            proximasAulasContainer.appendChild(div);
-        });
-    }
-
-    
-    
-    // Função para carregar os certificados
-    function carregarCertificados(participante) {
-        const certificadosContainer = document.getElementById('certificados');
-        certificadosContainer.innerHTML = '';
-        
-        // Renderizar certificados
-        participante.certificados.forEach(certificado => {
-            const div = document.createElement('div');
-            div.className = 'bg-[#1a2234] rounded-lg p-4 card-hover';
-            
-            // Definir a cor do ícone
-            let iconClass = 'text-orange-500';
-            if (certificado.icone === 'fa-award') {
-                iconClass = 'text-blue-500';
-            } else if (certificado.icone === 'fa-medal') {
-                iconClass = 'text-yellow-500';
-            }
-            
-            div.innerHTML = `
-                <div class="flex justify-center mb-4">
-                    <div class="bg-[#2a3245] p-4 rounded-full">
-                        <i class="fas ${certificado.icone} ${iconClass} text-2xl"></i>
-                    </div>
-                </div>
-                <h4 class="font-semibold text-center mb-2">${certificado.titulo}</h4>
-                <p class="text-gray-400 text-sm text-center mb-3">${certificado.tipo}</p>
-                <p class="text-xs text-center text-gray-400">Emitido em ${certificado.data}</p>
-                <div class="flex justify-center mt-3">
-                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded-lg text-sm">
-                        <i class="fas fa-download mr-1"></i> Baixar
-                    </button>
-                </div>
-            `;
-            
-            certificadosContainer.appendChild(div);
-        });
-    }
 });
 
   // Script para o menu mobile
