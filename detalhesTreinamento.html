@@ -172,6 +172,53 @@
     <div class="lg:col-span-1 order-2" id="modulo-aulas">
         <div class="bg-secondary rounded-xl overflow-hidden shadow-xl border border-gray-700">
             <div class="p-4 bg-gradient-to-r from-blue-400 to-orange-400 bg-opacity-20 border-b border-gray-700">
+                <!-- Substitua a seção de avaliação existente por esta versão atualizada -->
+<div class="p-4 border-b border-gray-700">
+    <!-- Avaliação média -->
+    <div class="flex items-center justify-between mb-4">
+        <h3 class="text-sm font-semibold">Avaliação do curso:</h3>
+        <div class="flex items-center">
+            <div class="flex mr-2">
+                <i class="fas fa-star text-accent"></i>
+                <i class="fas fa-star text-accent"></i>
+                <i class="fas fa-star text-accent"></i>
+                <i class="fas fa-star text-accent"></i>
+                <i class="fas fa-star-half-alt text-accent"></i>
+            </div>
+            <span class="text-white font-bold">4.5</span>
+            <span class="text-gray-400 text-xs ml-1">(128 avaliações)</span>
+        </div>
+    </div>
+    
+    <!-- Avaliação do usuário -->
+    <div class="bg-primary bg-opacity-30 rounded-lg p-3">
+        <h3 class="text-sm font-semibold mb-2">Sua avaliação:</h3>
+        <div class="flex items-center justify-between">
+            <div class="star-rating">
+                <input type="radio" id="star5" name="rating" value="5" class="hidden" />
+                <label for="star5" class="text-2xl cursor-pointer text-gray-400 hover:text-accent">★</label>
+                
+                <input type="radio" id="star4" name="rating" value="4" class="hidden" />
+                <label for="star4" class="text-2xl cursor-pointer text-gray-400 hover:text-accent">★</label>
+                
+                <input type="radio" id="star3" name="rating" value="3" class="hidden" />
+                <label for="star3" class="text-2xl cursor-pointer text-gray-400 hover:text-accent">★</label>
+                
+                <input type="radio" id="star2" name="rating" value="2" class="hidden" />
+                <label for="star2" class="text-2xl cursor-pointer text-gray-400 hover:text-accent">★</label>
+                
+                <input type="radio" id="star1" name="rating" value="1" class="hidden" />
+                <label for="star1" class="text-2xl cursor-pointer text-gray-400 hover:text-accent">★</label>
+            </div>
+            <button id="submit-rating" class="bg-accent hover:bg-orange-600 text-white px-3 py-1 rounded-lg text-xs">
+                Enviar
+            </button>
+        </div>
+        <div id="rating-message" class="text-xs text-success mt-2 hidden">
+            Obrigado pela sua avaliação!
+        </div>
+    </div>
+</div>
                 <h2 class="text-lg font-bold flex items-center">
                     <i class="fas fa-chart-pie text-accent mr-2"></i> Seu Progresso
                 </h2>
@@ -476,6 +523,58 @@
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param);
         }
+
+          // sistema de avaliação
+    document.addEventListener('DOMContentLoaded', function() {
+        const ratingLabels = document.querySelectorAll('.star-rating label');
+        const ratingInputs = document.querySelectorAll('.star-rating input');
+        const submitRatingBtn = document.getElementById('submit-rating');
+        const ratingMessage = document.getElementById('rating-message');
+        
+        // Adiciona efeito de animação nas estrelas da avaliação média
+        const averageStars = document.querySelectorAll('.fas.fa-star, .fas.fa-star-half-alt');
+        averageStars.forEach((star, index) => {
+            star.style.animation = `pulse-star 1.5s ease ${index * 0.1}s`;
+        });
+        
+        // Adiciona evento de clique nas estrelas
+        ratingLabels.forEach(label => {
+            label.addEventListener('click', function() {
+                // Obtém o input associado
+                const input = document.getElementById(this.getAttribute('for'));
+                input.checked = true;
+            });
+        });
+        
+        // Enviar avaliação
+        submitRatingBtn.addEventListener('click', function() {
+            const selectedRating = document.querySelector('.star-rating input:checked');
+            
+            if (selectedRating) {
+                const ratingValue = selectedRating.value;
+                console.log('Avaliação enviada:', ratingValue);
+                
+                // Mostra mensagem de agradecimento
+                ratingMessage.classList.remove('hidden');
+                ratingMessage.classList.add('show');
+              
+                
+                submitRatingBtn.disabled = true;
+                submitRatingBtn.classList.add('opacity-50');
+                
+                // Reabilita após 3 segundos (opcional)
+                setTimeout(() => {
+                    submitRatingBtn.disabled = false;
+                    submitRatingBtn.classList.remove('opacity-50');
+                    ratingMessage.classList.add('hidden');
+                    ratingMessage.classList.remove('show');
+                }, 3000);
+            } else {
+                alert('Por favor, selecione uma avaliação antes de enviar.');
+            }
+        });
+    });
+    
     </script>
 </body>
 </html>

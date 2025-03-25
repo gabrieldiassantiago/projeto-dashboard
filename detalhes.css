@@ -274,3 +274,27 @@
     gap: 0.5rem;
     margin-top: 0.5rem;
 }
+
+/* Star Rating System */
+.star-rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.star-rating input:checked ~ label {
+    color: #ff9800; /* accent color */
+}
+
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: #ff9800;
+}
+
+.star-rating label {
+    transition: all 0.2s ease;
+}
+
+.star-rating label:hover {
+    transform: scale(1.2);
+}
