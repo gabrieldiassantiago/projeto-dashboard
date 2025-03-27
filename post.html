@@ -19,27 +19,28 @@
   --border-accent: rgba(255, 152, 0, 0.3);
   --card-bg: rgba(42, 50, 69, 0.95);
   --card-bg-lighter: rgba(52, 62, 85, 0.85);
-  --shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-  --shadow-sm: 0 6px 20px rgba(0, 0, 0, 0.35);
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.25);
   --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
   font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.7;
+  line-height: 1.6;
   color: var(--text-light);
   background: linear-gradient(145deg, #1a2234 0%, #2a3245 100%) fixed;
   min-height: 100vh;
   margin: 0;
   padding: 0;
-  font-size: 16px;
+  font-size: 15px;
 }
 
 .publicacao {
   background-color: var(--card-bg);
-  border-radius: 24px;
-  padding: 40px 60px; 
-  margin: 50px 50px 50px 100px;
+  border-radius: 18px;
+  padding: 30px 25px; 
+  margin: 30px auto;
+  max-width: 600px;
   box-shadow: var(--shadow);
   border: 1px solid var(--border-color);
   color: var(--text-muted);
@@ -51,38 +52,38 @@ body {
 }
 
 .publicacao:hover {
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
 }
 
 .publicacao h1 {
-  font-size: 2.4rem;
+  font-size: 1.8rem;
   color: var(--text-light);
   margin-top: 0;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   font-weight: 700;
   text-align: left; 
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .publicacao h1::after {
   content: "#152";
-  font-size: 1.3rem;
+  font-size: 1rem;
   color: var(--text-dim);
   font-weight: 500;
   background: var(--accent-light);
-  padding: 4px 12px;
-  border-radius: 12px;
-  margin-left: 15px; 
+  padding: 3px 10px;
+  border-radius: 10px;
+  margin-left: 12px; 
 }
 
 .publicacao > p:first-of-type {
   display: inline-flex;
   align-items: center;
   background-color: rgba(255, 255, 255, 0.12);
-  padding: 10px 18px;
-  border-radius: 25px;
-  margin-bottom: 30px;
-  font-size: 0.95rem;
+  padding: 8px 15px;
+  border-radius: 20px;
+  margin-bottom: 25px;
+  font-size: 0.9rem;
   color: var(--text-dim);
   transition: var(--transition-normal);
 }
@@ -94,14 +95,14 @@ body {
 /* Resumo */
 .publicacao > blockquote {
   border: 1px solid var(--border-accent);
-  border-left: 4px solid var(--accent);
-  border-radius: 10px;
-  padding: 25px;
-  margin: 0 0 35px 0;
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  padding: 18px;
+  margin: 0 0 25px 0;
   background-color: var(--card-bg-lighter);
   position: relative;
   transition: var(--transition-normal);
-  text-align: left; /* Alinhado à esquerda */
+  text-align: left;
 }
 
 .publicacao > blockquote:hover {
@@ -110,8 +111,8 @@ body {
 
 .publicacao > blockquote > h3 {
   margin-top: 0;
-  margin-bottom: 12px;
-  font-size: 1.2rem;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
   color: var(--text-light);
   font-weight: 600;
 }
@@ -119,19 +120,19 @@ body {
 .publicacao > blockquote > p {
   margin: 0;
   color: var(--text-muted);
-  font-size: 1rem;
+  font-size: 0.95rem;
 }
 
 /* Seções */
 .publicacao > h2 {
-  font-size: 1.7rem;
+  font-size: 1.4rem;
   color: var(--text-light);
-  margin-top: 2.5rem;
-  margin-bottom: 1.2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
   font-weight: 600;
   position: relative;
-  padding-bottom: 8px;
-  text-align: left; /* Alinhado à esquerda */
+  padding-bottom: 6px;
+  text-align: left;
 }
 
 .publicacao > h2::before {
@@ -139,8 +140,8 @@ body {
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 50px;
-  height: 3px;
+  width: 40px;
+  height: 2px;
   background-color: var(--accent);
   border-radius: 2px;
 }
@@ -148,17 +149,17 @@ body {
 /* Imagens */
 .publicacao > figure {
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 15px;
-  margin: 25px 0;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 20px 0;
   background-color: rgba(255, 255, 255, 0.08);
   position: relative;
   transition: var(--transition-normal);
-  text-align: left; /* Alinhado à esquerda */
+  text-align: center;
 }
 
 .publicacao > figure:hover {
-  transform: translateY(-5px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-sm);
 }
 
@@ -166,8 +167,11 @@ body {
   max-width: 100%;
   height: auto;
   display: block;
-  border-radius: 8px;
+  border-radius: 6px;
   transition: var(--transition-normal);
+  object-fit: contain;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .publicacao > figure:hover > img {
@@ -176,8 +180,8 @@ body {
 
 .publicacao > figure > figcaption {
   position: absolute;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   background-color: var(--accent);
   color: white;
   border-radius: 50%;
@@ -185,8 +189,8 @@ body {
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 15px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+  font-size: 13px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
   transition: var(--transition-normal);
 }
 
@@ -214,13 +218,14 @@ body {
   counter-reset: item;
   list-style-type: none;
   padding-left: 0;
-  text-align: left; /* Alinhado à esquerda */
+  text-align: left;
+  margin: 15px 0;
 }
 
 .publicacao > ol > li {
   position: relative;
-  padding-left: 45px;
-  margin-bottom: 18px;
+  padding-left: 38px;
+  margin-bottom: 12px;
   counter-increment: item;
   transition: var(--transition-normal);
 }
@@ -235,8 +240,8 @@ body {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
+  width: 26px;
+  height: 26px;
   background-color: var(--accent);
   color: white;
   border-radius: 50%;
@@ -244,63 +249,69 @@ body {
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  font-size: 16px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .publicacao > p {
-  text-align: left; 
+  text-align: left;
+  margin: 12px 0;
 }
 
 /* Responsividade */
 @media (max-width: 768px) {
   .publicacao {
-    padding: 30px 40px;
-    margin: 30px 20px 30px 50px;
-    border-radius: 20px;
+    padding: 25px 20px;
+    margin: 25px 15px;
+    border-radius: 16px;
+    max-width: 100%;
   }
   
   .publicacao h1 {
-    font-size: 2rem;
+    font-size: 1.6rem;
     display: block;
   }
   
   .publicacao h1::after {
-    margin-top: 8px;
-    font-size: 1.1rem;
+    margin-top: 6px;
+    font-size: 0.9rem;
     display: inline-block;
   }
   
   .publicacao > figure > figcaption {
-    width: 24px;
-    height: 24px;
-    font-size: 13px;
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
   }
   
   .publicacao > ol > li::before {
-    width: 28px;
-    height: 28px;
-    font-size: 14px;
+    width: 24px;
+    height: 24px;
+    font-size: 13px;
   }
 }
 
 @media (max-width: 576px) {
   .publicacao {
-    padding: 20px 25px;
-    margin: 20px 15px 20px 25px; 
-    border-radius: 16px;
+    padding: 18px 15px;
+    margin: 15px 10px; 
+    border-radius: 14px;
   }
   
   .publicacao h1 {
-    font-size: 1.6rem;
-  }
-  
-  .publicacao > h2 {
     font-size: 1.4rem;
   }
   
+  .publicacao > h2 {
+    font-size: 1.2rem;
+  }
+  
   .publicacao > blockquote {
-    padding: 20px;
+    padding: 15px;
+  }
+  
+  .publicacao > ol > li {
+    padding-left: 32px;
   }
 }
     </style>
@@ -321,7 +332,7 @@ body {
         <p>Logo abaixo, está o caminho para que você possa fazer o pedido de venda:</p>
         
         <figure>
-            <img width="" src="transferir (2).png" alt="Captura de tela do sistema mostrando o caminho para fazer pedido de venda">
+            <img src="transferir (2).png" alt="Captura de tela do sistema mostrando o caminho para fazer pedido de venda">
          
         </figure>
         
@@ -336,7 +347,7 @@ body {
         </ol>
         
         <figure>
-            <img src="https://via.placeholder.com/750x400" alt="Captura de tela do formulário de pedido de venda">
+          <img src="transferir (2).png" alt="Captura de tela do sistema mostrando o caminho para fazer pedido de venda">
         </figure>
         
         <h2>3 - Finalize o Pedido</h2>
@@ -349,7 +360,7 @@ body {
         </ol>
         
         <figure>
-            <img src="https://via.placeholder.com/750x400" alt="Captura de tela da finalização do pedido">
+          <img src="transferir (2).png" alt="Captura de tela do sistema mostrando o caminho para fazer pedido de venda">
         </figure>
     </div>
 
