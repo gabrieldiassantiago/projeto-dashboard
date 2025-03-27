@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suporte Online - Sua Solução em uma Pesquisa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1a2234',
+                        secondary: '#2a3245',
+                        accent: '#ff9800',
+                        'accent-dark': '#e08800',
+                        'accent-light': 'rgba(255, 152, 0, 0.2)',
+                        success: '#4CAF50',
+                        warning: '#FFC107',
+                        danger: '#F44336',
+                        info: '#2196F3',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .gradient-bg {
+                background: linear-gradient(135deg, #1a2234 0%, #2a3245 100%);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            }
+            .section-container {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out;
+                opacity: 0;
+            }
+            .section-container.open {
+                max-height: 1000px;
+                opacity: 1;
+            }
+            .toggle-icon {
+                transition: transform 0.3s ease;
+            }
+            .toggle-icon.open {
+                transform: rotate(180deg);
+            }
+            .progress-shine {
+                position: relative;
+                overflow: hidden;
+            }
+            .progress-shine::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 50%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+                animation: shine 1.5s infinite;
+            }
+            @keyframes shine {
+                100% {
+                    left: 150%;
+                }
+            }
+            .badge-pulse {
+                animation: pulse 2s infinite;
+            }
+            @keyframes pulse {
+                0% {
+                    box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7);
+                }
+                70% {
+                    box-shadow: 0 0 0 10px rgba(255, 152, 0, 0);
+                }
+                100% {
+                    box-shadow: 0 0 0 0 rgba(255, 152, 0, 0);
+                }
+            }
+            .bg-image-section {
+                background-image: url('00yBpAS.png'); /* so apgar aqui qualquer coisa*/
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                position: relative;
+            }
+            .bg-image-section::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: linear-gradient(to bottom, rgba(26, 34, 52, 0.85), rgba(26, 34, 52, 0.95));
+                z-index: 1;
+            }
+            .bg-image-section > * {
+                position: relative;
+                z-index: 2;
+            }
+            /* Adicionando animação de spinner */
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+            .spinner {
+                animation: spin 1s linear infinite;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="min-h-screen gradient-bg text-white">
+    <!-- Conteúdo principal -->
+    <div class="transition-all duration-300">
+        <!-- Header -->
+        <header class="p-4 md:p-6 flex justify-between items-center bg-secondary bg-opacity-20 border-b border-gray-700 relative z-20">
+            <div class="flex items-center">
+                <i class="fas fa-cubes text-accent text-2xl mr-2"></i>
+                <h1 class="text-xl font-bold">Suporte Online</h1>
+            </div>
+            <div>
+                <button class="bg-accent hover:bg-accent-dark text-white px-4 py-2 rounded-md transition-colors duration-300">
+                    Acessar Plataforma
+                </button>
+            </div>
+        </header>
+
+        <!-- Seção com background de imagem - do hero até os cards -->
+        <div class="bg-image-section">
+            <!-- Hero Section -->
+            <section class="py-16 md:py-24 px-4 text-center relative overflow-hidden">
+                <div class="container mx-auto">
+                    <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Sua Solução em uma Pesquisa!</h2>
+                    <p class="text-lg md:text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
+                        Descreva de forma intuitiva o seu problema e obtenha ajuda sem nenhum tempo de espera.
+                    </p>
+                    
+                    <div class="max-w-2xl mx-auto relative">
+                        <input 
+                            type="text" 
+                            id="search-input"
+                            placeholder="Como podemos ajudar?" 
+                            class="w-full bg-white bg-opacity-10 border border-gray-600 rounded-full py-4 px-6 pl-12 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent shadow-lg backdrop-blur-sm"
+                        >
+                        <i class="fas fa-search absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <button id="search-button" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-accent hover:bg-accent-dark text-white px-6 py-2 rounded-full transition-colors duration-300">
+                            <span id="search-text">Buscar!</span>
+                            <span id="search-loading" class="hidden">
+                                <i class="fas fa-circle-notch spinner"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading Indicator -->
+            <section id="loading-section" class="py-8 px-4 hidden">
+                <div class="container mx-auto flex flex-col items-center justify-center">
+                    <div class="w-16 h-16 mb-4">
+                        <i class="fas fa-circle-notch text-accent text-4xl spinner"></i>
+                    </div>
+                    <p class="text-lg text-gray-300">Buscando resultados...</p>
+                </div>
+            </section>
+
+            <!-- Resultados de Pesquisa -->
+            <section id="search-results" class="py-8 px-4 hidden">
+                <div class="container mx-auto">
+                    <h3 class="text-2xl font-bold mb-6">Resultados da Pesquisa</h3>
+                    <div id="results-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Os cards de resultados serão inseridos aqui via JavaScript -->
+                    </div>
+                    <div id="no-results" class="hidden bg-white bg-opacity-5 border border-white border-opacity-10 rounded-lg p-8 text-center">
+                        <h3 class="text-xl font-medium text-white mb-2">Nenhum resultado encontrado</h3>
+                        <p class="text-white text-opacity-70">Tente usar termos mais gerais ou verifique a ortografia.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section class="py-16 px-4">
+                <div class="container mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Card 1 -->
+                        <div class="bg-secondary bg-opacity-50 rounded-xl p-6 border border-gray-700 shadow-lg card-hover">
+                            <div class="flex items-center justify-center w-16 h-16 bg-accent bg-opacity-20 rounded-full mb-6 mx-auto">
+                                <i class="fas fa-search text-accent text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-center mb-3">Agilidade</h3>
+                            <p class="text-gray-300 text-center">
+                                Encontre sua solução através de pesquisas sem nenhuma fila de espera.
+                            </p>
+                        </div>
+                        
+                        <!-- Card 2 -->
+                        <div class="bg-secondary bg-opacity-50 rounded-xl p-6 border border-gray-700 shadow-lg card-hover">
+                            <div class="flex items-center justify-center w-16 h-16 bg-accent bg-opacity-20 rounded-full mb-6 mx-auto">
+                                <i class="fas fa-lock text-accent text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-center mb-3">Privacidade</h3>
+                            <p class="text-gray-300 text-center">
+                                Suas pesquisas são coletadas de forma anônima para melhoria dos resultados.
+                            </p>
+                        </div>
+                        
+                        <!-- Card 3 -->
+                        <div class="bg-secondary bg-opacity-50 rounded-xl p-6 border border-gray-700 shadow-lg card-hover">
+                            <div class="flex items-center justify-center w-16 h-16 bg-accent bg-opacity-20 rounded-full mb-6 mx-auto">
+                                <i class="fas fa-headset text-accent text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-center mb-3">Atendimento</h3>
+                            <p class="text-gray-300 text-center">
+                                Equipe de suporte disponível para te ajudar com o que precisar.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Testimonials Section -->
+        <section class="py-16 px-4 bg-primary bg-opacity-50">
+            <div class="container mx-auto">
+                <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">O que nossos clientes dizem</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                    <!-- Testimonial 1 -->
+                    <div class="bg-secondary bg-opacity-50 rounded-xl p-6 border border-gray-700 shadow-lg relative">
+                        <div class="absolute -top-4 -left-4 w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+                            <i class="fas fa-quote-left text-white"></i>
+                        </div>
+                        <p class="text-gray-300 mb-4">
+                            "Super prático para utilizar, e os manuais estão bem explicadinhos e objetivos."
+                        </p>
+                        <p class="text-accent font-medium">- Usuário Satisfeito</p>
+                    </div>
+                    
+                    <!-- Testimonial 2 -->
+                    <div class="bg-secondary bg-opacity-50 rounded-xl p-6 border border-gray-700 shadow-lg relative">
+                        <div class="absolute -top-4 -left-4 w-8 h-8 bg-accent rounded-full flex items-center justify-center">
+                            <i class="fas fa-quote-left text-white"></i>
+                        </div>
+                        <p class="text-gray-300 mb-4">
+                            "Me ajudou muito a treinar uma nova funcionária, tirando todas as suas dúvidas."
+                        </p>
+                        <p class="text-accent font-medium">- Gestor Contente</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-black bg-opacity-30 text-gray-400 py-6 border-t border-gray-700">
+            <div class="container mx-auto px-4 md:px-6">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0 text-center md:text-left">
+                        <p>© 2024 Use Sistemas. Todos os direitos reservados.</p>
+                    </div>
+                    <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 text-center">
+                        <a href="#" class="hover:text-accent transition-colors duration-300">Termos de Uso</a>
+                        <a href="#" class="hover:text-accent transition-colors duration-300">Política de Privacidade</a>
+                        <a href="#" class="hover:text-accent transition-colors duration-300">Contato</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Dados de postss
+        const postss = [
+            {
+                id: 1,
+                nome: "Como cadastrar clientes ",
+                modulo: "Comercial",
+                status: "Concluído",
+                duracao: "45 minutos",
+                nivel: "Básico",
+                progresso: 100,
+                imagem: "./static/compradores-seu-papel-no-varejo.jpg",
+                video: "./videos/clientes.mp4",
+                descricao: "Aprenda à como cadastrar Clientes no Sistema, sejam eles pessoas Físicas (CPF) ou pessoas jurídicas (CNPJ)",
+                visualizacoes: 120,
+            },
+            {
+                id: 2,
+                nome: "Como Cadastrar Representantes",
+                modulo: "Comercial",
+                status: "Em Andamento",
+                duracao: "30 minutos",
+                nivel: "Intermediário",
+                progresso: 50,
+                imagem: "./static/bom-relacionamento-fornecedores.jpg",
+                video: "./videos/clientes.mp4",
+                descricao: "Aprenda à como cadastrar Fornecedores no Sistema, sejam eles pessoas Físicas (CPF) ou pessoas jurídicas (CNPJ)",
+                visualizacoes: 80,
+            },
+            {
+                id: 3,
+                nome: "Cadastro de transportadoras",
+                modulo: "Comercial",
+                status: "Não Iniciado",
+                duracao: "90 minutos",
+                nivel: "Especialista",
+                progresso: 0,
+                imagem: "./static/contratos.avif",
+                video: "./videos/clientes.mp4",
+                descricao: "Descrição do posts 4",
+                visualizacoes: 30,
+            },
+            {
+                id: 4,
+                nome: "Cadastro de Tabela de Preço",
+                modulo: "Estoque",
+                status: "Não Iniciado",
+                duracao: "50 minutos",
+                nivel: "Intermediário",
+                progresso: 0,
+                imagem: "./static/produtos.jpg",
+                video: "./videos/clientes.mp4",
+                descricao: "Aprenda à como Cadastrar Produtos no Sistema.",
+                visualizacoes: 70,
+            },
+        ]
+
+        // Elementos DOM
+        const searchInput = document.getElementById("search-input")
+        const searchButton = document.getElementById("search-button")
+        const searchText = document.getElementById("search-text")
+        const searchLoading = document.getElementById("search-loading")
+        const loadingSection = document.getElementById("loading-section")
+        const searchResults = document.getElementById("search-results")
+        const resultsContainer = document.getElementById("results-container")
+        const noResults = document.getElementById("no-results")
+
+        // Função para criar um card de posts
+        function createTrainingCard(posts) {
+            let statusClass = ""
+            let statusBg = ""
+            switch (posts.status) {
+                case "Concluído":
+                    statusClass = "text-green-500"
+                    statusBg = "bg-green-500 bg-opacity-20"
+                    break
+                case "Em Andamento":
+                    statusClass = "text-yellow-500"
+                    statusBg = "bg-yellow-500 bg-opacity-20"
+                    break
+                case "Não Iniciado":
+                    statusClass = "text-gray-400"
+                    statusBg = "bg-gray-500 bg-opacity-20"
+                    break
+            }
+
+            const card = document.createElement("div")
+            card.className = "bg-secondary bg-opacity-50 rounded-xl overflow-hidden border border-gray-700 shadow-lg card-hover"
+            const imageSrc = posts.imagem || "https://via.placeholder.com/300x150"
+
+            card.innerHTML = `
+                <div class="relative">
+                    <img src="${imageSrc}" alt="${posts.nome}" class="w-full h-48 object-cover">
+                    <div class="absolute top-2 right-2 ${statusBg} px-2 py-1 rounded-full text-xs font-medium ${statusClass}">
+                        ${posts.status}
+                    </div>
+                    <div class="absolute bottom-2 left-2 bg-black bg-opacity-70 px-2 py-1 rounded text-xs">
+                        <i class="fas fa-clock mr-1"></i> ${posts.duracao}
+                    </div>
+                </div>
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="bg-accent bg-opacity-20 text-accent text-xs px-2 py-1 rounded-full">${posts.modulo}</span>
+                        <span class="text-xs text-gray-400"><i class="fas fa-eye mr-1"></i> ${posts.visualizacoes}</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">${posts.nome}</h3>
+                    <p class="text-gray-300 text-sm mb-4 line-clamp-2">${posts.descricao}</p>
+                    ${
+                        posts.progresso > 0
+                            ? `
+                    <div class="w-full bg-gray-700 rounded-full h-2 mb-2">
+                        <div class="bg-accent h-2 rounded-full progress-shine" style="width: ${posts.progresso}%"></div>
+                    </div>
+                    <div class="flex justify-between text-xs text-gray-400 mb-4">
+                        <span>Progresso</span>
+                        <span>${posts.progresso}%</span>
+                    </div>
+                    `
+                            : ""
+                    }
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs bg-gray-700 px-2 py-1 rounded">${posts.nivel}</span>
+                        <a href="#" class="text-accent hover:text-accent-dark transition-colors duration-300 text-sm font-medium flex items-center">
+                            Ver posts <i class="fas fa-arrow-right ml-1"></i>
+                        </a>
+                    </div>
+                </div>
+            `
+            return card
+        }
+
+        // Função para pesquisar posts
+        function searchTrainings(query) {
+            if (!query) return postss
+            query = query.toLowerCase()
+            return postss.filter(
+                (posts) =>
+                    posts.nome.toLowerCase().includes(query) ||
+                    posts.descricao.toLowerCase().includes(query) ||
+                    posts.modulo.toLowerCase().includes(query)
+            )
+        }
+
+        // Função para mostrar o loading
+        function showLoading() {
+            // Altera o botão de busca
+            searchText.classList.add("hidden")
+            searchLoading.classList.remove("hidden")
+            
+            // Mostra a seção de loading
+            loadingSection.classList.remove("hidden")
+            
+            // Esconde os resultados se estiverem visíveis
+            searchResults.classList.add("hidden")
+        }
+
+        // Função para esconder o loading
+        function hideLoading() {
+            // Restaura o botão de busca
+            searchText.classList.remove("hidden")
+            searchLoading.classList.add("hidden")
+            
+            // Esconde a seção de loading
+            loadingSection.classList.add("hidden")
+        }
+
+        // Função para exibir resultados
+        function displayResults(results) {
+            resultsContainer.innerHTML = ""
+            
+            if (results.length === 0) {
+                noResults.classList.remove("hidden")
+            } else {
+                noResults.classList.add("hidden")
+                results.forEach((posts) => {
+                    const card = createTrainingCard(posts)
+                    resultsContainer.appendChild(card)
+                })
+            }
+            
+            // Esconde o loading e mostra os resultados
+            hideLoading()
+            searchResults.classList.remove("hidden")
+            searchResults.scrollIntoView({ behavior: "smooth" })
+        }
+
+        // Event listeners para pesquisa
+        searchButton.addEventListener("click", () => {
+            const query = searchInput.value.trim()
+            
+            // Mostra o loading
+            showLoading()
+            
+          
+            setTimeout(() => {
+                const results = searchTrainings(query)
+                displayResults(results)
+            }, 1000) // Simula 1 segundo de carregamento
+        })
+
+        searchInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                const query = searchInput.value.trim()
+                
+                // Mostra o loading
+                showLoading()
+                
+                // Simula um tempo de carregamento (adaptar aqui)
+                setTimeout(() => {
+                    const results = searchTrainings(query)
+                    displayResults(results)
+                }, 1000) // Simula 1 segundo de carregamento
+            }
+        })
+    </script>
+</body>
+</html>
+

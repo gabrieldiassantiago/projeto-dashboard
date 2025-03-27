@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treinamentos - Pesquisa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="entrada.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo-container">
+            <span class="logo-text">Suporte Online</span>
+        </div>
+        <div class="header-right">
+            <button class="btn-primary">Acessar Plataforma</button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero gradient-bg">
+        <div class="container">
+            <h1>Sua Solução em uma Pesquisa!</h1>
+            <p class="subtitle">Descreva de forma intuitiva o seu problema e obtenha ajuda sem nenhum tempo de espera.</p>
+            
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="Como podemos ajudar? Descreva de forma objetiva para nós..." class="search-input">
+                <button id="search-button" class="search-button">Buscar !</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                    </div>
+                    <h3 class="feature-title">Agilidade</h3>
+                    <p class="feature-description">Encontre sua solução através de pesquisas sem nenhuma fila de espera.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                    </div>
+                    <h3 class="feature-title">Privacidade</h3>
+                    <p class="feature-description">Suas pesquisas são coletadas de forma anônima para melhoria dos resultados.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                    </div>
+                    <h3 class="feature-title">Atendimento</h3>
+                    <p class="feature-description">Equipe de suporte disponível para te ajudar com o que precisar.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resultados da Pesquisa (inicialmente oculto) -->
+    <section id="search-results" class="search-results hidden">
+        <div class="container">
+            <h2>Resultados da Pesquisa</h2>
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label for="module-filter">Módulo:</label>
+                    <select id="module-filter" class="filter-select">
+                        <option value="all">Todos</option>
+                        <option value="Comercial">Comercial</option>
+                        <option value="Estoque">Estoque</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="status-filter">Status:</label>
+                    <select id="status-filter" class="filter-select">
+                        <option value="all">Todos</option>
+                        <option value="Concluído">Concluído</option>
+                        <option value="Em Andamento">Em Andamento</option>
+                        <option value="Não Iniciado">Não Iniciado</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div id="training-cards" class="training-grid"></div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <h2>O que nossos clientes dizem</h2>
+            <div class="testimonial-item">
+                <p class="testimonial-text">"Super prático para utilizar, e os manuais estão bem explicadinhos e objetivos."</p>
+                <p class="testimonial-author">- Não Identificado</p>
+            </div>
+            <div class="testimonial-item">
+                <p class="testimonial-text">"Me ajudou muito à treinar uma nova funcionária, tirando todas as suas dúvidas."</p>
+                <p class="testimonial-author">- Não Identificado</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>© 2024 Use Sistemas. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Dados de exemplo dos treinamentos
+const treinamentos = [
+{ id: 1, nome: "Como cadastrar clientes", modulo: "Comercial", status: "Concluído", duracao: "45 minutos", nivel: "Básico", progresso: 100, imagem: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-jiLeUJYd08wjQvsgtZcJETF5jejxD7.png", video: "./videos/clientes.mp4", descricao: "Aprenda à como cadastrar Clientes no Sistema, sejam eles pessoas Físicas (CPF) ou pessoas jurídicas (CNPJ)", visualizacoes: 120 },
+{ id: 2, nome: "Como Cadastrar Representantes", modulo: "Comercial", status: "Em Andamento", duracao: "30 minutos", nivel: "Intermediário", progresso: 50, imagem: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-jiLeUJYd08wjQvsgtZcJETF5jejxD7.png", video: "./videos/clientes.mp4", descricao: "Aprenda à como cadastrar Fornecedores no Sistema, sejam eles pessoas Físicas (CPF) ou pessoas jurídicas (CNPJ)", visualizacoes: 80 },
+{ id: 3, nome: "Cadastro de transportadoras", modulo: "Comercial", status: "Não Iniciado", duracao: "90 minutos", nivel: "Especialista", progresso: 0, imagem: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-jiLeUJYd08wjQvsgtZcJETF5jejxD7.png", video: "./videos/clientes.mp4", descricao: "Descrição do treinamento 4", visualizacoes: 30 },
+{ id: 4, nome: "Cadastro de Tabela de Preço", modulo: "Estoque", status: "Não Iniciado", duracao: "50 minutos", nivel: "Intermediário", progresso: 0, imagem: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-jiLeUJYd08wjQvsgtZcJETF5jejxD7.png", video: "./videos/clientes.mp4", descricao: "Aprenda à como Cadastrar Produtos no Sistema.", visualizacoes: 70 },
+];
+
+// Elementos DOM
+const searchInput = document.getElementById('search-input');
+const searchButton = document.getElementById('search-button');
+const searchResults = document.getElementById('search-results');
+const trainingCards = document.getElementById('training-cards');
+const moduleFilter = document.getElementById('module-filter');
+const statusFilter = document.getElementById('status-filter');
+
+// Função para criar um card de treinamento
+function createTrainingCard(treinamento) {
+// Determinar a classe de status
+let statusClass = '';
+switch(treinamento.status) {
+    case 'Concluído':
+        statusClass = 'status-completed';
+        break;
+    case 'Em Andamento':
+        statusClass = 'status-in-progress';
+        break;
+    case 'Não Iniciado':
+        statusClass = 'status-not-started';
+        break;
+}
+
+// Criar o elemento do card
+const card = document.createElement('div');
+card.className = 'training-card card-hover';
+card.innerHTML = `
+    <img src="${treinamento.imagem}" alt="${treinamento.nome}" class="card-image">
+    <div class="card-content">
+        <h3 class="card-title">${treinamento.nome}</h3>
+        <span class="card-module">${treinamento.modulo}</span>
+        <div class="card-info">
+            <span>${treinamento.duracao}</span>
+            <span>Nível: ${treinamento.nivel}</span>
+        </div>
+        <div class="card-status">
+            <span class="status-indicator ${statusClass}"></span>
+            <span>${treinamento.status}</span>
+        </div>
+        <div class="progress-bar">
+            <div class="progress-fill progress-shine" style="width: ${treinamento.progresso}%"></div>
+        </div>
+        <a href="treinamento.html?id=${treinamento.id}" class="card-button">Ver Treinamento</a>
+    </div>
+`;
+
+return card;
+}
+
+// Função para filtrar e exibir os treinamentos
+function filterAndDisplayTrainings() {
+const searchTerm = searchInput.value.toLowerCase();
+const moduleValue = moduleFilter.value;
+const statusValue = statusFilter.value;
+
+// Limpar os cards existentes
+trainingCards.innerHTML = '';
+
+// Filtrar os treinamentos
+const filteredTrainings = treinamentos.filter(treinamento => {
+    const matchesSearch = treinamento.nome.toLowerCase().includes(searchTerm) || 
+                         treinamento.descricao.toLowerCase().includes(searchTerm);
+    const matchesModule = moduleValue === 'all' || treinamento.modulo === moduleValue;
+    const matchesStatus = statusValue === 'all' || treinamento.status === statusValue;
+    
+    return matchesSearch && matchesModule && matchesStatus;
+});
+
+// Exibir os treinamentos filtrados
+if (filteredTrainings.length === 0) {
+    const noResults = document.createElement('div');
+    noResults.className = 'no-results';
+    noResults.textContent = 'Nenhum treinamento encontrado com os critérios selecionados.';
+    trainingCards.appendChild(noResults);
+} else {
+    filteredTrainings.forEach(treinamento => {
+        trainingCards.appendChild(createTrainingCard(treinamento));
+    });
+}
+
+// Mostrar a seção de resultados
+searchResults.classList.remove('hidden');
+}
+
+// Event listeners
+searchButton.addEventListener('click', filterAndDisplayTrainings);
+searchInput.addEventListener('keypress', function(e) {
+if (e.key === 'Enter') {
+    filterAndDisplayTrainings();
+}
+});
+
+moduleFilter.addEventListener('change', filterAndDisplayTrainings);
+statusFilter.addEventListener('change', filterAndDisplayTrainings);
+
+// Inicializar a página com todos os treinamentos
+document.addEventListener('DOMContentLoaded', function() {
+// Preencher os cards iniciais (opcional)
+// filterAndDisplayTrainings();
+});
+
+    </script>
+</body>
+</html>

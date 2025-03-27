@@ -276,23 +276,29 @@ function filtrarTreinamentos() {
 const debouncedFiltrarTreinamentos = debounce(filtrarTreinamentos, 300);
 
 // Inicializa a lista quando o DOM estiver carregado
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM carregado, inicializando treinamentos");
-    
-    // Adicionar listeners aos filtros
-    document.getElementById("search").addEventListener("input", debouncedFiltrarTreinamentos);
-    document.getElementById("modulo").addEventListener("change", filtrarTreinamentos);
-    document.getElementById("status").addEventListener("change", filtrarTreinamentos);
-    
-    // Carregar treinamentos iniciais
-    const comercialTreinamentos = treinamentos.filter(t => t.modulo === "Comercial");
-    const estoqueTreinamentos = treinamentos.filter(t => t.modulo === "Estoque");
-    
-    console.log("Comercial treinamentos:", comercialTreinamentos);
-    console.log("Estoque treinamentos:", estoqueTreinamentos);
-    
-    exibirTreinamentos(comercialTreinamentos, "comercial-container");
-    exibirTreinamentos(estoqueTreinamentos, "estoque-container");
+    document.addEventListener("DOMContentLoaded", () => {
+    // Verifica se estamos na página principal de listagem
+    if (document.getElementById("search")) {
+        // Configura funcionalidades de busca e filtro
+        document.getElementById("search").addEventListener("input", debouncedFiltrarTreinamentos);
+        document.getElementById("modulo").addEventListener("change", filtrarTreinamentos);
+        document.getElementById("status").addEventListener("change", filtrarTreinamentos);
+        
+        // Carrega listagens de treinamento iniciais
+        const comercialTreinamentos = treinamentos.filter(t => t.modulo === "Comercial");
+        const estoqueTreinamentos = treinamentos.filter(t => t.modulo === "Estoque");
+        
+        exibirTreinamentos(comercialTreinamentos, "comercial-container");
+        exibirTreinamentos(estoqueTreinamentos, "estoque-container");
+    } else {
+        // Estamos na página de detalhes, então carregue os detalhes apropriados
+        const treinamentoId = getQueryParam('id');
+        if (treinamentoId) {
+            const treinamento = buscarTreinamentoPorId(treinamentoId);
+            exibirDadosTreinamento(treinamento);
+            carregarProximasAulas(treinamento);
+        }
+    }
 });
 
 function toggleModule(containerId) {

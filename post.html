@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Como Fazer um Pedido de Venda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+:root {
+  --primary: #1a2234;
+  --secondary: #2a3245;
+  --accent: #ff9800;
+  --accent-dark: #e08800;
+  --accent-light: rgba(255, 152, 0, 0.2);
+  --text-light: #ffffff;
+  --text-muted: #e0e0e0;
+  --text-dim: #b0b0b0;
+  --border-color: rgba(255, 255, 255, 0.2);
+  --border-accent: rgba(255, 152, 0, 0.3);
+  --card-bg: rgba(42, 50, 69, 0.95);
+  --card-bg-lighter: rgba(52, 62, 85, 0.85);
+  --shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 6px 20px rgba(0, 0, 0, 0.35);
+  --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.7;
+  color: var(--text-light);
+  background: linear-gradient(145deg, #1a2234 0%, #2a3245 100%) fixed;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+.publicacao {
+  background-color: var(--card-bg);
+  border-radius: 24px;
+  padding: 40px 60px; 
+  margin: 50px 50px 50px 100px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: var(--transition-normal);
+}
+
+.publicacao:hover {
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.6);
+}
+
+.publicacao h1 {
+  font-size: 2.4rem;
+  color: var(--text-light);
+  margin-top: 0;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  text-align: left; 
+  letter-spacing: -0.02em;
+}
+
+.publicacao h1::after {
+  content: "#152";
+  font-size: 1.3rem;
+  color: var(--text-dim);
+  font-weight: 500;
+  background: var(--accent-light);
+  padding: 4px 12px;
+  border-radius: 12px;
+  margin-left: 15px; 
+}
+
+.publicacao > p:first-of-type {
+  display: inline-flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.12);
+  padding: 10px 18px;
+  border-radius: 25px;
+  margin-bottom: 30px;
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  transition: var(--transition-normal);
+}
+
+.publicacao > p:first-of-type:hover {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
+/* Resumo */
+.publicacao > blockquote {
+  border: 1px solid var(--border-accent);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  padding: 25px;
+  margin: 0 0 35px 0;
+  background-color: var(--card-bg-lighter);
+  position: relative;
+  transition: var(--transition-normal);
+  text-align: left; /* Alinhado à esquerda */
+}
+
+.publicacao > blockquote:hover {
+  background-color: rgba(52, 62, 85, 0.9);
+}
+
+.publicacao > blockquote > h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+.publicacao > blockquote > p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+/* Seções */
+.publicacao > h2 {
+  font-size: 1.7rem;
+  color: var(--text-light);
+  margin-top: 2.5rem;
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 8px;
+  text-align: left; /* Alinhado à esquerda */
+}
+
+.publicacao > h2::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background-color: var(--accent);
+  border-radius: 2px;
+}
+
+/* Imagens */
+.publicacao > figure {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 15px;
+  margin: 25px 0;
+  background-color: rgba(255, 255, 255, 0.08);
+  position: relative;
+  transition: var(--transition-normal);
+  text-align: left; /* Alinhado à esquerda */
+}
+
+.publicacao > figure:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-sm);
+}
+
+.publicacao > figure > img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  transition: var(--transition-normal);
+}
+
+.publicacao > figure:hover > img {
+  filter: brightness(1.05);
+}
+
+.publicacao > figure > figcaption {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background-color: var(--accent);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 15px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+  transition: var(--transition-normal);
+}
+
+.publicacao > figure > figcaption:hover {
+  transform: scale(1.1);
+}
+
+.publicacao > figure > figcaption:nth-of-type(1) {
+  top: 50%;
+  left: 20%;
+}
+
+.publicacao > figure > figcaption:nth-of-type(2) {
+  top: 30%;
+  left: 50%;
+}
+
+.publicacao > figure > figcaption:nth-of-type(3) {
+  top: 60%;
+  left: 70%;
+}
+
+/* Listas */
+.publicacao > ol {
+  counter-reset: item;
+  list-style-type: none;
+  padding-left: 0;
+  text-align: left; /* Alinhado à esquerda */
+}
+
+.publicacao > ol > li {
+  position: relative;
+  padding-left: 45px;
+  margin-bottom: 18px;
+  counter-increment: item;
+  transition: var(--transition-normal);
+}
+
+.publicacao > ol > li:hover {
+  color: var(--text-light);
+}
+
+.publicacao > ol > li::before {
+  content: counter(item);
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  background-color: var(--accent);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.publicacao > p {
+  text-align: left; 
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .publicacao {
+    padding: 30px 40px;
+    margin: 30px 20px 30px 50px;
+    border-radius: 20px;
+  }
+  
+  .publicacao h1 {
+    font-size: 2rem;
+    display: block;
+  }
+  
+  .publicacao h1::after {
+    margin-top: 8px;
+    font-size: 1.1rem;
+    display: inline-block;
+  }
+  
+  .publicacao > figure > figcaption {
+    width: 24px;
+    height: 24px;
+    font-size: 13px;
+  }
+  
+  .publicacao > ol > li::before {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .publicacao {
+    padding: 20px 25px;
+    margin: 20px 15px 20px 25px; 
+    border-radius: 16px;
+  }
+  
+  .publicacao h1 {
+    font-size: 1.6rem;
+  }
+  
+  .publicacao > h2 {
+    font-size: 1.4rem;
+  }
+  
+  .publicacao > blockquote {
+    padding: 20px;
+  }
+}
+    </style>
+</head>
+<body>
+
+    <div class="publicacao">
+        <h1>Como Fazer um Pedido de Venda</h1>
+        
+        <p>📁 Comercial → Movimentos → Pedidos</p>
+        
+        <blockquote>
+            <h3>Resumo</h3>
+            <p>Aprenda de forma rápida e prática como fazer vendas pelo sistema!</p>
+        </blockquote>
+        
+        <h2>1 - Siga o Caminho</h2>
+        <p>Logo abaixo, está o caminho para que você possa fazer o pedido de venda:</p>
+        
+        <figure>
+            <img width="" src="transferir (2).png" alt="Captura de tela do sistema mostrando o caminho para fazer pedido de venda">
+         
+        </figure>
+        
+        <h2>2 - Preencha os Dados</h2>
+        <p>Após acessar a tela de pedidos, você precisará preencher os seguintes campos:</p>
+        
+        <ol>
+            <li>Selecione o cliente na lista ou cadastre um novo</li>
+            <li>Escolha a condição de pagamento</li>
+            <li>Adicione os produtos desejados</li>
+            <li>Confira os valores e descontos</li>
+        </ol>
+        
+        <figure>
+            <img src="https://via.placeholder.com/750x400" alt="Captura de tela do formulário de pedido de venda">
+        </figure>
+        
+        <h2>3 - Finalize o Pedido</h2>
+        <p>Para finalizar o pedido, siga os passos abaixo:</p>
+        
+        <ol>
+            <li>Verifique se todos os dados estão corretos</li>
+            <li>Clique no botão "Salvar" para registrar o pedido</li>
+            <li>Imprima o pedido se necessário</li>
+        </ol>
+        
+        <figure>
+            <img src="https://via.placeholder.com/750x400" alt="Captura de tela da finalização do pedido">
+        </figure>
+    </div>
+
+</body>
+</html>
