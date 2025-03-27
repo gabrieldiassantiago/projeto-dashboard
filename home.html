@@ -276,61 +276,37 @@
     </div>
 
     <script>
-        // Dados de postss
-        const postss = [
-            {
-                id: 1,
-                nome: "Como cadastrar clientes ",
-                modulo: "Comercial",
-                status: "Concluído",
-                duracao: "45 minutos",
-                nivel: "Básico",
-                progresso: 100,
-                imagem: "./static/compradores-seu-papel-no-varejo.jpg",
-                video: "./videos/clientes.mp4",
-                descricao: "Aprenda à como cadastrar Clientes no Sistema, sejam eles pessoas Físicas (CPF) ou pessoas jurídicas (CNPJ)",
-                visualizacoes: 120,
-            },
-            {
-                id: 2,
-                nome: "Como Cadastrar Representantes",
-                modulo: "Comercial",
-                status: "Em Andamento",
-                duracao: "30 minutos",
-                nivel: "Intermediário",
-                progresso: 50,
-                imagem: "./static/bom-relacionamento-fornecedores.jpg",
-                video: "./videos/clientes.mp4",
-                descricao: "Aprenda à como cadastrar Fornecedores no Sistema, sejam eles pessoas Físicas (CPF) ou pessoas jurídicas (CNPJ)",
-                visualizacoes: 80,
-            },
-            {
-                id: 3,
-                nome: "Cadastro de transportadoras",
-                modulo: "Comercial",
-                status: "Não Iniciado",
-                duracao: "90 minutos",
-                nivel: "Especialista",
-                progresso: 0,
-                imagem: "./static/contratos.avif",
-                video: "./videos/clientes.mp4",
-                descricao: "Descrição do posts 4",
-                visualizacoes: 30,
-            },
-            {
-                id: 4,
-                nome: "Cadastro de Tabela de Preço",
-                modulo: "Estoque",
-                status: "Não Iniciado",
-                duracao: "50 minutos",
-                nivel: "Intermediário",
-                progresso: 0,
-                imagem: "./static/produtos.jpg",
-                video: "./videos/clientes.mp4",
-                descricao: "Aprenda à como Cadastrar Produtos no Sistema.",
-                visualizacoes: 70,
-            },
-        ]
+        // Dados de posts
+        const posts = [
+        {
+            id: 1,
+            titulo: "Como cadastrar clientes",
+            descricao: "Aprenda a cadastrar clientes no sistema de forma simples e rápida.",
+            imagem: "./static/compradores-seu-papel-no-varejo.jpg",
+            tutorial: true
+        },
+        {
+            id: 2,
+            titulo: "Como Cadastrar Representantes",
+            descricao: "Guia completo para cadastrar representantes comerciais.",
+            imagem: "./static/bom-relacionamento-fornecedores.jpg",
+            tutorial: true
+        },
+        {
+            id: 3,
+            titulo: "Cadastro de transportadoras",
+            descricao: "Saiba como cadastrar transportadoras no sistema.",
+            imagem: "./static/contratos.avif",
+            tutorial: false
+        },
+        {
+            id: 4,
+            titulo: "Cadastro de Tabela de Preço",
+            descricao: "Configure tabelas de preço para otimizar suas vendas.",
+            imagem: "./static/produtos.jpg",
+            tutorial: true
+        }
+    ];
 
         // Elementos DOM
         const searchInput = document.getElementById("search-input")
@@ -342,79 +318,39 @@
         const resultsContainer = document.getElementById("results-container")
         const noResults = document.getElementById("no-results")
 
-        // Função para criar um card de posts
-        function createTrainingCard(posts) {
-            let statusClass = ""
-            let statusBg = ""
-            switch (posts.status) {
-                case "Concluído":
-                    statusClass = "text-green-500"
-                    statusBg = "bg-green-500 bg-opacity-20"
-                    break
-                case "Em Andamento":
-                    statusClass = "text-yellow-500"
-                    statusBg = "bg-yellow-500 bg-opacity-20"
-                    break
-                case "Não Iniciado":
-                    statusClass = "text-gray-400"
-                    statusBg = "bg-gray-500 bg-opacity-20"
-                    break
-            }
-
-            const card = document.createElement("div")
-            card.className = "bg-secondary bg-opacity-50 rounded-xl overflow-hidden border border-gray-700 shadow-lg card-hover"
-            const imageSrc = posts.imagem || "https://via.placeholder.com/300x150"
-
+        function createPostCard(post) {
+            const card = document.createElement("div");
+            card.className = "bg-secondary bg-opacity-50 rounded-xl overflow-hidden border border-gray-700 shadow-lg card-hover";
+            const imageSrc = post.imagem || "https://via.placeholder.com/300x150";
+        
             card.innerHTML = `
                 <div class="relative">
-                    <img src="${imageSrc}" alt="${posts.nome}" class="w-full h-48 object-cover">
-                    <div class="absolute top-2 right-2 ${statusBg} px-2 py-1 rounded-full text-xs font-medium ${statusClass}">
-                        ${posts.status}
-                    </div>
-                    <div class="absolute bottom-2 left-2 bg-black bg-opacity-70 px-2 py-1 rounded text-xs">
-                        <i class="fas fa-clock mr-1"></i> ${posts.duracao}
-                    </div>
+                    <img src="${imageSrc}" alt="${post.titulo}" class="w-full h-48 object-cover">
+                    ${post.tutorial ? `
+                        <span class="absolute top-2 left-2 bg-accent text-white text-xs px-2 py-1 rounded-full">
+                            Passo a Passo
+                        </span>
+                    ` : ""}
                 </div>
                 <div class="p-4">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="bg-accent bg-opacity-20 text-accent text-xs px-2 py-1 rounded-full">${posts.modulo}</span>
-                        <span class="text-xs text-gray-400"><i class="fas fa-eye mr-1"></i> ${posts.visualizacoes}</span>
-                    </div>
-                    <h3 class="text-lg font-bold mb-2">${posts.nome}</h3>
-                    <p class="text-gray-300 text-sm mb-4 line-clamp-2">${posts.descricao}</p>
-                    ${
-                        posts.progresso > 0
-                            ? `
-                    <div class="w-full bg-gray-700 rounded-full h-2 mb-2">
-                        <div class="bg-accent h-2 rounded-full progress-shine" style="width: ${posts.progresso}%"></div>
-                    </div>
-                    <div class="flex justify-between text-xs text-gray-400 mb-4">
-                        <span>Progresso</span>
-                        <span>${posts.progresso}%</span>
-                    </div>
-                    `
-                            : ""
-                    }
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs bg-gray-700 px-2 py-1 rounded">${posts.nivel}</span>
+                    <h3 class="text-lg font-bold mb-2">${post.titulo}</h3>
+                    <p class="text-gray-300 text-sm mb-4">${post.descricao}</p>
+                    <div class="flex justify-end">
                         <a href="#" class="text-accent hover:text-accent-dark transition-colors duration-300 text-sm font-medium flex items-center">
-                            Ver posts <i class="fas fa-arrow-right ml-1"></i>
+                            Ver post <i class="fas fa-arrow-right ml-1"></i>
                         </a>
                     </div>
                 </div>
-            `
-            return card
+            `;
+            return card;
         }
 
         // Função para pesquisar posts
-        function searchTrainings(query) {
-            if (!query) return postss
+        function searchPosts(query) {
+            if (!query) return posts
             query = query.toLowerCase()
-            return postss.filter(
-                (posts) =>
-                    posts.nome.toLowerCase().includes(query) ||
-                    posts.descricao.toLowerCase().includes(query) ||
-                    posts.modulo.toLowerCase().includes(query)
+            return posts.filter(
+                (post) => post.titulo.toLowerCase().includes(query)
             )
         }
 
@@ -449,8 +385,8 @@
                 noResults.classList.remove("hidden")
             } else {
                 noResults.classList.add("hidden")
-                results.forEach((posts) => {
-                    const card = createTrainingCard(posts)
+                results.forEach((post) => {
+                    const card = createPostCard(post)
                     resultsContainer.appendChild(card)
                 })
             }
@@ -468,9 +404,8 @@
             // Mostra o loading
             showLoading()
             
-          
             setTimeout(() => {
-                const results = searchTrainings(query)
+                const results = searchPosts(query)
                 displayResults(results)
             }, 1000) // Simula 1 segundo de carregamento
         })
@@ -482,9 +417,9 @@
                 // Mostra o loading
                 showLoading()
                 
-                // Simula um tempo de carregamento (adaptar aqui)
+                // Simula um tempo de carregamento
                 setTimeout(() => {
-                    const results = searchTrainings(query)
+                    const results = searchPosts(query)
                     displayResults(results)
                 }, 1000) // Simula 1 segundo de carregamento
             }
@@ -492,4 +427,3 @@
     </script>
 </body>
 </html>
-
