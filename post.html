@@ -5,26 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Como Fazer um Pedido de Venda</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-          theme: {
-              extend: {
-                  colors: {
-                      primary: '#1a2234',
-                      secondary: '#2a3245',
-                      accent: '#ff9800',
-                      'accent-dark': '#e08800',
-                      'accent-light': 'rgba(255, 152, 0, 0.2)',
-                      success: '#4CAF50',
-                      warning: '#FFC107',
-                      danger: '#F44336',
-                      info: '#2196F3',
-                  }
-              }
-          }
-      }
-    </script>
     <style>
 :root {
   --primary: #1a2234;
@@ -55,6 +35,128 @@ body {
   font-size: 15px;
 }
 
+/* Header simples */
+.site-header {
+  background-color: var(--secondary);
+  background-opacity: 0.2;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+  z-index: 20;
+  padding: 0.75rem 1rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.site-title {
+  font-weight: bold;
+  font-size: 1.25rem;
+  color: var(--text-light);
+  margin: 0;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.title-icon {
+  color: var(--accent);
+  margin-right: 0.5rem;
+}
+
+/* Botão de ação */
+.action-button {
+  background-color: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.action-button:hover {
+  background-color: var(--accent-dark);
+}
+
+/* Link de voltar para desktop */
+.back-link-desktop {
+  display: flex;
+  align-items: center;
+  color: var(--accent);
+  text-decoration: none;
+  transition: var(--transition-normal);
+}
+
+.back-link-desktop:hover {
+  color: var(--accent-dark);
+}
+
+.back-icon {
+  margin-right: 0.5rem;
+}
+
+/* Menu mobile */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-light);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mobile-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: var(--secondary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.mobile-menu.open {
+  max-height: 100px;
+  padding: 0.5rem 0;
+}
+
+.back-link-mobile {
+  display: block;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  transition: var(--transition-normal);
+}
+
+.back-link-mobile:hover {
+  color: var(--accent-dark);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Responsividade para mobile */
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+  }
+  
+  .mobile-menu {
+    display: block;
+  }
+  
+  .back-link-desktop {
+    display: none;
+  }
+}
+
+/* Resto do CSS da página (mantido do original) */
 .publicacao {
   background-color: var(--card-bg);
   border-radius: 18px;
@@ -278,7 +380,7 @@ body {
   margin: 12px 0;
 }
 
-/* Responsividade */
+/* Responsividade para o conteúdo */
 @media (max-width: 768px) {
   .publicacao {
     padding: 25px 20px;
@@ -337,66 +439,85 @@ body {
     </style>
 </head>
 <body>
-  <header class="p-4 md:p-6 flex justify-between items-center bg-secondary bg-opacity-20 border-b border-gray-700 relative z-20">
-    <nav class="flex items-center gap-4">
-        <a href="home.html" class="text-accent hover:text-accent-dark transition-colors duration-300 flex items-center">
-            <i class="fas fa-arrow-left mr-2"></i> Voltar 
-        </a>
-    </nav>
-    <h1 class="flex items-center text-xl font-bold mx-auto">
-        <i class="fas fa-cubes text-accent text-2xl mr-2"></i>
+  <header class="site-header">
+    <div class="header-content">
+      <!-- Menu hambúrguer (aparece apenas no mobile) -->
+      <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+        ☰
+      </button>
+      
+      <!-- Link "Voltar" para desktop (escondido no mobile) -->
+      <a href="home.html" class="back-link-desktop">
+        <span class="back-icon">←</span> Voltar
+      </a>
+      
+      <!-- Título centralizado -->
+      <h1 class="site-title">
         Suporte Online
-    </h1>
-    <div>
-        <button class="bg-accent hover:bg-accent-dark text-white px-4 py-2 rounded-md transition-colors duration-300">
-            Acessar Plataforma
-        </button>
+      </h1>
+      
+      <!-- Botão de ação -->
+      <button class="action-button">Acessar Plataforma</button>
     </div>
-</header>
+    
+    <!-- Menu mobile (aparece apenas quando o hambúrguer é clicado) -->
+    <nav class="mobile-menu" id="mobileMenu">
+      <a href="home.html" class="back-link-mobile">
+        <span class="back-icon">←</span> Voltar
+      </a>
+    </nav>
+  </header>
 
-    <div class="publicacao">
-        <h1>Como Fazer um Pedido de Venda</h1>
-        
-        <p>📁 Comercial → Movimentos → Pedidos</p>
-        
-        <blockquote>
-            <h3>Resumo</h3>
-            <p>Aprenda de forma rápida e prática como fazer vendas pelo sistema!</p>
-        </blockquote>
-        
-        <h2>1 - Siga o Caminho</h2>
-        <p>Logo abaixo, está o caminho para que você possa fazer o pedido de venda:</p>
-        
-        <figure>
-            <img src="transferir (2).png" alt="Captura de tela do sistema mostrando o caminho para fazer pedido de venda">
-        </figure>
-        
-        <h2>2 - Preencha os Dados</h2>
-        <p>Após acessar a tela de pedidos, você precisará preencher os seguintes campos:</p>
-        
-        <ol>
-            <li>Selecione o cliente na lista ou cadastre um novo</li>
-            <li>Escolha a condição de pagamento</li>
-            <li>Adicione os produtos desejados</li>
-            <li>Confira os valores e descontos</li>
-        </ol>
-        
-        <figure>
-            <img src="transferir (2).png" alt="Captura de tela do sistema mostrando o caminho para fazer pedido de venda">
-        </figure>
-        
-        <h2>3 - Finalize o Pedido</h2>
-        <p>Para finalizar o pedido, siga os passos abaixo:</p>
-        
-        <ol>
-            <li>Verifique se todos os dados estão corretos</li>
-            <li>Clique no botão "Salvar" para registrar o pedido</li>
-            <li>Imprima o pedido se necessário</li>
-        </ol>
-        
-        <figure>
-            <img src="transferir (2).png" alt="Captura de tela do sistema mostrando o caminho para fazer pedido de venda">
-        </figure>
-    </div>
+  <div class="publicacao">
+    <h1>Como Fazer um Pedido de Venda</h1>
+    
+    <p>📁 Comercial → Movimentos → Pedidos</p>
+    
+    <blockquote>
+      <h3>Resumo</h3>
+      <p>Aprenda de forma rápida e prática como fazer vendas pelo sistema!</p>
+    </blockquote>
+    
+    <h2>1 - Siga o Caminho</h2>
+    <p>Logo abaixo, está o caminho para que você possa fazer o pedido de venda:</p>
+    
+    <figure>
+      <img src="transferir (2).png" alt="Captura de tela do sistema mostrando o caminho para fazer pedido de venda">
+    </figure>
+    
+    <h2>2 - Preencha os Dados</h2>
+    <p>Após acessar a tela de pedidos, você precisará preencher os seguintes campos:</p>
+    
+    <ol>
+      <li>Selecione o cliente na lista ou cadastre um novo</li>
+      <li>Escolha a condição de pagamento</li>
+      <li>Adicione os produtos desejados</li>
+      <li>Confira os valores e descontos</li>
+    </ol>
+    
+    <figure>
+      <img src="transferir (2).png" alt="Captura de tela do sistema mostrando o caminho para fazer pedido de venda">
+    </figure>
+    
+    <h2>3 - Finalize o Pedido</h2>
+    <p>Para finalizar o pedido, siga os passos abaixo:</p>
+    
+    <ol>
+      <li>Verifique se todos os dados estão corretos</li>
+      <li>Clique no botão "Salvar" para registrar o pedido</li>
+      <li>Imprima o pedido se necessário</li>
+    </ol>
+    
+    <figure>
+      <img src="transferir (2).png" alt="Captura de tela do sistema mostrando o caminho para fazer pedido de venda">
+    </figure>
+  </div>
+
+  <script>
+    // Simples JavaScript para toggle do menu mobile
+    document.getElementById('menuToggle').addEventListener('click', function() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    });
+  </script>
 </body>
 </html>
