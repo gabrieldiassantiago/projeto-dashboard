@@ -19,6 +19,15 @@
                         warning: '#FFC107',
                         danger: '#F44336',
                         info: '#2196F3',
+                        violet: '#8B5CF6',
+                        blue: '#3B82F6',
+                        green: '#10B981',
+                        red: '#EF4444',
+                        yellow: '#F59E0B',
+                        pink: '#EC4899',
+                        indigo: '#6366F1',
+                        purple: '#8B5CF6',
+                        orange: '#F97316',
                     }
                 }
             }
@@ -276,37 +285,6 @@
     </div>
 
     <script>
-        // Dados de posts
-        const posts = [
-        {
-            id: 1,
-            titulo: "Como cadastrar clientes",
-            descricao: "Aprenda a cadastrar clientes no sistema de forma simples e rápida.",
-            imagem: "./static/compradores-seu-papel-no-varejo.jpg",
-            tutorial: true
-        },
-        {
-            id: 2,
-            titulo: "Como Cadastrar Representantes",
-            descricao: "Guia completo para cadastrar representantes comerciais.",
-            imagem: "./static/bom-relacionamento-fornecedores.jpg",
-            tutorial: true
-        },
-        {
-            id: 3,
-            titulo: "Cadastro de transportadoras",
-            descricao: "Saiba como cadastrar transportadoras no sistema.",
-            imagem: "./static/contratos.avif",
-            tutorial: false
-        },
-        {
-            id: 4,
-            titulo: "Cadastro de Tabela de Preço",
-            descricao: "Configure tabelas de preço para otimizar suas vendas.",
-            imagem: "./static/produtos.jpg",
-            tutorial: true
-        }
-    ];
 
         // Elementos DOM
         const searchInput = document.getElementById("search-input")
@@ -318,25 +296,46 @@
         const resultsContainer = document.getElementById("results-container")
         const noResults = document.getElementById("no-results")
 
+        // Função para criar um card de post com o novo formato de dados
         function createPostCard(post) {
             const card = document.createElement("div");
             card.className = "bg-secondary bg-opacity-50 rounded-xl overflow-hidden border border-gray-700 shadow-lg card-hover";
+            
+            // Usar a imagem do post ou uma imagem padrão se não existir
             const imageSrc = post.imagem || "https://via.placeholder.com/300x150";
-        
+            
+            // Determinar a cor da tag
+            let tagColorClass = "bg-violet"; // Padrão para 'violet'
+            
+            if (post.tag_color) {
+                switch(post.tag_color.toLowerCase()) {
+                    case 'blue': tagColorClass = "bg-blue"; break;
+                    case 'green': tagColorClass = "bg-green"; break;
+                    case 'red': tagColorClass = "bg-red"; break;
+                    case 'yellow': tagColorClass = "bg-yellow"; break;
+                    case 'pink': tagColorClass = "bg-pink"; break;
+                    case 'indigo': tagColorClass = "bg-indigo"; break;
+                    case 'purple': tagColorClass = "bg-purple"; break;
+                    case 'orange': tagColorClass = "bg-orange"; break;
+                    default: tagColorClass = "bg-violet"; // Padrão
+                }
+            }
+            
             card.innerHTML = `
                 <div class="relative">
-                    <img src="${imageSrc}" alt="${post.titulo}" class="w-full h-48 object-cover">
-                    ${post.tutorial ? `
-                        <span class="absolute top-2 left-2 bg-accent text-white text-xs px-2 py-1 rounded-full">
-                            Passo a Passo
+                    <img src="${imageSrc}" alt="${post.ctitulopost}" class="w-full h-48 object-cover">
+                    ${post.tag ? `
+                        <span class="absolute top-2 left-2 ${tagColorClass} text-white text-xs px-2 py-1 rounded-full">
+                            ${post.tag}
                         </span>
                     ` : ""}
                 </div>
                 <div class="p-4">
-                    <h3 class="text-lg font-bold mb-2">${post.titulo}</h3>
-                    <p class="text-gray-300 text-sm mb-4">${post.descricao}</p>
-                    <div class="flex justify-end">
-                        <a href="post.html" class="text-accent hover:text-accent-dark transition-colors duration-300 text-sm font-medium flex items-center">
+                    <h3 class="text-lg font-bold mb-2">${post.ctitulopost}</h3>
+                    <p class="text-gray-300 text-sm mb-4">${post.cdescripost}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-xs text-gray-400">Post #${post.nnumeropost}</span>
+                        <a href="post.html?id=${post.nnumeropost}" class="text-accent hover:text-accent-dark transition-colors duration-300 text-sm font-medium flex items-center">
                             Ver post <i class="fas fa-arrow-right ml-1"></i>
                         </a>
                     </div>
@@ -345,85 +344,117 @@
             return card;
         }
 
-        // Função para pesquisar posts
-        function searchPosts(query) {
-            if (!query) return posts
-            query = query.toLowerCase()
-            return posts.filter(
-                (post) => post.titulo.toLowerCase().includes(query)
-            )
+        // Função para buscar posts da API (adaptar aqi caso necessario)
+        async function fetchPosts(query) {
+            try {
+                const endpoint = `https://suporte.usesistemas.com.br/search?q=${encodeURIComponent(query)}`;
+                const response = await fetch(endpoint);
+                
+                if (!response.ok) {
+                    throw new Error(`Erro na requisição: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                return Array.isArray(data) ? data : [data]; 
+            } catch (error) {
+                console.error("Erro ao buscar dados:", error);
+                return [];
+            }
         }
 
         // Função para mostrar o loading
         function showLoading() {
             // Altera o botão de busca
-            searchText.classList.add("hidden")
-            searchLoading.classList.remove("hidden")
+            searchText.classList.add("hidden");
+            searchLoading.classList.remove("hidden");
             
             // Mostra a seção de loading
-            loadingSection.classList.remove("hidden")
+            loadingSection.classList.remove("hidden");
             
             // Esconde os resultados se estiverem visíveis
-            searchResults.classList.add("hidden")
+            searchResults.classList.add("hidden");
         }
 
         // Função para esconder o loading
         function hideLoading() {
             // Restaura o botão de busca
-            searchText.classList.remove("hidden")
-            searchLoading.classList.add("hidden")
+            searchText.classList.remove("hidden");
+            searchLoading.classList.add("hidden");
             
             // Esconde a seção de loading
-            loadingSection.classList.add("hidden")
+            loadingSection.classList.add("hidden");
         }
 
         // Função para exibir resultados
         function displayResults(results) {
-            resultsContainer.innerHTML = ""
+            resultsContainer.innerHTML = "";
             
             if (results.length === 0) {
-                noResults.classList.remove("hidden")
+                noResults.classList.remove("hidden");
             } else {
-                noResults.classList.add("hidden")
+                noResults.classList.add("hidden");
                 results.forEach((post) => {
-                    const card = createPostCard(post)
-                    resultsContainer.appendChild(card)
-                })
+                    const card = createPostCard(post);
+                    resultsContainer.appendChild(card);
+                });
             }
             
             // Esconde o loading e mostra os resultados
-            hideLoading()
-            searchResults.classList.remove("hidden")
-            searchResults.scrollIntoView({ behavior: "smooth" })
+            hideLoading();
+            searchResults.classList.remove("hidden");
+            searchResults.scrollIntoView({ behavior: "smooth" });
         }
 
         // Event listeners para pesquisa
-        searchButton.addEventListener("click", () => {
-            const query = searchInput.value.trim()
+        searchButton.addEventListener("click", async () => {
+            const query = searchInput.value.trim();
+            if (!query) return;
             
             // Mostra o loading
-            showLoading()
+            showLoading();
             
-            setTimeout(() => {
-                const results = searchPosts(query)
-                displayResults(results)
-            }, 1000) // Simula 1 segundo de carregamento
-        })
+            try {
+                // Busca os posts da API
+                const results = await fetchPosts(query);
+                displayResults(results);
+            } catch (error) {
+                console.error("Erro na busca:", error);
+                hideLoading();
+                // Exibe mensagem de erro
+                noResults.innerHTML = `
+                    <h3 class="text-xl font-medium text-white mb-2">Erro ao buscar resultados</h3>
+                    <p class="text-white text-opacity-70">Tente novamente mais tarde.</p>
+                `;
+                noResults.classList.remove("hidden");
+                searchResults.classList.remove("hidden");
+            }
+        });
 
-        searchInput.addEventListener("keypress", (e) => {
+        searchInput.addEventListener("keypress", async (e) => {
             if (e.key === "Enter") {
-                const query = searchInput.value.trim()
+                const query = searchInput.value.trim();
+                if (!query) return;
                 
                 // Mostra o loading
-                showLoading()
+                showLoading();
                 
-                // Simula um tempo de carregamento
-                setTimeout(() => {
-                    const results = searchPosts(query)
-                    displayResults(results)
-                }, 1000) // Simula 1 segundo de carregamento
+                try {
+                    // Busca os posts da API
+                    const results = await fetchPosts(query);
+                    displayResults(results);
+                } catch (error) {
+                    console.error("Erro na busca:", error);
+                    hideLoading();
+                    // Exibe mensagem de erro
+                    noResults.innerHTML = `
+                        <h3 class="text-xl font-medium text-white mb-2">Erro ao buscar resultados</h3>
+                        <p class="text-white text-opacity-70">Tente novamente mais tarde.</p>
+                    `;
+                    noResults.classList.remove("hidden");
+                    searchResults.classList.remove("hidden");
+                }
             }
-        })
+        });
     </script>
 </body>
 </html>
